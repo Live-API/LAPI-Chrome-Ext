@@ -7,25 +7,33 @@
 
   "browser_action": {
     // "default_icon": "icon.png",
-    "default_popup": "lapi.html",
+    // "default_popup": "lapi.html",
     "default_title": "LiveAPI Endpoint Creation Tool"
   },
-  "web_accessible_resources": [ "toolbar.html"],
+  "web_accessible_resources": ["src/assets/*", "*.png", "*.eot", "*.woff", "*.woff2", "*.ttf", "*.svg", "bundles/*"],
   "background": {
     "scripts": ["bundles/background.bundle.js"],
     "persistent": false
   },
   "content_scripts": [
       {
-      "matches": ["http://*/*","https://*/*"],
-      "css": ["style.css"],
-      "js": ["jquery.js", "bundles/contentscripts.bundle.js", "src/main.js"]
+
+      "matches": ["http://*/*","https://*/*", "<all_urls>"],
+      "css": ["semantic.css", "style.css"],
+      // "js": ["configure-webpack.js", "jquery.js", "bundles/contentscripts.bundle.js", "./node_modules/semantic-ui-css/semantic.css"]
+      "js": ["bundles/semantic.bundle.js", "jquery.js", "src/main.js"]
+
       }
   ],
   "permissions": [
+    "tabs",
     "activeTab",
     "file:///*",
     "http://*/*",
-    "https://*/*"
-  ]
+    "https://*/*",
+    "<all_urls>"
+  ],
+    "content_security_policy": "default-src 'self'; script-src 'self' 'unsafe-eval'; style-src * 'unsafe-inline' 'self' blob:; img-src 'self'; font-src 'self' *" 
+
+  // "background_page": "background.html"
 }

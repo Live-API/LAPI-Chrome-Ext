@@ -61,4 +61,4 @@ typings/
 db/
 
 # Build files
-client/public/bundles
+bundles

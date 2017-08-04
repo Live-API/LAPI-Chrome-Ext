@@ -60,15 +60,26 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 97);
+/******/ 	return __webpack_require__(__webpack_require__.s = 456);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 97:
+/***/ 456:
 /***/ (function(module, exports) {
 
 
+
+chrome.browserAction.onClicked.addListener(function (tab) {
+  // console.log("without bang", $('#lapiChromeExtensionContainer'));
+  // console.log("with bang", !!$('#lapiChromeExtensionContainer'));
+  // if (!!$('#lapiChromeExtensionContainer')!=true) {
+  chrome.tabs.executeScript(null, { file: "bundles/contentscripts.bundle.js" });
+  // }
+  // chrome.tabs.executeScript(null, {file: "bundles/contentscripts.bundle.js"});
+});
+
+// var elementExists = document.getElementById("find-me");
 
 /***/ })
 

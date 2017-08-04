@@ -1,9 +1,121 @@
-#lapiChromeExtensionToolbar {
-    position: absolute;
-    top: -35px;
+#lapiChromeExtensionContainer {
+    /* -webkit-transform: translateZ(0);
+    -webkit-transform: translateY(0); */
+    position: fixed;
+    height: 165px; 
+      top: -165px;      
+     /* top: 0px; */
+    left: 0px;
+    width: 100%;
+    z-index: 2000;
+     /* background: #dde084;
+    color: black;  */
+}
+
+
+
+/* #lapiChromeExtensionContainerSpacer {
+    position: absolute; 
+    height: 165px; 
+    top: 0px;   
     left: 0px;
     width: 100%;
     background: #dde084;
+
+} */
+
+.redText {
+    background: blue;
+    opacity: .5;
+    color: red;
+    height: 100px;
+}
+ 
+.constWidth {
+padding-left: 10px;
+padding-right: 10px; 
+width: 100%;
+height: 150px;
+z-index: 2000;
+/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#266d26+0,cbebff+100&1+0,0+100 */
+background: -moz-linear-gradient(top, rgb(0, 168, 47) 0%, rgba(203,235,255,0) 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top, rgb(0, 168, 47) 0%,rgba(203,235,255,0) 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom, rgb(0, 168, 47) 0%,rgba(203,235,255,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+/* filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#266d26', endColorstr='#00cbebff',GradientType=0 );  IE6-9  */
+} 
+ 
+#lapiChromeExtensionContainer > div > div > div.ui.container.constWidth {
+    width: 100%;
+} 
+
+ div.step {
+     width: 20%; 
+} 
+
+
+div>.step>.content {
+    margin-top: 20px;
+}
+
+.tb {
+    padding-top: 6px;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 100%;
+    height: 35px;
+    background-color: #00a82f;
+    color: white;
+    font-size: 1.5em;
+}
+
+.ui.tertiary.segment {
+    height: 30px;
+}
+
+#leftMenu {
+    float: left;
+    /* width: 35px;
+    height: 35px; */
+}
+
+#rightMenu {
+    float: right;
+     width: 70px;
+    /* height: 35px;  */
+}
+
+.tb>#leftMenu>img {
+   -webkit-filter: invert(1);
+   filter: invert(1);
+}
+
+.tb>#rightMenu>img {
+   -webkit-filter: invert(1);
+   filter: invert(1);
+}
+
+.titleDiv {
+    padding-top: 6px;
+    float: left;
+    width: 200px;
+    padding-left: 12px;
+}
+
+#lapiChromeExtensionContainer > div > div > div.tb > h2 > i {
+    font-size: 1em;
+}
+
+.rightHeader {
+  float: right;
+}
+
+.leftHeader {
+  float: left;
+}
+
+#lapiChromeExtensionContainer > div > div > div.tb > div.leftHeader > h3 {
+    display: inline;
+
     color: black;
 }
 
@@ -30,4 +142,5 @@
 
 .liveAPI-border-yellow {
   outline: 3px solid yellow;
+
 }

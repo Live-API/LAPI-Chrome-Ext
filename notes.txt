@@ -1,0 +1,15 @@
+.constWidth {
+/* background: black; */
+padding-left: 10px;
+padding-right: 10px;
+width: 100%;
+height: 150px;
+z-index: 2000;
+
+/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#266d26+0,cbebff+100&1+0,0+100 */
+background: -moz-linear-gradient(top, rgb(0, 168, 47) 0%, rgba(203,235,255,0) 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top, rgb(0, 168, 47) 0%,rgba(203,235,255,0) 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom, rgb(0, 168, 47) 0%,rgba(203,235,255,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+/* filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#266d26', endColorstr='#00cbebff',GradientType=0 );  IE6-9  */
+
+} 
