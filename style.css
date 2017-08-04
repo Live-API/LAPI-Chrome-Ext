@@ -15,7 +15,7 @@
   display: inline-block;  
   white-space: pre-wrap;
   padding: 2px 6px;
-  z-index: 999998;
+  z-index: 2147483647;
 }
 
 .liveAPI-yellow {
@@ -26,4 +26,8 @@
 .liveAPI-highlight-wrapper {
   display: inline-block;
   position: relative;
+}
+
+.liveAPI-border-yellow {
+  outline: 3px solid yellow;
 }

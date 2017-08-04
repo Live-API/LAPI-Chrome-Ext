@@ -28,9 +28,21 @@ $.fn.fullSelector = function () {
     return quickCss;
 };
 
+$(document).on('mouseenter', '*', function(e) {
+  // $(this).stop().animate({'border': '3px solid yellow'});
+  $(this).addClass('liveAPI-border-yellow');
+  e.stopImmediatePropagation();
+})
+
+$(document).on('mouseleave', '*', function(e) {
+  $(this).removeClass('liveAPI-border-yellow');
+  // $(this).stop().animate('border', 'none');
+  e.stopImmediatePropagation();
+})
+
 // click on part of the page to see the CSS selector
 $(document).on('click','*', function(){
-    // console.log('DOM Path', $(this).fullSelector() );
+    console.log('DOM Path', $(this).fullSelector() );
     return false;
 });
 
@@ -65,8 +77,14 @@ $(document).on('click', '.liveAPI-highlight-button', function(e) {
 })
 
 $(document).on('click', '*', function() {
+  let children = $(this).children().map((i, ele) => {
+    return ele.nodeName.toLowerCase();
+  }).get();
+  // Check if this is a parent div, with child div elements
+  console.log('html element', $(this));
+  if ($(this)[0].nodeName.toLowerCase() === 'div' && children.includes('div')) return false;
   let styles = $(this).css([
-    "width", "height", "font-size", "font-weight", "font-family", "font-variant", "font-stretch", "line-height", "text-transform", "text-align", "z-index", "padding-top", "padding-bottom", "padding-left", "padding-right", "letter-spacing"]
+    "width", "height", "font-size", "font-weight", "font-family", "font-variant", "font-stretch", "line-height", "text-transform", "text-align", "padding-top", "padding-bottom", "padding-left", "padding-right", "letter-spacing"]
   );
   
   const position = cumulativeOffset(this);
@@ -75,7 +93,7 @@ $(document).on('click', '*', function() {
     .offset({top: position.top, left: position.left})
 
     // Assign div element the CSS properties of the HTML Element
-    .css({"font-size": styles["font-size"], "font-family": styles["font-family"], "font-variant": styles["font-variant"], "font-stretch": styles["font-stretch"], "line-height": styles["line-height"], "text-transform": styles["text-transform"], "text-align": styles["text-align"], "z-index": styles["z-index"], "letter-spacing": styles["letter-spacing"]})
+    .css({"font-size": styles["font-size"], "font-family": styles["font-family"], "font-variant": styles["font-variant"], "font-stretch": styles["font-stretch"], "line-height": styles["line-height"], "text-transform": styles["text-transform"], "text-align": styles["text-align"], "letter-spacing": styles["letter-spacing"]})
     
     // Add highlight and ignore classes
     .addClass('liveAPI-highlight liveAPI-yellow liveAPI-ignore')
@@ -94,7 +112,6 @@ $(document).on('click', '*', function() {
       .text('x')
     )
   );
-  
   // console.log(cleanWhiteSpace($(this).text()));
 });
 
