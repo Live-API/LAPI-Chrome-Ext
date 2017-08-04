@@ -2,7 +2,8 @@ import React from 'react'
 import { Button, Header, Icon, Image, Modal } from 'semantic-ui-react'
 
 const ModalScrollingExample = () => (
-  <Modal trigger={<Button>Long Modal</Button>}>
+  // <Modal trigger={<Button>Long Modal</Button>}>
+<Modal trigger={<Icon inverted={true} name='align justify' link={true}/>}>
     <Modal.Header>Profile Picture</Modal.Header>
     <Modal.Content image>
       <Image wrapped size='medium' src='/assets/images/wireframe/image.png' />

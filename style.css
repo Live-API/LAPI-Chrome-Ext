@@ -111,3 +111,7 @@ div>.step>.content {
 .leftHeader {
   float: left;
 }
+
+#lapiChromeExtensionContainer > div > div > div.tb > div.leftHeader > h3 {
+    display: inline;
+}
