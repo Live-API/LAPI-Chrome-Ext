@@ -19,7 +19,7 @@
       {
       "matches": ["http://*/*","https://*/*"],
       "css": ["style.css"],
-      "js": ["jquery.js", "bundles/contentscripts.bundle.js"]
+      "js": ["jquery.js", "bundles/contentscripts.bundle.js", "src/main.js"]
       }
   ],
   "permissions": [
