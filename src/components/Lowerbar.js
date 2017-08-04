@@ -1,0 +1,14 @@
+import React, { Component } from 'react';
+import Step from "./Step";
+import { Grid, Container } from 'semantic-ui-react'
+
+class Lowerbar extends Component {
+  render() {
+    return (
+        <Container className='constWidth'>
+            <Step/>
+        </Container>
+    )
+  }
+}
+export default Lowerbar;
