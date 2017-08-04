@@ -115,8 +115,7 @@ div>.step>.content {
 
 #lapiChromeExtensionContainer > div > div > div.tb > div.leftHeader > h3 {
     display: inline;
-
-    color: black;
+    background-color: inherit;
 }
 
 /* Parent div */

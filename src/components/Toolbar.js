@@ -5,6 +5,7 @@ import $ from '../../jquery.js';
 //let imgUrlArrow = chrome.extension.getURL("src/assets/arrow-right-b.png")
 //let imgUrlX = require("../assets/close.png")
 
+console.log("from path", __webpack_public_path__);
 
 
 

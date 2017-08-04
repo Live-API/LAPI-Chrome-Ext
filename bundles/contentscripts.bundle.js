@@ -55260,6 +55260,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
 //let imgUrlArrow = chrome.extension.getURL("src/assets/arrow-right-b.png")
 //let imgUrlX = require("../assets/close.png")
 
+console.log("from path", __webpack_require__.p);
 
 class Toolbar extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     // componentDidMount(){
