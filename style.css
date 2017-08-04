@@ -6,3 +6,24 @@
     background: #dde084;
     color: black;
 }
+
+/* Parent div */
+.liveAPI-highlight {
+  position: absolute;  
+  box-sizing: border-box;
+  border-radius: 2px;
+  display: inline-block;  
+  white-space: pre-wrap;
+  padding: 2px 6px;
+  z-index: 999998;
+}
+
+.liveAPI-yellow {
+  background-color: yellow;
+}
+
+/* Child div  */
+.liveAPI-highlight-wrapper {
+  display: inline-block;
+  position: relative;
+}
