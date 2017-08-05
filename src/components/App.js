@@ -5,9 +5,11 @@ import React, { Component } from 'react';
 import $ from "../../jquery";
 import Toolbar from "./Toolbar";
 import Lowerbar from "./Lowerbar";
-import Segment from "./Segment";
-import AuthModal from "./AuthModal.jsx";
-import SendDefinitionModal from "./SendModal.jsx";
+import SegmentOne from "./SegmentOne";
+import SegmentFour from "./SegmentFour";
+import SegmentFive from "./SegmentFive";
+// import AuthModal from "./AuthModal.jsx";
+// import SendDefinitionModal from "./SendModal.jsx";
 
 
 $.fn.fullSelector = function () {
@@ -66,9 +68,9 @@ class App extends Component {
       activeStep: 1,
       stepsCompleted: [],
       lowerBar: true,
-      scrapePropNames: [],
+      // scrapePropNames: [],
       lowerSegment: false,
-      segmentPropValue: '',
+      // segmentPropValue: '', 
       property: undefined,
       propertyArray: []
     }
@@ -96,12 +98,12 @@ class App extends Component {
     }
 
     // save scrapePropNames
-    this.saveScrapePropNames = () => {
-      let newArr = this.state.scrapePropNames;
-      newArr.push(this.state.segmentPropValue);
-      this.setState({scrapePropNames: newArr});
-      console.log(this.state.scrapePropNames)
-    }
+    // this.saveScrapePropNames = () => {
+    //   let newArr = this.state.scrapePropNames;
+    //   newArr.push(this.state.segmentPropValue);
+    //   this.setState({scrapePropNames: newArr});
+    //   console.log(this.state.scrapePropNames)
+    // }
 
     // this.activateModal = this.activateModal.bind(this)
     this.closeEx = () => {
@@ -268,11 +270,19 @@ class App extends Component {
       <div className="App">
         <div className="App-header">
 
-           <AuthModal trigger={<button>Authenticate</button>}/>
-          <SendDefinitionModal trigger={<button>Create API Endpoint</button>} address='localhost:4000'/>
+           {/* <AuthModal trigger={<button>Authenticate</button>}/>
+          <SendDefinitionModal trigger={<button>Create API Endpoint</button>} address='localhost:4000'/> */}
            <Toolbar closeFunc={this.closeEx} toggleLower={this.toggleLower} arrowDown={this.state.lowerBar}/>
+
           {this.state.lowerBar ? <Lowerbar activeStep={this.state.activeStep} stepsCompleted={this.state.stepsCompleted}/> : null}
-          {this.state.lowerBar ? <Segment getPropertyName={this.getPropertyName} property={this.state.property} saveProperty={this.saveProperty}/> : null}
+
+{/* setValFunc={this.handleChangeValue} value={this.state.segmentPropValue} saveFunc={this.saveScrapePropNames}  */}
+          {(this.state.lowerBar && (this.state.activeStep===1)) ? <SegmentOne doneFunc={this.stepForward} getPropertyName={this.getPropertyName} property={this.state.property} saveProperty={this.saveProperty}/> : null}
+
+           {(this.state.lowerBar && (this.state.activeStep===4)) ? <SegmentFour doneFunc={this.stepForward}/> : null}
+
+            {(this.state.lowerBar && (this.state.activeStep===5)) ? <SegmentFive doneFunc={this.stepForward}/> : null}
+
 
         </div>
       </div>
