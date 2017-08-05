@@ -5,6 +5,8 @@ import React, { Component } from 'react';
 import $ from "../../jquery";
 import Toolbar from "./Toolbar";
 import Lowerbar from "./Lowerbar";
+import AuthModal from "./AuthModal.jsx";
+import SendDefinitionModal from "./SendModal.jsx";
 
 
 class App extends Component {
@@ -41,8 +43,10 @@ class App extends Component {
     return (
       <div className="App">
         <div className="App-header">
-           <Toolbar closeFunc={this.closeEx}/>
-          <Lowerbar/> 
+          <AuthModal trigger={<button>Authenticate</button>}/>
+          <SendDefinitionModal trigger={<button>Create API Endpoint</button>} address='localhost:4000'/>
+          <Toolbar closeFunc={this.closeEx}/>
+          <Lowerbar/>
         </div>
       </div>
     );
