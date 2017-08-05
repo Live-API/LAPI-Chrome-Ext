@@ -2,11 +2,11 @@ import React from 'react'
 import { Grid, Step } from 'semantic-ui-react'
 
 const steps = [
-  { link: true, completed: true, title: 'Select DOM Elements', description: 'Click on DOM elements that you want as properties in your data object.' },
-  { completed: true, title: 'Select Details', description: 'Click on nested elements that you want as properties in your data object.' },
-  { active: true, title: 'Identify Pagination Links', description: 'If you desire pagination, click on the "next" link.' },
-  { active: false, title: 'Create Endpoint', description: 'Authorize yourself and serve your endpoint' },
-  { active: false, title: 'Authorization', description: 'Authorize yourself and serve your endpoint' }
+  { active: true, link: true, completed: false, title: 'Select DOM Elements', description: 'Click on DOM elements that you want as properties in your data object.' },
+  { disabled: true, active: false, completed: false, title: 'Select Details', description: 'Click on nested elements that you want as properties in your data object.' },
+  { disabled: true, active: false, title: 'Identify Pagination Links', description: 'If you desire pagination, click on the "next" link.' },
+  { active: false, title: 'Authorization', description: 'Authorize yourself and serve your endpoint' },
+  { active: false, title: 'Create Endpoint', description: 'Authorize yourself and serve your endpoint' }
 ]
 
 const StepExampleOrdered = () => (

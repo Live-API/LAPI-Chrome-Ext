@@ -5,6 +5,7 @@ import $ from '../../jquery.js';
 //let imgUrlArrow = chrome.extension.getURL("src/assets/arrow-right-b.png")
 //let imgUrlX = require("../assets/close.png")
 
+console.log("from path", __webpack_public_path__);
 
 
 
@@ -21,7 +22,7 @@ class Toolbar extends Component {
             
             <div className="leftHeader">
                 <Modal/>
-                 <Header as='h3' content='LiveAPI' inverted={true}/> 
+                 <Header as='h3' content='LiveAPI' inverted={true} className='menuh3'/> 
                 <Icon inverted={true} name='angle down' />
                  {/* {(this.state.active) ? <Modal /> : null}     */}
             </div>

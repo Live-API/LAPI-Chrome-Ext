@@ -20,8 +20,8 @@
 
       "matches": ["http://*/*","https://*/*", "<all_urls>"],
       "css": ["semantic.css", "style.css"],
-      // "js": ["configure-webpack.js", "jquery.js", "bundles/contentscripts.bundle.js", "./node_modules/semantic-ui-css/semantic.css"]
-      "js": ["bundles/semantic.bundle.js", "jquery.js", "src/main.js"]
+      // "js": ["configure-webpack.js", "jquery.js", "bundles/contentscripts.bundle.js", "./node_modules/semantic-ui-css/semantic.css", "src/main.js"]
+      "js": ["bundles/semantic.bundle.js", "jquery.js"]
 
       }
   ],
