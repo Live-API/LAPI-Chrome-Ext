@@ -51213,11 +51213,15 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
       lowerBar: true,
       scrapePropNames: [],
       lowerSegment: false,
-      segmentPropValue: ''
+      segmentPropValue: '',
+      property: undefined,
+      propertyArray: []
     };
     this.text = {};
-    this.temporaryTextStorage = {};
+    this.getPropertyName = this.getPropertyName.bind(this);
     this.saveProperty = this.saveProperty.bind(this);
+    this.resetPropertyName = this.resetPropertyName.bind(this);
+
     // this.activateModal = () => {
     //   console.log("ji");
     //   this.setState({active: !this.state.active});
@@ -51230,9 +51234,6 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
         this.setState({ activeStep: this.state.activeStep++ });
       }
     };
-
-    // deal with segment value
-    this.handleChangeValue = e => this.setState({ segmentPropValue: e.target.value });
 
     // save scrapePropNames
     this.saveScrapePropNames = () => {
@@ -51257,19 +51258,46 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     };
     // end constructor
   }
+  // Gets property name when entered
 
-  saveProperty(property, DOMPath) {
-    this.text[property] = DOMPath;
-    console.log(this.text);
+  // Gets value of the property textbox
+  getPropertyName(e) {
+    this.setState({ property: e.target.value });
+    console.log('this.property', this.state.property);
   }
 
+  // Clears the property textbox. Executed in saveProperty function
+  resetPropertyName() {
+    const propertyTextbox = document.getElementById('live-API-property-textbox');
+    propertyTextbox.value = '';
+    this.setState({ property: undefined });
+    // target the id element
+    // reset its value
+    // reset this.property to undefined
+  }
+  // In Step 1, click the save button to add property to this.text object
+  // and clear the textbox
+  saveProperty(property) {
+    console.log('hi');
+    console.log('property', property);
+    if (!property) return;
+    this.text[property] = this.state.propertyArray;
+    console.log('this.text', this.text);
+    this.resetPropertyName();
+  }
+
+  /*
+  Experiencing Problems Here
+  */
+
   componentDidMount() {
-    const App = this;
+    const Application = this;
+
+    // Event listener to prevent population of new highlight div on existing highlight div
     __WEBPACK_IMPORTED_MODULE_1__jquery___default()(document).on('click', '*', function () {
-      const path = __WEBPACK_IMPORTED_MODULE_1__jquery___default()(this).fullSelector();
-      App.temporaryTextStorage[path] = path;
       return false;
     });
+
     __WEBPACK_IMPORTED_MODULE_1__jquery___default()(document).on('click', '.liveAPI-highlight', function (e) {
       e.stopImmediatePropagation();
     });
@@ -51279,11 +51307,19 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     });
 
     __WEBPACK_IMPORTED_MODULE_1__jquery___default()(document).on('click', '.liveAPI-highlight-button', function (e) {
-      __WEBPACK_IMPORTED_MODULE_1__jquery___default()(this).parent().data();
+      console.log('propertyArray', Application.state.propertyArray);
+      // When the item is deselected, remove DOMPath from the currentArray
+      const propertyArray = Application.state.propertyArray.slice();
+      let currDOMPath = __WEBPACK_IMPORTED_MODULE_1__jquery___default()(this).parent().data('DOMPath');
+      let index = propertyArray.indexOf(currDOMPath);
+      propertyArray.splice(index, 1);
+      Application.setState({ "propertyArray": propertyArray });
       __WEBPACK_IMPORTED_MODULE_1__jquery___default()(this).parent().remove();
       // prevents other listeners of the same event from being called
       e.stopImmediatePropagation();
     });
+
+    // #lapiChromeExtensionContainer
 
     __WEBPACK_IMPORTED_MODULE_1__jquery___default()(document).on('click', '*', function () {
       let children = __WEBPACK_IMPORTED_MODULE_1__jquery___default()(this).children().map((i, ele) => {
@@ -51297,18 +51333,25 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
       let styles = __WEBPACK_IMPORTED_MODULE_1__jquery___default()(this).css(["width", "height", "font-size", "font-weight", "font-family", "font-variant", "font-stretch", "line-height", "text-transform", "text-align", "padding-top", "padding-bottom", "padding-left", "padding-right", "letter-spacing"]);
 
       const position = cumulativeOffset(this);
+      const DOMPath = __WEBPACK_IMPORTED_MODULE_1__jquery___default()(this).fullSelector();
+      // Add DOM Path to this.state.propertyArray
+      const propertyArray = Application.state.propertyArray.slice();
+      propertyArray.push(DOMPath);
+      Application.setState({ "propertyArray": propertyArray });
       __WEBPACK_IMPORTED_MODULE_1__jquery___default()('#lapiChromeExtensionContainer').append(__WEBPACK_IMPORTED_MODULE_1__jquery___default()('<div/>').offset({ top: position.top, left: position.left })
 
       // Assign div element the CSS properties of the HTML Element
       .css({ "font-size": styles["font-size"], "font-family": styles["font-family"], "font-variant": styles["font-variant"], "font-stretch": styles["font-stretch"], "line-height": styles["line-height"], "text-transform": styles["text-transform"], "text-align": styles["text-align"], "letter-spacing": styles["letter-spacing"] })
       // Add DOM Path to the parent div element
-      .data(__WEBPACK_IMPORTED_MODULE_1__jquery___default()(this).fullSelector())
+      .data('DOMPath', DOMPath)
+      // Add highlight and ignore classes
       // Add highlight and ignore classes
       .addClass('liveAPI-highlight liveAPI-yellow liveAPI-ignore').append(__WEBPACK_IMPORTED_MODULE_1__jquery___default()('<div/>').addClass('liveAPI-highlight-wrapper liveAPI-ignore').css({
         "max-width": styles["width"], "height": styles["height"], "padding-right": styles["padding-right"]
       })
       // .text(cleanWhiteSpace($(this).getText()))
       .text(cleanWhiteSpace(__WEBPACK_IMPORTED_MODULE_1__jquery___default()(this).text()))).append(__WEBPACK_IMPORTED_MODULE_1__jquery___default()('<a/>').addClass('liveAPI-highlight-button').text('x')));
+      console.log(Application.state.propertyArray);
       // console.log(cleanWhiteSpace($(this).text()));
     });
   }
@@ -51322,7 +51365,7 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
         { className: "App-header" },
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__Toolbar__["a" /* default */], { closeFunc: this.closeEx, toggleLower: this.toggleLower }),
         this.state.lowerBar ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__Lowerbar__["a" /* default */], null) : null,
-        this.state.lowerBar ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__Segment__["a" /* default */], { setValFunc: this.handleChangeValue, value: this.state.segmentPropValue, saveFunc: this.saveScrapePropNames }) : null
+        this.state.lowerBar ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__Segment__["a" /* default */], { getPropertyName: this.getPropertyName, property: this.state.property, saveProperty: this.saveProperty }) : null
       )
     );
   }
@@ -71432,10 +71475,10 @@ class SegmentExampleRaised extends __WEBPACK_IMPORTED_MODULE_0_react__["Componen
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["g" /* Segment */],
       { raised: true },
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["e" /* Input */], { placeholder: 'Please name your prop', type: 'text', value: this.props.value, onChange: this.props.setValFunc }),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["e" /* Input */], { id: 'live-API-property-textbox', placeholder: 'Please name your prop', type: 'text', onBlur: e => this.props.getPropertyName(e) }),
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["a" /* Button */],
-        { className: 'propSaveBtn', onClick: this.props.saveFunc },
+        { className: 'propSaveBtn', onClick: () => this.props.saveProperty(this.props.property) },
         'Save'
       )
     );
