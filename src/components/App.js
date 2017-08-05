@@ -5,9 +5,11 @@ import React, { Component } from 'react';
 import $ from "../../jquery";
 import Toolbar from "./Toolbar";
 import Lowerbar from "./Lowerbar";
-import Segment from "./Segment";
-import AuthModal from "./AuthModal.jsx";
-import SendDefinitionModal from "./SendModal.jsx";
+import SegmentOne from "./SegmentOne";
+import SegmentFour from "./SegmentFour";
+import SegmentFive from "./SegmentFive";
+// import AuthModal from "./AuthModal.jsx";
+// import SendDefinitionModal from "./SendModal.jsx";
 
 
 class App extends Component {
@@ -98,11 +100,17 @@ class App extends Component {
       <div className="App">
         <div className="App-header">
 
-           <AuthModal trigger={<button>Authenticate</button>}/>
-          <SendDefinitionModal trigger={<button>Create API Endpoint</button>} address='localhost:4000'/>
+           {/* <AuthModal trigger={<button>Authenticate</button>}/>
+          <SendDefinitionModal trigger={<button>Create API Endpoint</button>} address='localhost:4000'/> */}
            <Toolbar closeFunc={this.closeEx} toggleLower={this.toggleLower} arrowDown={this.state.lowerBar}/>
+
           {this.state.lowerBar ? <Lowerbar activeStep={this.state.activeStep} stepsCompleted={this.state.stepsCompleted}/> : null}
-          {this.state.lowerBar ? <Segment setValFunc={this.handleChangeValue} value={this.state.segmentPropValue} saveFunc={this.saveScrapePropNames} doneFunc={this.stepForward}/> : null}
+
+          {(this.state.lowerBar && (this.state.activeStep===1)) ? <SegmentOne setValFunc={this.handleChangeValue} value={this.state.segmentPropValue} saveFunc={this.saveScrapePropNames} doneFunc={this.stepForward}/> : null}
+
+           {(this.state.lowerBar && (this.state.activeStep===4)) ? <SegmentFour setValFunc={this.handleChangeValue} value={this.state.segmentPropValue} saveFunc={this.saveScrapePropNames} doneFunc={this.stepForward}/> : null}
+
+            {(this.state.lowerBar && (this.state.activeStep===5)) ? <SegmentFive setValFunc={this.handleChangeValue} value={this.state.segmentPropValue} saveFunc={this.saveScrapePropNames} doneFunc={this.stepForward}/> : null}
 
         </div>
       </div>
