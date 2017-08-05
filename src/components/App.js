@@ -12,14 +12,30 @@ class App extends Component {
     constructor(){
     super();
     this.state = {
-      one: true,
-      lowerIcon: 'angle down',
+      activeStep: 0,
+      lowerBar: true,
+      scrapePropNames: [],
+      lowerSegment: false,
+      segmentPropValue: '',
     }
 
-    // this.activateModal = () => {
-    //   console.log("ji");
-    //   this.setState({active: !this.state.active});
-    // }
+    // move to next step
+    this.stepForward = () => {
+      console.log("step", this.state.activeStep);
+      if (this.state.activeStep<5){
+      this.setState({activeStep: this.state.activeStep++});
+      }
+    }
+
+    // deal with segment value
+    this.handleChangeValue = (e) => this.setState({segmentPropValue: e.target.value});
+
+    // save scrapePropNames
+    this.saveScrapePropNames = () => {
+      let newArr = this.state.scrapePropNames;
+      newArr.push(this.state.segmentPropValue);
+      this.setState({scrapePropNames: newArr});
+    }
 
     // this.activateModal = this.activateModal.bind(this)
     this.closeEx = () => {
@@ -32,8 +48,8 @@ class App extends Component {
     }
 
     // close lower and change icon
-    this.closeLower = () => {
-      $('#lapiChromeExtensionContainer').remove();
+    this.toggleLower = () => {
+      this.setState({lowerBar: !this.state.lowerBar});
     }
   // end constructor
   }
@@ -42,9 +58,9 @@ class App extends Component {
     return (
       <div className="App">
         <div className="App-header">
-           <Toolbar closeFunc={this.closeEx}/>
-          <Lowerbar/> 
-          <Segment/>
+           <Toolbar closeFunc={this.closeEx} toggleLower={this.toggleLower}/>
+          {this.state.lowerBar ? <Lowerbar /> : null}
+          {this.state.lowerBar ? <Segment setValFunc={this.handleChangeValue} value={this.state.segmentPropValue} saveFunc={this.saveScrapePropNames}/> : null}
         </div>
       </div>
     );
