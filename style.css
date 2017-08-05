@@ -146,7 +146,7 @@ div.ui.header {
   position: relative;
 }
 
-.liveAPI-border-yellow {
+ .liveAPI-border-yellow {
   outline: 3px solid yellow;
 
 }
@@ -161,6 +161,7 @@ div.ui.header {
 #lapiChromeExtensionContainer > div > div > div.ui.raised.segment > button {
     margin-left: 10px;
 }
+
 
 .marginRightTen {
     margin-right: 10px;
