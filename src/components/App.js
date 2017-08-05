@@ -68,10 +68,14 @@ class App extends Component {
       scrapePropNames: [],
       lowerSegment: false,
       segmentPropValue: '',
+      property: undefined,
+      propertyArray: []
     }
     this.text = {};
-    this.temporaryTextStorage = {};
+    this.getPropertyName = this.getPropertyName.bind(this);
     this.saveProperty = this.saveProperty.bind(this);
+    this.resetPropertyName = this.resetPropertyName.bind(this);
+
     // this.activateModal = () => {
     //   console.log("ji");
     //   this.setState({active: !this.state.active});
@@ -84,9 +88,6 @@ class App extends Component {
       this.setState({activeStep: this.state.activeStep++});
       }
     }
-
-    // deal with segment value
-    this.handleChangeValue = (e) => this.setState({segmentPropValue: e.target.value});
 
     // save scrapePropNames
     this.saveScrapePropNames = () => {
@@ -111,19 +112,47 @@ class App extends Component {
     }
   // end constructor
   }
+  // Gets property name when entered
 
-  saveProperty(property, DOMPath) {
-    this.text[property] = DOMPath;
-    console.log(this.text);
+  // Gets value of the property textbox
+  getPropertyName(e) {
+    this.setState({property: e.target.value});
+    console.log('this.property', this.state.property);
   }
 
+  // Clears the property textbox. Executed in saveProperty function
+  resetPropertyName() {
+    const propertyTextbox = document.getElementById('live-API-property-textbox');
+    propertyTextbox.value = '';
+    this.setState({property: undefined});
+    // target the id element
+    // reset its value
+    // reset this.property to undefined
+  }
+  // In Step 1, click the save button to add property to this.text object
+  // and clear the textbox
+  saveProperty(property) {
+    console.log('hi');
+    console.log('property', property);
+    if (!property) return;
+    this.text[property] = this.state.propertyArray;
+    console.log('this.text', this.text);
+    this.resetPropertyName();
+  }
+
+
+  /*
+  Experiencing Problems Here
+  */
+
   componentDidMount() {
-    const App = this;
+    const Application = this;
+
+    // Event listener to prevent population of new highlight div on existing highlight div
     $(document).on('click','*', function(){
-      const path = $(this).fullSelector();
-        App.temporaryTextStorage[path] = path;
         return false;
     });
+
     $(document).on('click', '.liveAPI-highlight', function(e) {
       e.stopImmediatePropagation();
     });
@@ -133,11 +162,19 @@ class App extends Component {
     });
 
     $(document).on('click', '.liveAPI-highlight-button', function(e) {
-      $(this).parent().data();
+      console.log('propertyArray', Application.state.propertyArray);
+      // When the item is deselected, remove DOMPath from the currentArray
+      const propertyArray = Application.state.propertyArray.slice();
+      let currDOMPath = $(this).parent().data('DOMPath');
+      let index = propertyArray.indexOf(currDOMPath);
+      propertyArray.splice(index, 1);
+      Application.setState({"propertyArray": propertyArray});
       $(this).parent().remove();
       // prevents other listeners of the same event from being called
       e.stopImmediatePropagation();
-    });
+    })
+
+    // #lapiChromeExtensionContainer
 
     $(document).on('click', '*', function() {
       let children = $(this).children().map((i, ele) => {
@@ -153,6 +190,11 @@ class App extends Component {
       );
       
       const position = cumulativeOffset(this);
+      const DOMPath = $(this).fullSelector();
+      // Add DOM Path to this.state.propertyArray
+      const propertyArray = Application.state.propertyArray.slice();
+      propertyArray.push(DOMPath);
+      Application.setState({"propertyArray": propertyArray});
       $('#lapiChromeExtensionContainer').append(
         $('<div/>')
         .offset({top: position.top, left: position.left})
@@ -160,7 +202,8 @@ class App extends Component {
         // Assign div element the CSS properties of the HTML Element
         .css({"font-size": styles["font-size"], "font-family": styles["font-family"], "font-variant": styles["font-variant"], "font-stretch": styles["font-stretch"], "line-height": styles["line-height"], "text-transform": styles["text-transform"], "text-align": styles["text-align"], "letter-spacing": styles["letter-spacing"]})
         // Add DOM Path to the parent div element
-        .data($(this).fullSelector())
+        .data('DOMPath', DOMPath)
+        // Add highlight and ignore classes
         // Add highlight and ignore classes
         .addClass('liveAPI-highlight liveAPI-yellow liveAPI-ignore')
         .append(
@@ -178,6 +221,7 @@ class App extends Component {
           .text('x')
         )
       );
+      console.log(Application.state.propertyArray);
       // console.log(cleanWhiteSpace($(this).text()));
     });
   }
@@ -188,7 +232,7 @@ class App extends Component {
         <div className="App-header">
            <Toolbar closeFunc={this.closeEx} toggleLower={this.toggleLower}/>
           {this.state.lowerBar ? <Lowerbar /> : null}
-          {this.state.lowerBar ? <Segment setValFunc={this.handleChangeValue} value={this.state.segmentPropValue} saveFunc={this.saveScrapePropNames}/> : null}
+          {this.state.lowerBar ? <Segment getPropertyName={this.getPropertyName} property={this.state.property} saveProperty={this.saveProperty} /> : null}
         </div>
       </div>
     );
