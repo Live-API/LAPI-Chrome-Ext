@@ -145,8 +145,8 @@ div.ui.header {
   display: inline-block;
   position: relative;
 }
-
-.liveAPI-border-yellow {
+/* 
+ .liveAPI-border-yellow {
   outline: 3px solid yellow;
 
 }
