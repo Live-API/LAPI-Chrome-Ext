@@ -51144,10 +51144,12 @@ module.exports = ReactDOMInvalidARIAHook;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Toolbar__ = __webpack_require__(543);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Lowerbar__ = __webpack_require__(870);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__AuthModal_jsx__ = __webpack_require__(872);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__SendModal_jsx__ = __webpack_require__(884);
 
 // import AccordionExampleStyled from './Accordian';
 // import Iframe from './Iframe';
 // import GridExampleVerticallyDivided from './Grid';
+
 
 
 
@@ -51192,8 +51194,13 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__AuthModal_jsx__["a" /* default */], { trigger: __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             "button",
             null,
-            "hello"
+            "Authenticate"
           ) }),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__SendModal_jsx__["a" /* default */], { trigger: __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            "button",
+            null,
+            "Create API Endpoint"
+          ), address: "localhost:4000" }),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__Toolbar__["a" /* default */], { closeFunc: this.closeEx }),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__Lowerbar__["a" /* default */], null)
       )
@@ -72043,6 +72050,140 @@ module.exports = function (css) {
 	return fixedCss;
 };
 
+
+/***/ }),
+/* 884 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__ = __webpack_require__(70);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__SendDialog_jsx__ = __webpack_require__(885);
+
+
+
+
+class SendDefinitionModal extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
+  postCredentials(endpoint) {
+    const url = `http://${this.props.address}/crawls`;
+    console.log(url);
+
+    const xhr = new XMLHttpRequest();
+
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState == XMLHttpRequest.DONE) {
+        console.log(xhr.responseText);
+      }
+    };
+
+    xhr.open("POST", url);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    console.log(JSON.stringify(endpoint));
+  }
+
+  render() {
+    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["i" /* Modal */],
+      { trigger: this.props.trigger, basic: true, size: 'small' },
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["i" /* Modal */].Content,
+        null,
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__SendDialog_jsx__["a" /* default */], { submission: this.postCredentials })
+      )
+    );
+  }
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (SendDefinitionModal);
+
+/***/ }),
+/* 885 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom__ = __webpack_require__(147);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_dom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react_dom__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__ = __webpack_require__(70);
+
+
+
+
+class SendDefinitionDialog extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
+  constructor(props) {
+    super(props);
+
+    this.state = {};
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange(event) {
+    const state = {};
+    state[event.target.name] = event.target.value;
+    this.setState(state);
+  }
+
+  handleSubmit(event) {
+    this.props.submission(this.state);
+    event.preventDefault();
+  }
+
+  render() {
+    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["b" /* Card */],
+      { fluid: true, color: 'black' },
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["b" /* Card */].Content,
+        null,
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["b" /* Card */].Header,
+          null,
+          'Create API Endpoint'
+        )
+      ),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["b" /* Card */].Content,
+        null,
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["e" /* Form */],
+          { onSubmit: this.handleSubmit },
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["e" /* Form */].Field,
+            null,
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+              'label',
+              null,
+              'Endpoint Name'
+            ),
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["h" /* Input */], { fluid: true, icon: 'tag', iconPosition: 'left', placeholder: '/crawls/{Endpoint Name}', name: 'endpoint', onChange: this.handleChange })
+          ),
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            __WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["e" /* Form */].Field,
+            null,
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+              'label',
+              null,
+              'Interval (in seconds)'
+            ),
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["h" /* Input */], { fluid: true, icon: 'repeat', iconPosition: 'left', placeholder: 'Amount of time between scrapes', name: 'interval', onChange: this.handleChange })
+          ),
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["d" /* Divider */], null),
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'button',
+            { type: 'submit' },
+            'Create Endpoint'
+          )
+        )
+      )
+    );
+  }
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (SendDefinitionDialog);
 
 /***/ })
 /******/ ]);
