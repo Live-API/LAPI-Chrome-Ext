@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 import $ from "../../jquery";
 import Toolbar from "./Toolbar";
 import Lowerbar from "./Lowerbar";
+import AuthModal from "./AuthModal.jsx";
 
 
 class App extends Component {
@@ -41,8 +42,9 @@ class App extends Component {
     return (
       <div className="App">
         <div className="App-header">
-           <Toolbar closeFunc={this.closeEx}/>
-          <Lowerbar/> 
+          <AuthModal trigger={<button>hello</button>}/>
+          <Toolbar closeFunc={this.closeEx}/>
+          <Lowerbar/>
         </div>
       </div>
     );
