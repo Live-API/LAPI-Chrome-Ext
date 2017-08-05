@@ -62,4 +62,5 @@ db/
 
 # Build files
 bundles/
+
 .vscode/

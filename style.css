@@ -35,7 +35,7 @@
 padding-left: 10px;
 padding-right: 10px; 
 width: 100%;
-height: 150px;
+height: 160px;
 z-index: 2000;
 /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#266d26+0,cbebff+100&1+0,0+100 */
 background: -moz-linear-gradient(top, rgb(0, 168, 47) 0%, rgba(203,235,255,0) 100%); /* FF3.6-15 */
@@ -149,4 +149,15 @@ div.ui.header {
 .liveAPI-border-yellow {
   outline: 3px solid yellow;
 
+}
+ 
+#lapiChromeExtensionContainer > div > div > div.ui.raised.segment {
+    margin-top: -36px;
+    margin-right: 10px;
+    margin-left: 10px;
+    z-index: 2500;
+} 
+
+#lapiChromeExtensionContainer > div > div > div.ui.raised.segment > button {
+    margin-left: 10px;
 }
