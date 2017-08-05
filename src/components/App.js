@@ -272,7 +272,7 @@ class App extends Component {
           <SendDefinitionModal trigger={<button>Create API Endpoint</button>} address='localhost:4000'/>
            <Toolbar closeFunc={this.closeEx} toggleLower={this.toggleLower} arrowDown={this.state.lowerBar}/>
           {this.state.lowerBar ? <Lowerbar activeStep={this.state.activeStep} stepsCompleted={this.state.stepsCompleted}/> : null}
-          {this.state.lowerBar ? <Segment getPropertyName={this.getPropertyName} property={this.state.property} saveProperty={this.saveProperty} doneFunc={this.stepForward}/> : null}
+          {this.state.lowerBar ? <Segment getPropertyName={this.getPropertyName} property={this.state.property} saveProperty={this.saveProperty}/> : null}
 
         </div>
       </div>
