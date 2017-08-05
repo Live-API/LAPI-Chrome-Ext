@@ -55208,16 +55208,32 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
   constructor() {
     super();
     this.state = {
-      one: true,
-      lowerIcon: 'angle down'
+      activeStep: 0,
+      lowerBar: true,
+      scrapePropNames: [],
+      lowerSegment: false,
+      segmentPropValue: ''
 
-      // this.activateModal = () => {
-      //   console.log("ji");
-      //   this.setState({active: !this.state.active});
-      // }
+      // move to next step
+    };this.stepForward = () => {
+      console.log("step", this.state.activeStep);
+      if (this.state.activeStep < 5) {
+        this.setState({ activeStep: this.state.activeStep++ });
+      }
+    };
 
-      // this.activateModal = this.activateModal.bind(this)
-    };this.closeEx = () => {
+    // deal with segment value
+    this.handleChangeValue = e => this.setState({ segmentPropValue: e.target.value });
+
+    // save scrapePropNames
+    this.saveScrapePropNames = () => {
+      let newArr = this.state.scrapePropNames;
+      newArr.push(this.state.segmentPropValue);
+      this.setState({ scrapePropNames: newArr });
+    };
+
+    // this.activateModal = this.activateModal.bind(this)
+    this.closeEx = () => {
       __WEBPACK_IMPORTED_MODULE_1__jquery___default()('#lapiChromeExtensionContainer').remove();
       __WEBPACK_IMPORTED_MODULE_1__jquery___default()('body').css({
         '-ms-transform': 'translateY(0px)',
@@ -55227,8 +55243,8 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     };
 
     // close lower and change icon
-    this.closeLower = () => {
-      __WEBPACK_IMPORTED_MODULE_1__jquery___default()('#lapiChromeExtensionContainer').remove();
+    this.toggleLower = () => {
+      this.setState({ lowerBar: !this.state.lowerBar });
     };
     // end constructor
   }
@@ -55240,9 +55256,9 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         "div",
         { className: "App-header" },
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__Toolbar__["a" /* default */], { closeFunc: this.closeEx }),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__Lowerbar__["a" /* default */], null),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__Segment__["a" /* default */], null)
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__Toolbar__["a" /* default */], { closeFunc: this.closeEx, toggleLower: this.toggleLower }),
+        this.state.lowerBar ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__Lowerbar__["a" /* default */], null) : null,
+        this.state.lowerBar ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__Segment__["a" /* default */], { setValFunc: this.handleChangeValue, value: this.state.segmentPropValue, saveFunc: this.saveScrapePropNames }) : null
       )
     );
   }
@@ -55268,7 +55284,6 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
 //let imgUrlArrow = chrome.extension.getURL("src/assets/arrow-right-b.png")
 //let imgUrlX = require("../assets/close.png")
 
-console.log("from path", __webpack_require__.p);
 
 class Toolbar extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     // componentDidMount(){
@@ -55284,7 +55299,7 @@ class Toolbar extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                 { className: 'leftHeader' },
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__Modal__["a" /* default */], null),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["c" /* Header */], { as: 'h3', content: 'LiveAPI', inverted: true, className: 'menuh3' }),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["d" /* Icon */], { inverted: true, name: 'angle down' })
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["d" /* Icon */], { inverted: true, name: 'angle down', link: true, onClick: this.props.toggleLower })
             ),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
@@ -75347,16 +75362,21 @@ const StepExampleOrdered = () => __WEBPACK_IMPORTED_MODULE_0_react___default.a.c
 
 
 
-const SegmentExampleRaised = () => __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-  __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["g" /* Segment */],
-  { raised: true },
-  __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["e" /* Input */], { placeholder: 'Please name your prop' }),
-  __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-    __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["a" /* Button */],
-    null,
-    'Save'
-  )
-);
+class SegmentExampleRaised extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
+
+  render() {
+    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["g" /* Segment */],
+      { raised: true },
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["e" /* Input */], { placeholder: 'Please name your prop', type: 'text', value: this.props.value, onChange: this.props.setValFunc }),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["a" /* Button */],
+        { className: 'propSaveBtn', onClick: this.props.saveFunc },
+        'Save'
+      )
+    );
+  }
+}
 
 /* harmony default export */ __webpack_exports__["a"] = (SegmentExampleRaised);
 
