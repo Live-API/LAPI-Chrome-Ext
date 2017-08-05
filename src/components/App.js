@@ -6,6 +6,8 @@ import $ from "../../jquery";
 import Toolbar from "./Toolbar";
 import Lowerbar from "./Lowerbar";
 import Segment from "./Segment";
+import AuthModal from "./AuthModal.jsx";
+import SendDefinitionModal from "./SendModal.jsx";
 
 
 class App extends Component {
@@ -95,9 +97,13 @@ class App extends Component {
     return (
       <div className="App">
         <div className="App-header">
+
+           <AuthModal trigger={<button>Authenticate</button>}/>
+          <SendDefinitionModal trigger={<button>Create API Endpoint</button>} address='localhost:4000'/>
            <Toolbar closeFunc={this.closeEx} toggleLower={this.toggleLower} arrowDown={this.state.lowerBar}/>
           {this.state.lowerBar ? <Lowerbar activeStep={this.state.activeStep} stepsCompleted={this.state.stepsCompleted}/> : null}
           {this.state.lowerBar ? <Segment setValFunc={this.handleChangeValue} value={this.state.segmentPropValue} saveFunc={this.saveScrapePropNames} doneFunc={this.stepForward}/> : null}
+
         </div>
       </div>
     );
