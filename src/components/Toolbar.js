@@ -15,13 +15,13 @@ class Toolbar extends Component {
   render() {
     return (
         <div className="tb">
-
+            
             {/* <Header as='h3' icon='align justify' content='LiveAPI' floated='left' inverted={true}/> */}
             
             <div className="leftHeader">
                 <Modal/>
                  <Header as='h3' content='LiveAPI' inverted={true} className='menuh3'/> 
-                <Icon inverted={true} name='angle down' link={true} onClick={this.props.toggleLower}/>
+                <Icon inverted={true} name={(this.props.arrowDown)?'angle down':'angle right'} link={true} onClick={this.props.toggleLower}/>
                  {/* {(this.state.active) ? <Modal /> : null}     */}
             </div>
 
