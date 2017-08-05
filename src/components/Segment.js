@@ -8,8 +8,12 @@ class SegmentExampleRaised extends Component {
     
 
     <Segment raised>
+      
         <Input placeholder='Please name your prop' type="text" value={this.props.value} onChange={this.props.setValFunc}/>
-        <Button className="propSaveBtn" onClick={this.props.saveFunc}>Save</Button>
+        <Button className="propSaveBtn" onClick={this.props.saveFunc} floated='left'>Save</Button>
+      
+        <Button className="doneBtn" floated='right' onClick={this.props.doneFunc}>Done</Button>
+     
     </Segment>
     )
   }
