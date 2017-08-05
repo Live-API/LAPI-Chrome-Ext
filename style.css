@@ -149,4 +149,10 @@ div.ui.header {
  .liveAPI-border-yellow {
   outline: 3px solid yellow;
 
-} 
+}
+
+#lapiChromeExtensionContainer > div > div > div.ui.raised.segment {
+    margin-top: -26px;
+    margin-right: 10px;
+    margin-left: 10px;
+}
