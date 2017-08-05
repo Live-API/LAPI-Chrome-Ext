@@ -8,8 +8,8 @@ class SegmentExampleRaised extends Component {
     
 
     <Segment raised>
-        <Input placeholder='Please name your prop' type="text" value={this.props.value} onChange={this.props.setValFunc}/>
-        <Button className="propSaveBtn" onClick={this.props.saveFunc}>Save</Button>
+        <Input id='live-API-property-textbox' placeholder='Please name your prop' type="text" onBlur={(e) => this.props.getPropertyName(e)}/>
+        <Button className="propSaveBtn" onClick={() => this.props.saveProperty(this.props.property)}>Save</Button>
     </Segment>
     )
   }
