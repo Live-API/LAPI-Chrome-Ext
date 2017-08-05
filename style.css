@@ -113,11 +113,17 @@ div>.step>.content {
   float: left;
 }
 
-#lapiChromeExtensionContainer > div > div > div.tb > div.leftHeader > h3 {
+ #lapiChromeExtensionContainer > div > div > div.tb > div.leftHeader > h3 {
     display: inline;
+    background-color: inherit;
+} 
 
-    color: black;
+
+div.ui.header {
+    background-color: inherit;
 }
+
+
 
 /* Parent div */
 .liveAPI-highlight {

@@ -11,7 +11,8 @@ class App extends Component {
     constructor(){
     super();
     this.state = {
-      active: false
+      one: true,
+      lowerIcon: 'angle down',
     }
 
     // this.activateModal = () => {
@@ -21,19 +22,18 @@ class App extends Component {
 
     // this.activateModal = this.activateModal.bind(this)
     this.closeEx = () => {
-     $('#lapiChromeExtensionContainer').remove(); 
-     $('body').css({
-        '-ms-transform': 'translateY(0px)',
-        '-webkit-transform': 'translateY(0px)',
-        'transform': 'translateY(0px)'
-    });
-  }
+      $('#lapiChromeExtensionContainer').remove(); 
+      $('body').css({
+          '-ms-transform': 'translateY(0px)',
+          '-webkit-transform': 'translateY(0px)',
+          'transform': 'translateY(0px)'
+      });
+    }
 
-  //   this.hideLow = () => {
-  //     console.log("wi");
-  //    $('#lapiChromeExtensionContainer').remove(); 
-  // }
-
+    // close lower and change icon
+    this.closeLower = () => {
+      $('#lapiChromeExtensionContainer').remove();
+    }
   // end constructor
   }
 
