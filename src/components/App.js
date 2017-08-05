@@ -79,6 +79,7 @@ class App extends Component {
     this.getPropertyName = this.getPropertyName.bind(this);
     this.saveProperty = this.saveProperty.bind(this);
     this.resetPropertyName = this.resetPropertyName.bind(this);
+    this.createEndpoint = this.createEndpoint.bind(this);
 
     // this.activateModal = () => {
     //   console.log("ji");
@@ -184,10 +185,21 @@ class App extends Component {
     this.resetPropertyName();
   }
 
-
-  /*
-  Experiencing Problems Here
-  */
+  // POST Request for Endpoint Creation
+  createEndpoint() {
+    let data = {
+      interval: this.interval,
+      endpoint: this.URL,
+      text: this.text
+    }
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST', this.URL);
+    // In the Requestheader, specify the header type: Authorization
+    // Then, add basic authentication, creates base-64 encoded ASCII string from a String object
+    // Username/Password to be defined in the Modal
+    xhr.setRequestHeader('Authorization', 'Basic' + btoa(USERNAME + ":" + PASSWORD));
+    xhr.send(data);
+  }
 
   componentDidMount() {
     const Application = this;
