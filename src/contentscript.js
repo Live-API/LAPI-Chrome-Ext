@@ -5,6 +5,11 @@ import "./configure-webpack.js";
 import 'semantic-ui-css/semantic.css';
 import $ from '../jquery.js';
 
+//turn on main.js
+// chrome.browserAction.onClicked.addListener(function(tab) {
+// chrome.tabs.executeScript(null, {file: "main.js"});
+// });
+
 let existsAlready = !($('#lapiChromeExtensionContainer').length === 0);
 if (existsAlready!=true) {
     // chrome.tabs.executeScript(null, {file: "contentscript.js"});

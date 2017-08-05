@@ -7511,7 +7511,7 @@ module.exports = canDefineProperty;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_49__elements_Icon_IconGroup__ = __webpack_require__(362);
 /* unused harmony reexport IconGroup */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_50__elements_Image__ = __webpack_require__(79);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return __WEBPACK_IMPORTED_MODULE_50__elements_Image__["a"]; });
+/* unused harmony reexport Image */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_51__elements_Image_ImageGroup__ = __webpack_require__(366);
 /* unused harmony reexport ImageGroup */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_52__elements_Input__ = __webpack_require__(223);
@@ -7549,7 +7549,7 @@ module.exports = canDefineProperty;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_68__elements_Segment_SegmentGroup__ = __webpack_require__(417);
 /* unused harmony reexport SegmentGroup */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_69__elements_Step__ = __webpack_require__(867);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return __WEBPACK_IMPORTED_MODULE_69__elements_Step__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return __WEBPACK_IMPORTED_MODULE_69__elements_Step__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_70__elements_Step_StepContent__ = __webpack_require__(419);
 /* unused harmony reexport StepContent */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_71__elements_Step_StepDescription__ = __webpack_require__(228);
@@ -7585,7 +7585,7 @@ module.exports = canDefineProperty;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_86__modules_Embed__ = __webpack_require__(869);
 /* unused harmony reexport Embed */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_87__modules_Modal__ = __webpack_require__(372);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return __WEBPACK_IMPORTED_MODULE_87__modules_Modal__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return __WEBPACK_IMPORTED_MODULE_87__modules_Modal__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_88__modules_Modal_ModalActions__ = __webpack_require__(375);
 /* unused harmony reexport ModalActions */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_89__modules_Modal_ModalContent__ = __webpack_require__(374);
@@ -40064,6 +40064,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
+//turn on main.js
+// chrome.browserAction.onClicked.addListener(function(tab) {
+// chrome.tabs.executeScript(null, {file: "main.js"});
+// });
+
 let existsAlready = !(__WEBPACK_IMPORTED_MODULE_5__jquery_js___default()('#lapiChromeExtensionContainer').length === 0);
 if (existsAlready != true) {
     // chrome.tabs.executeScript(null, {file: "contentscript.js"});
@@ -55201,7 +55206,8 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
   constructor() {
     super();
     this.state = {
-      active: false
+      one: true,
+      lowerIcon: 'angle down'
 
       // this.activateModal = () => {
       //   console.log("ji");
@@ -55218,11 +55224,10 @@ class App extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
       });
     };
 
-    //   this.hideLow = () => {
-    //     console.log("wi");
-    //    $('#lapiChromeExtensionContainer').remove(); 
-    // }
-
+    // close lower and change icon
+    this.closeLower = () => {
+      __WEBPACK_IMPORTED_MODULE_1__jquery___default()('#lapiChromeExtensionContainer').remove();
+    };
     // end constructor
   }
 
@@ -55275,7 +55280,7 @@ class Toolbar extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
                 'div',
                 { className: 'leftHeader' },
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__Modal__["a" /* default */], null),
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["c" /* Header */], { as: 'h3', content: 'LiveAPI', inverted: true }),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["c" /* Header */], { as: 'h3', content: 'LiveAPI', inverted: true, className: 'menuh3' }),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_semantic_ui_react__["d" /* Icon */], { inverted: true, name: 'angle down' })
             ),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -55299,45 +55304,34 @@ class Toolbar extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
 
 
 
-const ModalScrollingExample = () =>
-// <Modal trigger={<Button>Long Modal</Button>}>
-__WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-  __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["f" /* Modal */],
-  { trigger: __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["d" /* Icon */], { inverted: true, name: 'align justify', link: true }) },
+const ModalScrollingExample = () => __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+  __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["e" /* Modal */],
+  { dimmer: 'blurring', trigger: __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["d" /* Icon */], { inverted: true, name: 'align justify', link: true }) },
   __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-    __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["f" /* Modal */].Header,
+    __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["e" /* Modal */].Header,
     null,
-    'Profile Picture'
+    'LiveAPI User Menu'
   ),
   __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-    __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["f" /* Modal */].Content,
-    { image: true },
-    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["e" /* Image */], { wrapped: true, size: 'medium', src: '/assets/images/wireframe/image.png' }),
+    __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["e" /* Modal */].Content,
+    null,
     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-      __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["f" /* Modal */].Description,
+      __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["e" /* Modal */].Description,
       null,
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["c" /* Header */],
         null,
-        'Modal Header'
+        'Contextual Menu Option'
       ),
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'p',
         null,
-        'This is an example of expanded content that will cause the modal\'s dimmer to scroll'
-      ),
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["e" /* Image */], { src: '/assets/images/wireframe/paragraph.png' }),
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["e" /* Image */], { src: '/assets/images/wireframe/paragraph.png' }),
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["e" /* Image */], { src: '/assets/images/wireframe/paragraph.png' }),
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["e" /* Image */], { src: '/assets/images/wireframe/paragraph.png' }),
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["e" /* Image */], { src: '/assets/images/wireframe/paragraph.png' }),
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["e" /* Image */], { src: '/assets/images/wireframe/paragraph.png' }),
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["e" /* Image */], { src: '/assets/images/wireframe/paragraph.png' }),
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["e" /* Image */], { src: '/assets/images/wireframe/paragraph.png' })
+        'User configuration, settings, options and views available here.'
+      )
     )
   ),
   __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-    __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["f" /* Modal */].Actions,
+    __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["e" /* Modal */].Actions,
     null,
     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       __WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["a" /* Button */],
@@ -75321,9 +75315,9 @@ class Lowerbar extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
 
 
 
-const steps = [{ link: true, completed: true, title: 'Select DOM Elements', description: 'Click on DOM elements that you want as properties in your data object.' }, { completed: true, title: 'Select Details', description: 'Click on nested elements that you want as properties in your data object.' }, { active: true, title: 'Identify Pagination Links', description: 'If you desire pagination, click on the "next" link.' }, { active: false, title: 'Create Endpoint', description: 'Authorize yourself and serve your endpoint' }, { active: false, title: 'Authorization', description: 'Authorize yourself and serve your endpoint' }];
+const steps = [{ active: true, link: true, completed: false, title: 'Select DOM Elements', description: 'Click on DOM elements that you want as properties in your data object.' }, { disabled: true, active: false, completed: false, title: 'Select Details', description: 'Click on nested elements that you want as properties in your data object.' }, { disabled: true, active: false, title: 'Identify Pagination Links', description: 'If you desire pagination, click on the "next" link.' }, { active: false, title: 'Authorization', description: 'Authorize yourself and serve your endpoint' }, { active: false, title: 'Create Endpoint', description: 'Authorize yourself and serve your endpoint' }];
 
-const StepExampleOrdered = () => __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["g" /* Step */].Group, { fluid: true, size: 'small', ordered: true, items: steps });
+const StepExampleOrdered = () => __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_semantic_ui_react__["f" /* Step */].Group, { fluid: true, size: 'small', ordered: true, items: steps });
 
 /* harmony default export */ __webpack_exports__["a"] = (StepExampleOrdered);
 

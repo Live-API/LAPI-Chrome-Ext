@@ -1,4 +1,7 @@
-// Logic for getting the DOM Path for a selected HTML Element
+// let isOn = ($('#lapiChromeExtensionContainer').length > 0); 
+// if (isOn) {
+  
+  // Logic for getting the DOM Path for a selected HTML Element
 // Finds the parents of the selected element
   // Adds classes, id, and index
 
@@ -153,3 +156,4 @@ https://stackoverflow.com/questions/10619445/the-preferred-way-of-creating-a-new
 
 https://stackoverflow.com/questions/11634770/get-position-offset-of-element-relative-to-a-parent-container
 */
+// }
