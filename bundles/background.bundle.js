@@ -75,7 +75,7 @@ chrome.browserAction.onClicked.addListener(function (tab) {
   // console.log("with bang", !!$('#lapiChromeExtensionContainer'));
   // if (!!$('#lapiChromeExtensionContainer')!=true) {
   chrome.tabs.executeScript(null, { file: "bundles/contentscripts.bundle.js" });
-  //chrome.tabs.executeScript(null, {file: "src/main.js"});
+  // chrome.tabs.executeScript(null, {file: "src/main.js"});
   // }
   // chrome.tabs.executeScript(null, {file: "bundles/contentscripts.bundle.js"});
 });
