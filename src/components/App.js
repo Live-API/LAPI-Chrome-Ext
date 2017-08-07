@@ -66,6 +66,8 @@ class App extends Component {
     super();
     this.state = {
       activeStep: 1,
+      authenticated: false,
+      authAttemptNum: 0,
       stepsCompleted: [],
       lowerBar: true,
       // scrapePropNames: [],
@@ -85,6 +87,22 @@ class App extends Component {
     //   console.log("ji");
     //   this.setState({active: !this.state.active});
     // }
+
+    // toggle authentication 
+    this.signIn = () => {
+      console.log(this);
+      this.setState({authenticated: true});
+      console.log("authenticated:", this.state.authenticated)
+    }
+
+    // increment auth attempts
+    this.authAttemptedFunc = () => {
+      let attempt = this.state.authAttemptNum;
+      ++attempt
+      this.setState({authAttemptNum: attempt});
+      console.log("attempt", this.state.authAttemptNum);
+      console.log("attempt from state",this.state.authAttemptNum);
+    }
 
     // move to next step
     this.stepForward = () => {
@@ -299,7 +317,7 @@ class App extends Component {
 {/* setValFunc={this.handleChangeValue} value={this.state.segmentPropValue} saveFunc={this.saveScrapePropNames}  */}
           {(this.state.lowerBar && (this.state.activeStep===1)) ? <SegmentOne doneFunc={this.stepForward} getPropertyName={this.getPropertyName} property={this.state.property} saveProperty={this.saveProperty}/> : null}
 
-           {(this.state.lowerBar && (this.state.activeStep===4)) ? <SegmentFour saveURL={this.saveURL} doneFunc={this.stepForward}/> : null}
+           {(this.state.lowerBar && (this.state.activeStep===4)) ? <SegmentFour saveURL={this.saveURL} doneFunc={this.stepForward} signIn={this.signIn} authed={this.state.authenticated} authAttemptedFunc={this.authAttemptedFunc} authAttemptedNum={this.state.authAttemptNum}/> : null}
 
             {(this.state.lowerBar && (this.state.activeStep===5)) ? <SegmentFive url={this.url} doneFunc={this.stepForward} text={this.text}/> : null}
 
