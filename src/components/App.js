@@ -162,7 +162,7 @@ class App extends Component {
   // Gets value of the property textbox
   getPropertyName(e) {
     this.setState({property: e.target.value});
-    console.log('this.property', this.state.property);
+    // console.log('this.property', this.state.property);
   }
 
   // Clears the property textbox. Executed in saveProperty function
@@ -177,11 +177,11 @@ class App extends Component {
   // In Step 1, click the save button to add property to this.text object
   // and clear the textbox
   saveProperty(property) {
-    console.log('hi');
-    console.log('property', property);
+    // console.log('hi');
+    // console.log('property', property);
     if (!property) return;
     this.text[property] = this.state.propertyArray;
-    console.log('this.text', this.text);
+    // console.log('this.text', this.text);
     this.resetPropertyName();
   }
 
@@ -218,7 +218,7 @@ class App extends Component {
     });
 
     $(document).on('click', '.liveAPI-highlight-button', function(e) {
-      console.log('propertyArray', Application.state.propertyArray);
+      // console.log('propertyArray', Application.state.propertyArray);
       // When the item is deselected, remove DOMPath from the currentArray
       const propertyArray = Application.state.propertyArray.slice();
       let currDOMPath = $(this).parent().data('DOMPath');
