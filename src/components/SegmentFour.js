@@ -16,14 +16,14 @@ class SegmentFour extends Component {
     this.postCredentials = (cred) => {
       this.props.saveURL(`http://${cred.address}`);
       const url = `http://${cred.address}/auth`;
-      console.log('url', url);
-      console.log('this.state', this.state);
+      // console.log('url', url);
+      // console.log('this.state', this.state);
       
       const xhr = new XMLHttpRequest();
       
       xhr.onreadystatechange = function() {
         if (xhr.readyState == XMLHttpRequest.DONE) {
-          console.log(xhr.responseText);
+          console.log('xhr.responseText', xhr.responseText);
         }
       }
       
