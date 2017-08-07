@@ -13,10 +13,11 @@ class SegmentFour extends Component {
       this.setState(state);
     }
 
-
     this.postCredentials = (cred) => {
+      this.props.saveURL(`http://${cred.address}`);
       const url = `http://${cred.address}/auth`;
-      console.log(url);
+      console.log('url', url);
+      console.log('this.state', this.state);
       
       const xhr = new XMLHttpRequest();
       
