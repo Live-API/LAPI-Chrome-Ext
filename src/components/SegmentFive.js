@@ -12,29 +12,30 @@ class SegmentFive extends Component {
     }
 
     this.postEndpoint = (config, text, url) => {
-      let data = {
-        url: document.location.href,
-        interval: config.interval,
-        endpoint: config.endpoint,
-        "text": text
-      }
-
-      const xhr = new XMLHttpRequest();
-
-      xhr.onreadystatechange = function() {
-        if (xhr.readyState == XMLHttpRequest.DONE) {
-          console.log(xhr.responseText);
+      return new Promise((res, rej) => {
+        let data = {
+          url: document.location.href,
+          interval: config.interval,
+          endpoint: config.endpoint,
+          "text": text
         }
-      }
+        let postURL = url + '/crawls';
+        const xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState == XMLHttpRequest.DONE) {
+            res(xhr.responseText);
+          }
+        }
 
-      xhr.open("POST", url);
-      xhr.setRequestHeader("Content-Type", "application/json");
-      xhr.send(JSON.stringify(data));
-    }
+        xhr.open("POST", postURL);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.send(JSON.stringify(data));
+      })
+    };
 
     this.handleSubmit = async() => {
       try {
-        await this.postEndpoint(this.state, this.props.text, this.props.url);
+        console.log(await this.postEndpoint(this.state, this.props.text, this.props.url));
         this.props.doneFunc();
       } catch(err) {
         console.log(err);
