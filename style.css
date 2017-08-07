@@ -166,3 +166,9 @@ div.ui.header {
 .marginRightTen {
     margin-right: 10px;
 }
+
+.alertText {
+    display: inline;
+    color: red;
+    margin-left: 10px;
+}
