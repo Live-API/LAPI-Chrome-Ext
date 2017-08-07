@@ -75,9 +75,11 @@ class App extends Component {
       propertyArray: []
     }
     this.text = {};
+    this.url = undefined;
     this.getPropertyName = this.getPropertyName.bind(this);
     this.saveProperty = this.saveProperty.bind(this);
     this.resetPropertyName = this.resetPropertyName.bind(this);
+    this.createEndpoint = this.createEndpoint.bind(this);
 
     // this.activateModal = () => {
     //   console.log("ji");
@@ -149,6 +151,10 @@ class App extends Component {
       this.setState({lowerBar: !this.state.lowerBar});
       this.lowerBarTransformCssToggle();
     }
+
+    this.saveURL = (url) => {
+      this.url = url;
+    }
   // end constructor
   }
   // Gets property name when entered
@@ -179,10 +185,21 @@ class App extends Component {
     this.resetPropertyName();
   }
 
-
-  /*
-  Experiencing Problems Here
-  */
+  // POST Request for Endpoint Creation
+  createEndpoint() {
+    let data = {
+      interval: this.interval,
+      endpoint: this.URL,
+      text: this.text
+    }
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST', this.URL);
+    // In the Requestheader, specify the header type: Authorization
+    // Then, add basic authentication, creates base-64 encoded ASCII string from a String object
+    // Username/Password to be defined in the Modal
+    xhr.setRequestHeader('Authorization', 'Basic' + btoa(USERNAME + ":" + PASSWORD));
+    xhr.send(data);
+  }
 
   componentDidMount() {
     const Application = this;
@@ -219,11 +236,16 @@ class App extends Component {
       let children = $(this).children().map((i, ele) => {
         return ele.nodeName.toLowerCase();
       }).get();
-      let path = $(this).parents().addBack().get().map((ele, i) => {
+      let pathId = $(this).parents().addBack().get().map((ele, i) => {
         return ele.id;
       })
+      let pathClassList = $(this).parents().addBack().get().map((ele, i) => {
+        return ele.classList;
+      })
       if ($(this)[0].nodeName.toLowerCase() === 'div' && children.includes('div')) return false;
-      if (path.includes('lapiChromeExtensionContainer')) return false;
+      if (pathId.includes('lapiChromeExtensionContainer')) return false;
+      if (pathClassList[0][0] === 'ui' && pathClassList[0][1] === 'raised' && pathClassList[0][2] === 'segment') return false;
+
       let styles = $(this).css([
         "width", "height", "font-size", "font-weight", "font-family", "font-variant", "font-stretch", "line-height", "text-transform", "text-align", "padding-top", "padding-bottom", "padding-left", "padding-right", "letter-spacing"]
       );
@@ -260,8 +282,6 @@ class App extends Component {
           .text('x')
         )
       );
-      console.log(Application.state.propertyArray);
-      // console.log(cleanWhiteSpace($(this).text()));
     });
   }
 
@@ -279,9 +299,9 @@ class App extends Component {
 {/* setValFunc={this.handleChangeValue} value={this.state.segmentPropValue} saveFunc={this.saveScrapePropNames}  */}
           {(this.state.lowerBar && (this.state.activeStep===1)) ? <SegmentOne doneFunc={this.stepForward} getPropertyName={this.getPropertyName} property={this.state.property} saveProperty={this.saveProperty}/> : null}
 
-           {(this.state.lowerBar && (this.state.activeStep===4)) ? <SegmentFour doneFunc={this.stepForward}/> : null}
+           {(this.state.lowerBar && (this.state.activeStep===4)) ? <SegmentFour saveURL={this.saveURL} doneFunc={this.stepForward}/> : null}
 
-            {(this.state.lowerBar && (this.state.activeStep===5)) ? <SegmentFive doneFunc={this.stepForward}/> : null}
+            {(this.state.lowerBar && (this.state.activeStep===5)) ? <SegmentFive url={this.url} doneFunc={this.stepForward} text={this.text}/> : null}
 
 
         </div>
