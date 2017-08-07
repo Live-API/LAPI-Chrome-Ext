@@ -244,9 +244,6 @@ class App extends Component {
       })
       if ($(this)[0].nodeName.toLowerCase() === 'div' && children.includes('div')) return false;
       if (pathId.includes('lapiChromeExtensionContainer')) return false;
-      console.log('pathClassList', pathClassList);
-      console.log('pathClassList', pathClassList[0], pathClassList[1], pathClassList[2]);
-      console.log('pathClassList', 'ui', 'raised', 'segment');
       if (pathClassList[0][0] === 'ui' && pathClassList[0][1] === 'raised' && pathClassList[0][2] === 'segment') return false;
 
       let styles = $(this).css([
@@ -285,8 +282,6 @@ class App extends Component {
           .text('x')
         )
       );
-      console.log(Application.state.propertyArray);
-      // console.log(cleanWhiteSpace($(this).text()));
     });
   }
 
