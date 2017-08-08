@@ -151,7 +151,8 @@ div.ui.header {
 
 }
  
-#lapiChromeExtensionContainer > div > div > div.ui.raised.segment {
+/* #lapiChromeExtensionContainer > div > div > div.ui.raised.segment  */
+div.ui.raised.segment {
     margin-top: -36px;
     margin-right: 10px;
     margin-left: 10px;
@@ -172,3 +173,7 @@ div.ui.header {
     color: red;
     margin-left: 10px;
 }
+/* 
+.title {
+    color: green;
+} */
