@@ -1,5 +1,5 @@
 import React, { Component }  from 'react'
-import { Button, Input, Segment } from 'semantic-ui-react'
+import { Button, Input, Segment, Popup, Icon } from 'semantic-ui-react'
 
 class SegmentFive extends Component {
   constructor(props) {
@@ -51,6 +51,12 @@ class SegmentFive extends Component {
         <Input className='marginRightTen' icon='tag' iconPosition='left' placeholder='Endpoint Name (/crawls/{Endpoint Name})' name='endpoint' onBlur={this.handleChange}/>
       
         <Input className='marginRightTen' placeholder='Interval (amount of time between scrapes in seconds)' icon='repeat' iconPosition='left' type="text" value={this.props.value} name='interval' onBlur={this.handleChange}/> 
+
+        <Popup
+          trigger={<Icon name='info'/>}
+          content='This endpoint name will be part of the route for your endpoint. Example: www.yourserver.com/crawls/<the-endpoint-you-name-here>. Please do not use spaces or special characters besides dashes.'
+          basic
+        />
 
         <Button className="propSaveBtn" onClick= {this.handleSubmit} floated='right'>Create Endpoint</Button>
            
