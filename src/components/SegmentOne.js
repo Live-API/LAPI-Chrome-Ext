@@ -1,5 +1,5 @@
 import React, { Component }  from 'react'
-import { Button, Input, Segment } from 'semantic-ui-react'
+import { Button, Input, Segment, Popup, Icon } from 'semantic-ui-react'
 
 class SegmentOne extends Component {
 
@@ -14,6 +14,13 @@ class SegmentOne extends Component {
         <Button className="propSaveBtn" onClick={this.props.saveFunc} >Save</Button> */}
 
         <Input id='live-API-property-textbox' placeholder='Please name your prop' type="text" value={this.props.value} onBlur={(e) => this.props.getPropertyName(e)}/>
+
+        <Popup
+          trigger={<Icon name='info'/>}
+          content='Once you click on the DOM element you want as a property in your object, name it and save it. Do this as many times as you need to for subsequent properties.'
+          basic
+        />
+
         <Button className="propSaveBtn" onClick={() => this.props.saveProperty(this.props.property)}>Save</Button>
 
       

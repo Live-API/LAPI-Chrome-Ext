@@ -1,5 +1,5 @@
 import React, { Component }  from 'react'
-import { Button, Input, Segment } from 'semantic-ui-react'
+import { Button, Input, Segment, Popup, Icon } from 'semantic-ui-react'
 
 class SegmentFour extends Component {
   constructor(props) {
@@ -66,11 +66,18 @@ class SegmentFour extends Component {
 
     <Segment raised>
 
-          <Input className='marginRightTen' icon='add user' iconPosition='left' placeholder='Username' name='username' onChange={this.handleChange} />
+          {(this.props.authed==false) ? <Input className='marginRightTen' icon='add user' iconPosition='left' placeholder='Username' name='username' onChange={this.handleChange} /> : null}
 
-          <Input className='marginRightTen' icon='lock' iconPosition='left' placeholder='Password' name='password' type='password' onChange={this.handleChange} />
+          {(this.props.authed==false) ? <Input className='marginRightTen' icon='lock' iconPosition='left' placeholder='Password' name='password' type='password' onChange={this.handleChange} /> : null}
       
-         <Input className='marginRightTen' placeholder='Address' icon='repeat' iconPosition='left' type="text" icon='external' iconPosition='left' name='address' onChange={this.handleChange} style={{width:'400px'}}/> 
+         {(this.props.authed==false) ? <Input className='marginRightTen' placeholder='Address' icon='repeat' iconPosition='left' type="text" icon='external' iconPosition='left' name='address' onChange={this.handleChange} style={{width:'400px'}}/> : null}
+
+
+        {(this.props.authed==false) ? <Popup
+          trigger={<Icon name='info'/>}
+          content='This is the URL for your LAS server. If you did not set this up yourself, ask your system administrator for this address.'
+          basic
+        /> : null}
 
             {((this.props.authed==false) && (this.props.authAttemptedNum>0)) ? <div className="alertText">Authentication failed, please try again.</div> : null}  
 
@@ -82,3 +89,4 @@ class SegmentFour extends Component {
 }
 
 export default SegmentFour
+
