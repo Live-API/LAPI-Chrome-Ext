@@ -16,8 +16,8 @@ class SegmentFour extends Component {
     this.postCredentials = (cred) => {
       return new Promise( (resolve, reject) => {
         
-        this.props.saveURL(`http://${cred.address}`);
-        const url = `http://${cred.address}/auth`;
+        this.props.saveURL(`https://${cred.address}`);
+        const url = `https://${cred.address}/auth`;
         console.log('url', url);
         console.log('this.state', this.state);
         
