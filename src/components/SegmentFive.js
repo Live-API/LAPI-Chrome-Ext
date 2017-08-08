@@ -56,6 +56,7 @@ class SegmentFive extends Component {
           trigger={<Icon name='info'/>}
           content='This endpoint name will be part of the route for your endpoint. Example: www.yourserver.com/crawls/<the-endpoint-you-name-here>. Please do not use spaces or special characters besides dashes.'
           basic
+          inverted
         />
 
         <Button className="propSaveBtn" onClick= {this.handleSubmit} floated='right'>Create Endpoint</Button>

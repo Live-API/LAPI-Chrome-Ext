@@ -77,6 +77,7 @@ class SegmentFour extends Component {
           trigger={<Icon name='info'/>}
           content='This is the URL for your LAS server. If you did not set this up yourself, ask your system administrator for this address.'
           basic
+          inverted
         /> : null}
 
             {((this.props.authed==false) && (this.props.authAttemptedNum>0)) ? <div className="alertText">Authentication failed, please try again.</div> : null}  

@@ -159,9 +159,9 @@ div.ui.raised.segment {
     z-index: 2500;
 } 
 
-#lapiChromeExtensionContainer > div > div > div.ui.raised.segment > button {
+/* #lapiChromeExtensionContainer > div > div > div.ui.raised.segment > button {
     margin-left: 10px;
-}
+} */
 
 
 .marginRightTen {
@@ -177,3 +177,9 @@ div.ui.raised.segment {
 .title {
     color: green;
 } */
+
+body > div.ui.page.modals.dimmer.transition.visible.active {
+    transform: translateY(-165px);
+    z-index: 6000;
+
+}

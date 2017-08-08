@@ -24,30 +24,16 @@ if (existsAlready!=true) {
 
     // var containerDivSpacer = "<div id='lapiChromeExtensionContainerSpacer' style='height:"+height+"'></div>";
 
-    // grab old body, place into targetBodyContainer
-    var allBody = $('body').clone();
-
-    // remove contents of body
-    $('body').empty();
-
-    
-    //add targetBodyContainer to body, fill with variable containing old body
-    var targetBodyContainer = "<div id='targetBodyContainer'></div>";
-    $('body').append(targetBodyContainer);
-    $('#targetBodyContainer').append(allBody);
-
-
-    // append chrome ext div
     $('body').append(containerDiv);
 
-    
+    $('body').css({
+        '-ms-transform': 'translateY(165px)',
+        '-webkit-transform': 'translateY(165px)',
+        'transform': 'translateY(165px)'
+    });
 
-    // $('body').css({
-    //     '-ms-transform': 'translateY(165px)',
-    //     '-webkit-transform': 'translateY(165px)',
-    //     'transform': 'translateY(165px)'
-    // });
-
+    // $('body').css('marginTop','165px');
+    // $('body').css('padding-top','64px');
 
     ReactDOM.render(<App />, document.getElementById('lapiChromeExtensionContainer'));
     console.log("2nd without bang", $('#lapiChromeExtensionContainer'));

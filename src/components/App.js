@@ -164,6 +164,35 @@ class App extends Component {
       (!this.state.lowerBar) ? pushDown() : pullUp();
     }
 
+    // toggle css for lowerSegment
+    // this.lowerSegmentTransformCssToggle = () => {
+    //         let pushDownALittleMore = () => {
+    //         $('body').css({
+    //         '-ms-transform': 'translateY(200px)',
+    //         '-webkit-transform': 'translateY(200px)',
+    //         'transform': 'translateY(200px)'
+    //     })
+    //       $('#lapiChromeExtensionContainer').css({
+    //       'top': '-200px'
+    //     })
+    //   }
+
+    //   let pullUpALittleMore = () => {
+    //     console.log("pulling body up")
+    //         $('body').css({
+    //         '-ms-transform': 'translateY(35px)',
+    //         '-webkit-transform': 'translateY(35px)',
+    //         'transform': 'translateY(35px)'
+    //     })
+
+    //     $('#lapiChromeExtensionContainer').css({
+    //       'top': '-35px'
+    //     })
+    //   }
+    //   (this.state.lowerSegment) ? pushDownALittleMore() : pullUpALitteMore();
+    // }
+
+
     // close lower and change icon
     this.toggleLower = () => {
       this.setState({lowerBar: !this.state.lowerBar});
