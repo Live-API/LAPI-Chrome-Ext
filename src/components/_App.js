@@ -128,7 +128,7 @@ class App extends Component {
     // this.activateModal = this.activateModal.bind(this)
     this.closeEx = () => {
       $('#lapiChromeExtensionContainer').remove(); 
-      $('#targetBodyContainer').css({
+      $('body').css({
           '-ms-transform': 'translateY(0px)',
           '-webkit-transform': 'translateY(0px)',
           'transform': 'translateY(0px)'
@@ -138,27 +138,27 @@ class App extends Component {
     // toggle lowerbar transform
     this.lowerBarTransformCssToggle = () => {
       let pushDown = () => {
-            $('#targetBodyContainer').css({
-            '-ms-transform': 'translateY(230px)',
-            '-webkit-transform': 'translateY(230px)',
-            'transform': 'translateY(230px)'
+            $('body').css({
+            '-ms-transform': 'translateY(165px)',
+            '-webkit-transform': 'translateY(165px)',
+            'transform': 'translateY(165px)'
         })
-        //   $('#lapiChromeExtensionContainer').css({
-        //   'top': '-165px'
-        // })
+          $('#lapiChromeExtensionContainer').css({
+          'top': '-165px'
+        })
       }
 
       let pullUp = () => {
         console.log("pulling body up")
-            $('#targetBodyContainer').css({
+            $('body').css({
             '-ms-transform': 'translateY(35px)',
             '-webkit-transform': 'translateY(35px)',
             'transform': 'translateY(35px)'
         })
 
-        // $('#lapiChromeExtensionContainer').css({
-        //   'top': '-35px'
-        // })
+        $('#lapiChromeExtensionContainer').css({
+          'top': '-35px'
+        })
       }
 
       (!this.state.lowerBar) ? pushDown() : pullUp();

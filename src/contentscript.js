@@ -31,14 +31,15 @@ if (existsAlready!=true) {
     $('body').empty();
 
     
+
+    // append chrome ext div
+    $('body').append(containerDiv);
+
     //add targetBodyContainer to body, fill with variable containing old body
     var targetBodyContainer = "<div id='targetBodyContainer'></div>";
     $('body').append(targetBodyContainer);
     $('#targetBodyContainer').append(allBody);
 
-
-    // append chrome ext div
-    $('body').append(containerDiv);
 
     
 

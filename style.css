@@ -3,8 +3,8 @@
     -webkit-transform: translateY(0); */
     position: fixed;
     height: 165px; 
-      top: -165px;      
-     /* top: 0px; */
+      /* top: -165px;       */
+      top: 0px; 
     left: 0px;
     width: 100%;
     z-index: 2000;
@@ -12,6 +12,13 @@
     color: black;  */
 }
 
+#targetBodyContainer{
+    /* position: absolute; */
+     /* top: 165px;  */
+     -ms-transform: translateY(230px);
+    -webkit-transform: translateY(230px);
+    transform: translateY(230px) 
+}
 
 
 /* #lapiChromeExtensionContainerSpacer {
@@ -179,7 +186,12 @@ div.ui.raised.segment {
 } */
 
 body > div.ui.page.modals.dimmer.transition.visible.active {
-    transform: translateY(-165px);
+    /* transform: translateY(-165px); */
     z-index: 6000;
 
+}
+
+/* div.ui.top.left.basic.inverted.popup.transition.visible */
+div.ui.popup.transition.visible {
+    z-index: 5100;
 }
