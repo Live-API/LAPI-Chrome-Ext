@@ -64,7 +64,7 @@ class SegmentFour extends Component {
     return (
     
 
-    <Segment raised>
+    <Segment raised clearing>
 
           {(this.props.authed==false) ? <Input className='marginRightTen' icon='add user' iconPosition='left' placeholder='Username' name='username' onChange={this.handleChange} /> : null}
 
@@ -80,8 +80,17 @@ class SegmentFour extends Component {
 
             {((this.props.authed==false) && (this.props.authAttemptedNum>0)) ? <div className="alertText">Authentication failed, please try again.</div> : null}  
 
-         <Button className="propSaveBtn" onClick={this.handleSubmit} floated='right'>Login</Button>
-           
+         {(this.props.authed==false) ? <Button className="propSaveBtn" onClick={this.handleSubmit} floated='right'>Login</Button> : null}
+
+         {/* already signed in  */}
+         {(this.props.authed==true) ? <div className="successText"><Icon color='green' name='check'/> You are already signed in.</div> : null} 
+        
+        {(this.props.authed==true) ? <Button primary onClick={this.props.doneFunc} floated='right'>Continue</Button> : null}
+
+        {(this.props.authed==true) ? <Button secondary onClick={this.props.logout} floated='right'>Logout</Button> : null}
+
+
+
     </Segment>
     )
   }
