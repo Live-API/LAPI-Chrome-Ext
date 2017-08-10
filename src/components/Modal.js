@@ -2,7 +2,7 @@ import React from 'react'
 import { Button, Header, Icon, Image, Modal } from 'semantic-ui-react'
 
 const ModalScrollingExample = () => (
-<Modal dimmer="blurring" trigger={<Icon inverted={true} name='align justify' link={true}/>}> 
+<Modal dimmer="blurring" trigger={<Icon inverted={true} name='align justify' link={true}/>} closeIcon='close'> 
     <Modal.Header>LiveAPI User Menu</Modal.Header>
     <Modal.Content>
       <Modal.Description>
