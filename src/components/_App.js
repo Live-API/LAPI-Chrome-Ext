@@ -22,12 +22,7 @@ $.fn.fullSelector = function () {
         var self = $(item),
             id = item.id ? '#' + item.id : '',
             // gets all the classes for an item, and chains them together
-            // remove extra whitespace from the sides
-            // remove extra whitespace between classes
-            classes = item.classList.toString();
-            classes = classes.replace(/^\s+|\s+$/g, "");
-            classes = classes.replace(/\s+/g, " ")
-            var clss = classes.length ? classes.split(' ').map(function (c) {
+            clss = item.classList.length ? item.classList.toString().split(' ').map(function (c) {
                 return '.' + c;
             }).join('') : '',
             name = item.nodeName.toLowerCase(),
@@ -39,13 +34,13 @@ $.fn.fullSelector = function () {
         // Other elements are returned with their index, id, and classes
         return name + index + id + clss;
     // Shows parent-child relationship
-    }).join(' > ');
+    }).join('>');
     return quickCss;
 };
 
 function cleanWhiteSpace(text) {
   // Remove whitespace before or after text
-  let revisedText = text.replace(/^\s+|\s+$/g, "");
+  let revisedText = text.replace(/^\s+|\s+$/, "");
   // Remove extra spaces between words
   revisedText = revisedText.replace(/\s\s+/g, " ");
   return revisedText;
@@ -70,7 +65,6 @@ class App extends Component {
     constructor(){
     super();
     this.state = {
-      serverUrl: '',
       activeStep: 1,
       authenticated: false,
       authAttemptNum: 0,
@@ -134,7 +128,7 @@ class App extends Component {
     // this.activateModal = this.activateModal.bind(this)
     this.closeEx = () => {
       $('#lapiChromeExtensionContainer').remove(); 
-      $('#targetBodyContainer').css({
+      $('body').css({
           '-ms-transform': 'translateY(0px)',
           '-webkit-transform': 'translateY(0px)',
           'transform': 'translateY(0px)'
@@ -144,27 +138,27 @@ class App extends Component {
     // toggle lowerbar transform
     this.lowerBarTransformCssToggle = () => {
       let pushDown = () => {
-            $('#targetBodyContainer').css({
-            '-ms-transform': 'translateY(230px)',
-            '-webkit-transform': 'translateY(230px)',
-            'transform': 'translateY(230px)'
+            $('body').css({
+            '-ms-transform': 'translateY(165px)',
+            '-webkit-transform': 'translateY(165px)',
+            'transform': 'translateY(165px)'
         })
-        //   $('#lapiChromeExtensionContainer').css({
-        //   'top': '-165px'
-        // })
+          $('#lapiChromeExtensionContainer').css({
+          'top': '-165px'
+        })
       }
 
       let pullUp = () => {
         console.log("pulling body up")
-            $('#targetBodyContainer').css({
+            $('body').css({
             '-ms-transform': 'translateY(35px)',
             '-webkit-transform': 'translateY(35px)',
             'transform': 'translateY(35px)'
         })
 
-        // $('#lapiChromeExtensionContainer').css({
-        //   'top': '-35px'
-        // })
+        $('#lapiChromeExtensionContainer').css({
+          'top': '-35px'
+        })
       }
 
       (!this.state.lowerBar) ? pushDown() : pullUp();
@@ -207,7 +201,6 @@ class App extends Component {
 
     this.saveURL = (url) => {
       this.url = url;
-      this.setState({serverUrl: url})
     }
   // end constructor
   }
@@ -235,7 +228,7 @@ class App extends Component {
     // console.log('property', property);
     if (!property) return;
     this.text[property] = this.state.propertyArray;
-    console.log('this.text', this.text);
+    // console.log('this.text', this.text);
     this.resetPropertyName();
   }
 
@@ -355,7 +348,7 @@ class App extends Component {
 
            {(this.state.lowerBar && (this.state.activeStep===4)) ? <SegmentFour saveURL={this.saveURL} doneFunc={this.stepForward} signIn={this.signIn} authed={this.state.authenticated} authAttemptedFunc={this.authAttemptedFunc} authAttemptedNum={this.state.authAttemptNum}/> : null}
 
-            {(this.state.lowerBar && ((this.state.activeStep===5) || (this.state.activeStep===6))) ? <SegmentFive url={this.url} doneFunc={this.stepForward} text={this.text} activeStep={this.state.activeStep} serverUrl={this.state.serverUrl}/> : null}
+            {(this.state.lowerBar && (this.state.activeStep===5)) ? <SegmentFive url={this.url} doneFunc={this.stepForward} text={this.text}/> : null}
 
 
         </div>
