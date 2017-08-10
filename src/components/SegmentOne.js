@@ -22,7 +22,6 @@ class SegmentOne extends Component {
           trigger={<Icon name='info'/>}
           content='Once you click on the DOM element you want as a property in your object, name it and save it. Do this as many times as you need to for subsequent properties.'
         />
-
       
         <Button className="doneBtn" floated='right' onClick={this.props.doneFunc}>Done</Button>
      

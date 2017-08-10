@@ -1,5 +1,19 @@
 import React, { Component }  from 'react'
-import { Button, Input, Segment, Popup, Icon } from 'semantic-ui-react'
+import { Button, Input, Segment, Popup, Icon, Link } from 'semantic-ui-react'
+
+// document.addEventListener('DOMContentLoaded', function () {
+//     var links = document.getElementsByTagName("a");
+//     for (var i = 0; i < links.length; i++) {
+//         (function () {
+//             var ln = links[i];
+//             var location = ln.href;
+//             ln.onclick = function () {
+//                 chrome.tabs.create({active: true, url: location});
+//             };
+//         })();
+//     }
+// });
+
 
 class SegmentFive extends Component {
   constructor(props) {
@@ -46,19 +60,25 @@ class SegmentFive extends Component {
   render() {
     return (
     
-    <Segment raised>
+    <Segment raised clearing>
         
-        <Input className='marginRightTen' icon='tag' iconPosition='left' placeholder='Endpoint Name (/crawls/{Endpoint Name})' name='endpoint' onBlur={this.handleChange}/>
+        {(this.props.activeStep===5) ? <Input className='marginRightTen' icon='tag' iconPosition='left' placeholder='Endpoint Name (/crawls/{Endpoint Name})' name='endpoint' onBlur={this.handleChange}/> : null}
       
-        <Input className='marginRightTen' placeholder='Interval (amount of time between scrapes in seconds)' icon='repeat' iconPosition='left' type="text" value={this.props.value} name='interval' onBlur={this.handleChange}/> 
+        {(this.props.activeStep===5) ? <Input className='marginRightTen' placeholder='Interval (amount of time between scrapes in seconds)' icon='repeat' iconPosition='left' type="text" value={this.props.value} name='interval' onBlur={this.handleChange}/> : null}
 
-        <Popup
+        {(this.props.activeStep===5) ? <Popup
           trigger={<Icon name='info'/>}
           content='This endpoint name will be part of the route for your endpoint. Example: www.yourserver.com/crawls/<the-endpoint-you-name-here>. Please do not use spaces or special characters besides dashes.'
           wide
-        />
+        /> : null}
 
-        <Button className="propSaveBtn" onClick= {this.handleSubmit} floated='right'>Create Endpoint</Button>
+        {(this.props.activeStep===5) ? <Button className="propSaveBtn" onClick= {this.handleSubmit} floated='right'>Create Endpoint</Button> : null}
+
+        {(this.props.activeStep===6) ? <div className="successText"><Icon color='green' name='check'/> Success! Your endpoint was created at {this.props.serverUrl}/crawls/{this.state.endpoint} and will be updated every {this.state.interval} second(s). </div> : null} 
+        
+        {(this.props.activeStep===6) ? <Button floated='right' onClick={newCrawl}>Initiate new crawl</Button> : null}
+
+        {(this.props.activeStep===6) ? <Button floated='right'  onClick={()=>{window.open(`${this.props.serverUrl}/crawls/${this.state.endpoint}`)}}>Go to endpoint</Button> : null}
            
     </Segment>
     )

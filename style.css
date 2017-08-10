@@ -180,10 +180,14 @@ div.ui.raised.segment {
     color: red;
     margin-left: 10px;
 }
-/* 
-.title {
-    color: green;
-} */
+ 
+
+.successText {
+    color: #00a82f;
+    font-weight: bold;
+    float: left;
+    margin-top: .6em;
+} 
 
 body > div.ui.page.modals.dimmer.transition.visible.active {
     /* transform: translateY(-165px); */

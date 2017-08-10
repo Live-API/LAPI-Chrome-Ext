@@ -65,6 +65,7 @@ class App extends Component {
     constructor(){
     super();
     this.state = {
+      serverUrl: '',
       activeStep: 1,
       authenticated: false,
       authAttemptNum: 0,
@@ -201,6 +202,7 @@ class App extends Component {
 
     this.saveURL = (url) => {
       this.url = url;
+      this.setState({serverUrl: url})
     }
   // end constructor
   }
@@ -348,7 +350,7 @@ class App extends Component {
 
            {(this.state.lowerBar && (this.state.activeStep===4)) ? <SegmentFour saveURL={this.saveURL} doneFunc={this.stepForward} signIn={this.signIn} authed={this.state.authenticated} authAttemptedFunc={this.authAttemptedFunc} authAttemptedNum={this.state.authAttemptNum}/> : null}
 
-            {(this.state.lowerBar && (this.state.activeStep===5)) ? <SegmentFive url={this.url} doneFunc={this.stepForward} text={this.text}/> : null}
+            {(this.state.lowerBar && ((this.state.activeStep===5) || (this.state.activeStep===6))) ? <SegmentFive url={this.url} doneFunc={this.stepForward} text={this.text} activeStep={this.state.activeStep} serverUrl={this.state.serverUrl}/> : null}
 
 
         </div>

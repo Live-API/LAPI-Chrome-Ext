@@ -24,8 +24,15 @@ if (existsAlready!=true) {
 
     // var containerDivSpacer = "<div id='lapiChromeExtensionContainerSpacer' style='height:"+height+"'></div>";
 
+    
     // grab old body, place into targetBodyContainer
-    var allBody = $('body').clone();
+    // console.log("above clone", ($('#targetBodyContainer').length===0))
+    var allBody;
+    if ($('#targetBodyContainer').length === 0) { 
+      allBody = $('body').clone();
+    } else if ($('#targetBodyContainer').length === 1){
+      allBody = $('#targetBodyContainer').clone();
+    }
 
     // remove contents of body
     $('body').empty();
@@ -35,11 +42,14 @@ if (existsAlready!=true) {
     // append chrome ext div
     $('body').append(containerDiv);
 
+    
+    if ($('#targetBodyContainer').length === 0) {
     //add targetBodyContainer to body, fill with variable containing old body
     var targetBodyContainer = "<div id='targetBodyContainer'></div>";
     $('body').append(targetBodyContainer);
     $('#targetBodyContainer').append(allBody);
-
+    console.log("running from inside")
+    }
 
     
 
@@ -50,7 +60,13 @@ if (existsAlready!=true) {
     // });
 
 
+
+
     ReactDOM.render(<App />, document.getElementById('lapiChromeExtensionContainer'));
-    console.log("2nd without bang", $('#lapiChromeExtensionContainer'));
-    console.log("2nd with bang", !!$('#lapiChromeExtensionContainer'));
+    // console.log("2nd without bang", $('#lapiChromeExtensionContainer'));
+    // console.log("2nd with bang", !!$('#lapiChromeExtensionContainer'));
+    console.log("2nd without bang", $('#targetBodyContainer'));
+    console.log("2nd with one bang", !$('#targetBodyContainer'));
+    console.log("2nd with bang", !!$('#targetBodyContainer'));
+    console.log("arr length", $('#targetBodyContainer').length);
 }
