@@ -22,7 +22,12 @@ $.fn.fullSelector = function () {
         var self = $(item),
             id = item.id ? '#' + item.id : '',
             // gets all the classes for an item, and chains them together
-            clss = item.classList.length ? item.classList.toString().split(' ').map(function (c) {
+            // remove extra whitespace from the sides
+            // remove extra whitespace between classes
+            classes = item.classList.toString();
+            classes = classes.replace(/^\s+|\s+$/g, "");
+            classes = classes.replace(/\s+/g, " ")
+            var clss = classes.length ? classes.split(' ').map(function (c) {
                 return '.' + c;
             }).join('') : '',
             name = item.nodeName.toLowerCase(),
@@ -34,13 +39,13 @@ $.fn.fullSelector = function () {
         // Other elements are returned with their index, id, and classes
         return name + index + id + clss;
     // Shows parent-child relationship
-    }).join('>');
+    }).join(' > ');
     return quickCss;
 };
 
 function cleanWhiteSpace(text) {
   // Remove whitespace before or after text
-  let revisedText = text.replace(/^\s+|\s+$/, "");
+  let revisedText = text.replace(/^\s+|\s+$/g, "");
   // Remove extra spaces between words
   revisedText = revisedText.replace(/\s\s+/g, " ");
   return revisedText;
@@ -199,7 +204,7 @@ class App extends Component {
     // console.log('property', property);
     if (!property) return;
     this.text[property] = this.state.propertyArray;
-    // console.log('this.text', this.text);
+    console.log('this.text', this.text);
     this.resetPropertyName();
   }
 
