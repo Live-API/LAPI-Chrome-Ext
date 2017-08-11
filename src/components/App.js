@@ -86,14 +86,9 @@ class App extends Component {
       lowerSegment: false,
       // segmentPropValue: '', 
       property: undefined,
-      propertyArray: []
+      propertyArray: [],
+      text: {}
     }
-    this.text = {};
-    this.getPropertyName = this.getPropertyName.bind(this);
-    this.saveProperty = this.saveProperty.bind(this);
-    this.resetPropertyName = this.resetPropertyName.bind(this);
-    this.createEndpoint = this.createEndpoint.bind(this);
-    this.setCrawlUrl = this.setCrawlUrl.bind(this);
 
     // this.activateModal = () => {
     //   console.log("ji");
@@ -227,73 +222,55 @@ class App extends Component {
     //   (this.state.lowerSegment) ? pushDownALittleMore() : pullUpALitteMore();
     // }
 
-
     // close lower and change icon
     this.toggleLower = () => {
       this.setState({lowerBar: !this.state.lowerBar});
       this.lowerBarTransformCssToggle();
     }
 
-    this.saveURL = () => {
-      let url = window.location.href;
+    this.savePostURL = (url) => {
       this.setState({serverUrl: url})
     }
-  }
-
-  /* 
-    Following functions are used in Step 1 to assign property name to the selected HTML elements.
-
-    getPropertyName - gets value of textbox
-    resetPropertyName - resets value of textbox after saving
-    saveProperty - saves property name to state
-  */
-
-  // Gets value of the property textbox
-  getPropertyName(e) {
-    this.setState({property: e.target.value});
-  }
-
-  // Clears the property textbox. Executed in saveProperty function
-  resetPropertyName() {
-    const propertyTextbox = document.getElementById('live-API-property-textbox');
-    propertyTextbox.value = '';
-    this.setState({property: undefined});
-  }
-
-  saveProperty(property) {
-    if (!property) return;
-    this.text[property] = this.state.propertyArray;
-    console.log('this.text', this.text);
-    this.resetPropertyName();
-  }
-
-  setCrawlUrl (url) {
-    this.setState({crawlUrl: url});
-  }
-  // POST Request for Endpoint Creation
-  createEndpoint() {
-    let data = {
-      interval: this.interval,
-      endpoint: this.URL,
-      text: this.text
+    /* 
+      Following functions are used in Step 1 to assign property name to the selected HTML elements.
+  
+      getPropertyName - gets value of textbox
+      resetPropertyName - resets value of textbox after saving
+      saveProperty - saves property name to state
+    */
+  
+    // Gets value of the property textbox
+    this.getPropertyName = (e) => {
+      this.setState({property: e.target.value});
     }
-    let xhr = new XMLHttpRequest();
-    xhr.open('POST', this.URL);
-    // In the Requestheader, specify the header type: Authorization
-    // Then, add basic authentication, creates base-64 encoded ASCII string from a String object
-    // Username/Password to be defined in the Modal
-    xhr.setRequestHeader('Authorization', 'Basic' + btoa(USERNAME + ":" + PASSWORD));
-    xhr.send(data);
+  
+    // Clears the property textbox. Executed in saveProperty function
+    this.resetPropertyName = () => {
+      const propertyTextbox = document.getElementById('live-API-property-textbox');
+      propertyTextbox.value = '';
+      this.setState({property: undefined});
+    }
+  
+    this.saveProperty = (property) => {
+      if (!property) return;
+      let textObj = JSON.parse(JSON.stringify(this.state.text));
+      textObj[property] = this.state.propertyArray.slice();
+      this.setState({text: textObj});
+      this.resetPropertyName();
+    }
+  
+    this.setCrawlUrl = (url) => {
+      this.setState({crawlUrl: url});
+    }
   }
 
   componentDidMount() {
     const Application = this;
 
-    // Event listener to prevent population of new highlight div on existing highlight div
     $(document).on('click','*', function (){
         return false;
     });
-
+    // Stop propagation for highlight components
 
     $(document).on('click', '.liveAPI-highlight', function(e) {
       e.stopImmediatePropagation();
@@ -304,6 +281,9 @@ class App extends Component {
 
     // DOMPath is removed from state when item is deselected
     $(document).on('click', '.liveAPI-highlight-button', function(e) {
+
+      // Abstract this into a function
+
       const propertyArray = Application.state.propertyArray.slice();
       let currDOMPath = $(this).parent().data('DOMPath');
       let index = propertyArray.indexOf(currDOMPath);
@@ -311,11 +291,23 @@ class App extends Component {
       Application.setState({"propertyArray": propertyArray});
       $(this).parent().remove();
       e.stopImmediatePropagation();
-    })
+    });
 
-    // #lapiChromeExtensionContainer
+    // Return false when the element is part of the Toolbar
+
+    // Return false for creation of multiple highlighting
+
+    // Return false if the element is not a
+      // div, span, li, p element
+    
+    // Add logic for div elements
 
     $(document).on('click', '*', function() {
+      console.log('this', this);
+      console.log('Application.state.propertyArray', Application.state.propertyArray);
+      if (Application.state.propertyArray.includes($(this).fullSelector())) return false;
+      // Check if DOM Path is in the array
+        // If so, return false
       let children = $(this).children().map((i, ele) => ele.nodeName.toLowerCase()).get();
       // let pathId = $(this).parents().addBack().get().map((ele, i) => ele.id);
       let pathClassList = $(this).parents().addBack().get().map((ele, i) => ele.classList);
@@ -380,12 +372,11 @@ class App extends Component {
           {this.state.lowerBar ? <Lowerbar activeStep={this.state.activeStep} stepsCompleted={this.state.stepsCompleted}/> : null}
 
 {/* setValFunc={this.handleChangeValue} value={this.state.segmentPropValue} saveFunc={this.saveScrapePropNames}  */}
-          {(this.state.lowerBar && (this.state.activeStep===1)) ? <SegmentOne doneFunc={this.stepForward} getPropertyName={this.getPropertyName} property={this.state.property} saveProperty={this.saveProperty} setCrawlUrl={this.setCrawlUrl}/> : null}
+          {(this.state.lowerBar && (this.state.activeStep===1)) ? <SegmentOne text={this.state.text} doneFunc={this.stepForward} getPropertyName={this.getPropertyName} property={this.state.property} saveProperty={this.saveProperty} setCrawlUrl={this.setCrawlUrl}/> : null}
 
-           {(this.state.lowerBar && (this.state.activeStep===4)) ? <SegmentFour saveURL={this.saveURL} doneFunc={this.stepForward} signIn={this.signIn} authed={this.state.authenticated} authAttemptedFunc={this.authAttemptedFunc} authAttemptedNum={this.state.authAttemptNum} logout={this.logout}/> : null}
+           {(this.state.lowerBar && (this.state.activeStep===4)) ? <SegmentFour savePostURL={this.savePostURL} doneFunc={this.stepForward} signIn={this.signIn} authed={this.state.authenticated} authAttemptedFunc={this.authAttemptedFunc} authAttemptedNum={this.state.authAttemptNum} logout={this.logout}/> : null}
 
-            {(this.state.lowerBar && ((this.state.activeStep===5) || (this.state.activeStep===6))) ? <SegmentFive url={this.url} doneFunc={this.stepForward} text={this.text} activeStep={this.state.activeStep} serverUrl={this.state.serverUrl} crawlUrl={this.state.crawlUrl}/> : null}
-
+            {(this.state.lowerBar && ((this.state.activeStep===5) || (this.state.activeStep===6))) ? <SegmentFive doneFunc={this.stepForward} text={this.state.text} activeStep={this.state.activeStep} crawlUrl={this.state.crawlUrl} serverUrl={this.state.serverUrl}/> : null}
 
         </div>
       </div>
