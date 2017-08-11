@@ -38,7 +38,7 @@ class SegmentOne extends Component {
         <Grid.Column width={10}> 
           <div className="floatLeft"> {this.props.scrapePropBtnArr.map((el)=><Button content={el} icon='remove' labelPosition='right' onClick={(e, el)=>this.props.removeProperty(e, el)}/>)} </div>
 
-        {(this.props.scrapePropBtnArr.length===0 && this.state.errBool) ? <div className="alertText">Please save at least one DOM element to scrape.</div> : null}  
+        {(this.props.scrapePropBtnArr.length===0 && this.state.errBool) ? <div className="alertTextGrid">Please save at least one DOM element to scrape.</div> : null}  
 
         </Grid.Column>
 

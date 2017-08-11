@@ -178,7 +178,7 @@ div.ui.raised.segment {
 .alertText {
     display: inline;
     color: red;
-    margin-left: 10px;
+    margin-left: 20px;
 }
  
 
@@ -187,6 +187,7 @@ div.ui.raised.segment {
     font-weight: bold;
     float: left;
     margin-top: .6em;
+    margin-left: 20px;
 } 
 
 body > div.ui.page.modals.dimmer.transition.visible.active {
@@ -203,3 +204,12 @@ div.ui.popup.transition.visible {
 /* .floatLeft {
     float: left;
 } */
+
+
+.alertTextGrid {
+    display: inline;
+    color: red;
+    margin-left: 10px;
+    position: relative;
+    top: 8px;
+}
