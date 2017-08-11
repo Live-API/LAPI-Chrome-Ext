@@ -2,7 +2,14 @@ import React, { Component }  from 'react'
 import { Button, Input, Segment, Popup, Icon } from 'semantic-ui-react'
 
 class SegmentOne extends Component {
-
+  constructor(props) {
+    super(props);
+    this.nextSteps = () => {
+      this.props.setCrawlUrl(window.location.href);
+      this.props.doneFunc();
+      console.log('text', this.props.text);
+    }
+  }
   render() {
     return (
     
@@ -23,7 +30,7 @@ class SegmentOne extends Component {
           content='Once you click on the DOM element you want as a property in your object, name it and save it. Do this as many times as you need to for subsequent properties.'
         />
       
-        <Button className="doneBtn" floated='right' onClick={this.props.doneFunc}>Done</Button>
+        <Button className="doneBtn" floated='right' onClick={this.nextSteps}>Done</Button>
      
     </Segment>
     )
