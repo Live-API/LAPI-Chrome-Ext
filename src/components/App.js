@@ -1,16 +1,10 @@
-import React, { Component } from 'react';
-// import AccordionExampleStyled from './Accordian';
-// import Iframe from './Iframe';
-// import GridExampleVerticallyDivided from './Grid';
+import React, { Component } from 'react';;
 import $ from "../../jquery";
 import Toolbar from "./Toolbar";
 import Lowerbar from "./Lowerbar";
 import SegmentOne from "./SegmentOne";
 import SegmentFour from "./SegmentFour";
 import SegmentFive from "./SegmentFive";
-// import AuthModal from "./AuthModal.jsx";
-// import SendDefinitionModal from "./SendModal.jsx";
-
 
 $.fn.fullSelector = function () {
     // returns an array of DOM path
@@ -72,6 +66,7 @@ class App extends Component {
       stepsCompleted: [],
       lowerBar: true,
       // scrapePropNames: [],
+      scrapePropBtnArr: [],
       lowerSegment: false,
       // segmentPropValue: '', 
       property: undefined,
@@ -81,13 +76,10 @@ class App extends Component {
     this.url = undefined;
     this.getPropertyName = this.getPropertyName.bind(this);
     this.saveProperty = this.saveProperty.bind(this);
+    this.deleteProperty = this.deleteProperty.bind(this);
     this.resetPropertyName = this.resetPropertyName.bind(this);
     this.createEndpoint = this.createEndpoint.bind(this);
 
-    // this.activateModal = () => {
-    //   console.log("ji");
-    //   this.setState({active: !this.state.active});
-    // }
 
     // toggle authentication 
     this.signIn = () => {
@@ -105,6 +97,22 @@ class App extends Component {
             property: undefined,
             propertyArray: []
         })
+    }
+
+    // remove property
+    this.removeProperty = (e, el) => {
+        let propArr = this.state.scrapePropBtnArr;
+        console.log("propArr", propArr);
+        propArr.forEach((element, i)=>{
+            console.log("i", i);
+            if (element === el.content){
+                propArr.splice(i,1);
+                console.log("HEY", propArr)
+                this.setState({scrapePropBtnArr: propArr});
+                this.deleteProperty(el.content);
+                console.log(this.text)
+            }
+        });
     }
 
     // log user out
@@ -149,7 +157,6 @@ class App extends Component {
     //   console.log(this.state.scrapePropNames)
     // }
 
-    // this.activateModal = this.activateModal.bind(this)
     this.closeEx = () => {
       $('#lapiChromeExtensionContainer').remove(); 
       $('#targetBodyContainer').css({
@@ -167,9 +174,6 @@ class App extends Component {
             '-webkit-transform': 'translateY(230px)',
             'transform': 'translateY(230px)'
         })
-        //   $('#lapiChromeExtensionContainer').css({
-        //   'top': '-165px'
-        // })
       }
 
       let pullUp = () => {
@@ -179,42 +183,10 @@ class App extends Component {
             '-webkit-transform': 'translateY(35px)',
             'transform': 'translateY(35px)'
         })
-
-        // $('#lapiChromeExtensionContainer').css({
-        //   'top': '-35px'
-        // })
       }
 
       (!this.state.lowerBar) ? pushDown() : pullUp();
     }
-
-    // toggle css for lowerSegment
-    // this.lowerSegmentTransformCssToggle = () => {
-    //         let pushDownALittleMore = () => {
-    //         $('body').css({
-    //         '-ms-transform': 'translateY(200px)',
-    //         '-webkit-transform': 'translateY(200px)',
-    //         'transform': 'translateY(200px)'
-    //     })
-    //       $('#lapiChromeExtensionContainer').css({
-    //       'top': '-200px'
-    //     })
-    //   }
-
-    //   let pullUpALittleMore = () => {
-    //     console.log("pulling body up")
-    //         $('body').css({
-    //         '-ms-transform': 'translateY(35px)',
-    //         '-webkit-transform': 'translateY(35px)',
-    //         'transform': 'translateY(35px)'
-    //     })
-
-    //     $('#lapiChromeExtensionContainer').css({
-    //       'top': '-35px'
-    //     })
-    //   }
-    //   (this.state.lowerSegment) ? pushDownALittleMore() : pullUpALitteMore();
-    // }
 
 
     // close lower and change icon
@@ -227,13 +199,17 @@ class App extends Component {
       this.url = url;
       this.setState({serverUrl: url})
     }
-  // end constructor
+  // end constructor /////////////////////////////////////
   }
+
+
   // Gets property name when entered
 
   // Gets value of the property textbox
   getPropertyName(e) {
-    this.setState({property: e.target.value});
+    this.setState({
+        property: e.target.value,
+    });
     // console.log('this.property', this.state.property);
   }
 
@@ -253,8 +229,22 @@ class App extends Component {
     // console.log('property', property);
     if (!property) return;
     this.text[property] = this.state.propertyArray;
+
+    let newArr = this.state.scrapePropBtnArr;
+    newArr.push(property);
+    this.setState({
+        property: property,
+        scrapePropBtnArr: newArr
+    });
+
     // console.log('this.text', this.text);
     this.resetPropertyName();
+  }
+
+  // Delete property from text object
+  deleteProperty(property){
+      if (!property) return;
+      delete this.text[property];
   }
 
   // POST Request for Endpoint Creation
@@ -368,8 +358,9 @@ class App extends Component {
 
           {this.state.lowerBar ? <Lowerbar activeStep={this.state.activeStep} stepsCompleted={this.state.stepsCompleted}/> : null}
 
-{/* setValFunc={this.handleChangeValue} value={this.state.segmentPropValue} saveFunc={this.saveScrapePropNames}  */}
-          {(this.state.lowerBar && (this.state.activeStep===1)) ? <SegmentOne doneFunc={this.stepForward} getPropertyName={this.getPropertyName} property={this.state.property} saveProperty={this.saveProperty}/> : null}
+            {/* setValFunc={this.handleChangeValue} value={this.state.segmentPropValue} saveFunc={this.saveScrapePropNames}  */}
+            
+          {(this.state.lowerBar && (this.state.activeStep===1)) ? <SegmentOne doneFunc={this.stepForward} getPropertyName={this.getPropertyName} property={this.state.property} saveProperty={this.saveProperty} scrapePropBtnArr={this.state.scrapePropBtnArr} removeProperty={this.removeProperty}/> : null}
 
            {(this.state.lowerBar && (this.state.activeStep===4)) ? <SegmentFour saveURL={this.saveURL} doneFunc={this.stepForward} signIn={this.signIn} authed={this.state.authenticated} authAttemptedFunc={this.authAttemptedFunc} authAttemptedNum={this.state.authAttemptNum} logout={this.logout}/> : null}
 
