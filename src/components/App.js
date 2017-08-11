@@ -1,24 +1,11 @@
-import React, { Component } from 'react';
-// import AccordionExampleStyled from './Accordian';
-// import Iframe from './Iframe';
-// import GridExampleVerticallyDivided from './Grid';
+import React, { Component } from 'react';;
 import $ from "../../jquery";
 import Toolbar from "./Toolbar";
 import Lowerbar from "./Lowerbar";
 import SegmentOne from "./SegmentOne";
 import SegmentFour from "./SegmentFour";
 import SegmentFive from "./SegmentFive";
-// import AuthModal from "./AuthModal.jsx";
-// import SendDefinitionModal from "./SendModal.jsx";
 
-/*
-  fullSelector is a method on the jQuery Object
-  It gets the selected HTML element's DOM Path, including
-    - Classes
-    - Id
-    - Index
-
-*/
 
 $.fn.fullSelector = function () {
     // returns an array of DOM path
@@ -83,6 +70,7 @@ class App extends Component {
       stepsCompleted: [],
       lowerBar: true,
       // scrapePropNames: [],
+      scrapePropBtnArr: [],
       lowerSegment: false,
       // segmentPropValue: '', 
       property: undefined,
@@ -90,10 +78,6 @@ class App extends Component {
       text: {}
     }
 
-    // this.activateModal = () => {
-    //   console.log("ji");
-    //   this.setState({active: !this.state.active});
-    // }
 
     // toggle authentication 
     this.signIn = () => {
@@ -111,6 +95,22 @@ class App extends Component {
             property: undefined,
             propertyArray: []
         })
+    }
+
+    // remove property
+    this.removeProperty = (e, el) => {
+        let propArr = this.state.scrapePropBtnArr;
+        console.log("propArr", propArr);
+        propArr.forEach((element, i)=>{
+            console.log("i", i);
+            if (element === el.content){
+                propArr.splice(i,1);
+                console.log("HEY", propArr)
+                this.setState({scrapePropBtnArr: propArr});
+                this.deleteProperty(el.content);
+                console.log(this.text)
+            }
+        });
     }
 
     // log user out
@@ -155,7 +155,6 @@ class App extends Component {
     //   console.log(this.state.scrapePropNames)
     // }
 
-    // this.activateModal = this.activateModal.bind(this)
     this.closeEx = () => {
       $('#lapiChromeExtensionContainer').remove(); 
       $('#targetBodyContainer').css({
@@ -173,9 +172,6 @@ class App extends Component {
             '-webkit-transform': 'translateY(230px)',
             'transform': 'translateY(230px)'
         })
-        //   $('#lapiChromeExtensionContainer').css({
-        //   'top': '-165px'
-        // })
       }
 
       let pullUp = () => {
@@ -185,42 +181,11 @@ class App extends Component {
             '-webkit-transform': 'translateY(35px)',
             'transform': 'translateY(35px)'
         })
-
-        // $('#lapiChromeExtensionContainer').css({
-        //   'top': '-35px'
-        // })
       }
 
       (!this.state.lowerBar) ? pushDown() : pullUp();
     }
 
-    // toggle css for lowerSegment
-    // this.lowerSegmentTransformCssToggle = () => {
-    //         let pushDownALittleMore = () => {
-    //         $('body').css({
-    //         '-ms-transform': 'translateY(200px)',
-    //         '-webkit-transform': 'translateY(200px)',
-    //         'transform': 'translateY(200px)'
-    //     })
-    //       $('#lapiChromeExtensionContainer').css({
-    //       'top': '-200px'
-    //     })
-    //   }
-
-    //   let pullUpALittleMore = () => {
-    //     console.log("pulling body up")
-    //         $('body').css({
-    //         '-ms-transform': 'translateY(35px)',
-    //         '-webkit-transform': 'translateY(35px)',
-    //         'transform': 'translateY(35px)'
-    //     })
-
-    //     $('#lapiChromeExtensionContainer').css({
-    //       'top': '-35px'
-    //     })
-    //   }
-    //   (this.state.lowerSegment) ? pushDownALittleMore() : pullUpALitteMore();
-    // }
 
     // close lower and change icon
     this.toggleLower = () => {
@@ -231,6 +196,7 @@ class App extends Component {
     this.savePostURL = (url) => {
       this.setState({serverUrl: url})
     }
+
     /* 
       Following functions are used in Step 1 to assign property name to the selected HTML elements.
   
@@ -257,10 +223,29 @@ class App extends Component {
       textObj[property] = this.state.propertyArray.slice();
       this.setState({text: textObj});
       this.resetPropertyName();
+      
+      // MELISSSA
+        let newArr = this.state.scrapePropBtnArr;
+        newArr.push(property);
+        this.setState({
+          property: property,
+          scrapePropBtnArr: newArr
+        });
     }
+    
+     // Delete property from text object
+      this.deleteProperty = (property) => {
+      if (!property) return;
+      delete this.text[property];
+      }
   
     this.setCrawlUrl = (url) => {
       this.setState({crawlUrl: url});
+
+  // end constructor /////////////////////////////////////
+  }
+
+
     }
   }
 
@@ -372,8 +357,13 @@ class App extends Component {
 
           {this.state.lowerBar ? <Lowerbar activeStep={this.state.activeStep} stepsCompleted={this.state.stepsCompleted}/> : null}
 
-{/* setValFunc={this.handleChangeValue} value={this.state.segmentPropValue} saveFunc={this.saveScrapePropNames}  */}
-          {(this.state.lowerBar && (this.state.activeStep===1)) ? <SegmentOne text={this.state.text} doneFunc={this.stepForward} getPropertyName={this.getPropertyName} property={this.state.property} saveProperty={this.saveProperty} setCrawlUrl={this.setCrawlUrl}/> : null}
+
+            {/* setValFunc={this.handleChangeValue} value={this.state.segmentPropValue} saveFunc={this.saveScrapePropNames}  */}
+            
+          {(this.state.lowerBar && (this.state.activeStep===1)) ? <SegmentOne text={this.state.text} doneFunc={this.stepForward} getPropertyName={this.getPropertyName} property={this.state.property} saveProperty={this.saveProperty} setCrawlUrl={this.setCrawlUrl} scrapePropBtnArr={this.state.scrapePropBtnArr} removeProperty={this.removeProperty}/> : null}
+
+           {(this.state.lowerBar && (this.state.activeStep===4)) ? <SegmentFour saveURL={this.saveURL} doneFunc={this.stepForward} signIn={this.signIn} authed={this.state.authenticated} authAttemptedFunc={this.authAttemptedFunc} authAttemptedNum={this.state.authAttemptNum} logout={this.logout}/> : null}
+
 
            {(this.state.lowerBar && (this.state.activeStep===4)) ? <SegmentFour savePostURL={this.savePostURL} doneFunc={this.stepForward} signIn={this.signIn} authed={this.state.authenticated} authAttemptedFunc={this.authAttemptedFunc} authAttemptedNum={this.state.authAttemptNum} logout={this.logout}/> : null}
 

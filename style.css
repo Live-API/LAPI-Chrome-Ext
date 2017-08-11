@@ -199,3 +199,7 @@ body > div.ui.page.modals.dimmer.transition.visible.active {
 div.ui.popup.transition.visible {
     z-index: 5100;
 }
+
+/* .floatLeft {
+    float: left;
+} */
