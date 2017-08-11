@@ -11,6 +11,14 @@ import SegmentFive from "./SegmentFive";
 // import AuthModal from "./AuthModal.jsx";
 // import SendDefinitionModal from "./SendModal.jsx";
 
+/*
+  fullSelector is a method on the jQuery Object
+  It gets the selected HTML element's DOM Path, including
+    - Classes
+    - Id
+    - Index
+
+*/
 
 $.fn.fullSelector = function () {
     // returns an array of DOM path
@@ -22,11 +30,9 @@ $.fn.fullSelector = function () {
         var self = $(item),
             id = item.id ? '#' + item.id : '',
             // gets all the classes for an item, and chains them together
-            // remove extra whitespace from the sides
-            // remove extra whitespace between classes
+            // remove leading, trailing, and excess white space
             classes = item.classList.toString();
-            classes = classes.replace(/^\s+|\s+$/g, "");
-            classes = classes.replace(/\s+/g, " ")
+            classes = classes.replace(/^\s+|\s+$/g, "").replace(/\s+/g, " ")
             var clss = classes.length ? classes.split(' ').map(function (c) {
                 return '.' + c;
             }).join('') : '',
@@ -43,14 +49,13 @@ $.fn.fullSelector = function () {
     return quickCss;
 };
 
+// Removes leading, trailing, and excess whitespace between words from text
 function cleanWhiteSpace(text) {
-  // Remove whitespace before or after text
-  let revisedText = text.replace(/^\s+|\s+$/g, "");
-  // Remove extra spaces between words
-  revisedText = revisedText.replace(/\s\s+/g, " ");
+  let revisedText = text.replace(/^\s+|\s+$/g, "").replace(/\s\s+/g, " ");
   return revisedText;
 }
 
+// Finds position of selected HTML element
 function cumulativeOffset(element) {
   let top = 0
   let left = 0;
@@ -61,7 +66,7 @@ function cumulativeOffset(element) {
   } while (element);
 
   return {
-    top: top + 165,
+    top: top + 230,
     left: left
   };
 };
@@ -71,6 +76,7 @@ class App extends Component {
     super();
     this.state = {
       serverUrl: '',
+      crawlUrl: '',
       activeStep: 1,
       authenticated: false,
       authAttemptNum: 0,
@@ -83,11 +89,11 @@ class App extends Component {
       propertyArray: []
     }
     this.text = {};
-    this.url = undefined;
     this.getPropertyName = this.getPropertyName.bind(this);
     this.saveProperty = this.saveProperty.bind(this);
     this.resetPropertyName = this.resetPropertyName.bind(this);
     this.createEndpoint = this.createEndpoint.bind(this);
+    this.setCrawlUrl = this.setCrawlUrl.bind(this);
 
     // this.activateModal = () => {
     //   console.log("ji");
@@ -228,18 +234,23 @@ class App extends Component {
       this.lowerBarTransformCssToggle();
     }
 
-    this.saveURL = (url) => {
-      this.url = url;
+    this.saveURL = () => {
+      let url = window.location.href;
       this.setState({serverUrl: url})
     }
-  // end constructor
   }
-  // Gets property name when entered
+
+  /* 
+    Following functions are used in Step 1 to assign property name to the selected HTML elements.
+
+    getPropertyName - gets value of textbox
+    resetPropertyName - resets value of textbox after saving
+    saveProperty - saves property name to state
+  */
 
   // Gets value of the property textbox
   getPropertyName(e) {
     this.setState({property: e.target.value});
-    // console.log('this.property', this.state.property);
   }
 
   // Clears the property textbox. Executed in saveProperty function
@@ -247,21 +258,18 @@ class App extends Component {
     const propertyTextbox = document.getElementById('live-API-property-textbox');
     propertyTextbox.value = '';
     this.setState({property: undefined});
-    // target the id element
-    // reset its value
-    // reset this.property to undefined
   }
-  // In Step 1, click the save button to add property to this.text object
-  // and clear the textbox
+
   saveProperty(property) {
-    // console.log('hi');
-    // console.log('property', property);
     if (!property) return;
     this.text[property] = this.state.propertyArray;
     console.log('this.text', this.text);
     this.resetPropertyName();
   }
 
+  setCrawlUrl (url) {
+    this.setState({crawlUrl: url});
+  }
   // POST Request for Endpoint Creation
   createEndpoint() {
     let data = {
@@ -282,45 +290,43 @@ class App extends Component {
     const Application = this;
 
     // Event listener to prevent population of new highlight div on existing highlight div
-    $(document).on('click','*', function(){
+    $(document).on('click','*', function (){
         return false;
     });
+
 
     $(document).on('click', '.liveAPI-highlight', function(e) {
       e.stopImmediatePropagation();
     });
-
     $(document).on('click', '.liveAPI-highlight-wrapper', function(e) {
       e.stopImmediatePropagation();
     });
 
+    // DOMPath is removed from state when item is deselected
     $(document).on('click', '.liveAPI-highlight-button', function(e) {
-      // console.log('propertyArray', Application.state.propertyArray);
-      // When the item is deselected, remove DOMPath from the currentArray
       const propertyArray = Application.state.propertyArray.slice();
       let currDOMPath = $(this).parent().data('DOMPath');
       let index = propertyArray.indexOf(currDOMPath);
       propertyArray.splice(index, 1);
       Application.setState({"propertyArray": propertyArray});
       $(this).parent().remove();
-      // prevents other listeners of the same event from being called
       e.stopImmediatePropagation();
     })
 
     // #lapiChromeExtensionContainer
 
     $(document).on('click', '*', function() {
-      let children = $(this).children().map((i, ele) => {
-        return ele.nodeName.toLowerCase();
-      }).get();
-      let pathId = $(this).parents().addBack().get().map((ele, i) => {
-        return ele.id;
-      })
-      let pathClassList = $(this).parents().addBack().get().map((ele, i) => {
-        return ele.classList;
-      })
+      let children = $(this).children().map((i, ele) => ele.nodeName.toLowerCase()).get();
+      // let pathId = $(this).parents().addBack().get().map((ele, i) => ele.id);
+      let pathClassList = $(this).parents().addBack().get().map((ele, i) => ele.classList);
       if ($(this)[0].nodeName.toLowerCase() === 'div' && children.includes('div')) return false;
-      if (pathId.includes('lapiChromeExtensionContainer')) return false;
+      console.log('pathClassList', pathClassList);
+      // Prevent click event on highlighted box
+      for (let i = 0; i < pathClassList.length; i++) {        
+        // console.log('pathClassList[i]', pathClassList[i]);
+        if (Array.from(pathClassList[i]).includes('.liveAPI-newElement')) return false;
+      }
+      // Prevent click event on buttons
       if (pathClassList[0][0] === 'ui' && pathClassList[0][1] === 'raised' && pathClassList[0][2] === 'segment') return false;
 
       let styles = $(this).css([
@@ -333,7 +339,7 @@ class App extends Component {
       const propertyArray = Application.state.propertyArray.slice();
       propertyArray.push(DOMPath);
       Application.setState({"propertyArray": propertyArray});
-      $('#lapiChromeExtensionContainer').append(
+      $('body').append(
         $('<div/>')
         .offset({top: position.top, left: position.left})
 
@@ -343,7 +349,7 @@ class App extends Component {
         .data('DOMPath', DOMPath)
         // Add highlight and ignore classes
         // Add highlight and ignore classes
-        .addClass('liveAPI-highlight liveAPI-yellow liveAPI-ignore')
+        .addClass('liveAPI-newElement liveAPI-highlight liveAPI-yellow liveAPI-ignore')
         .append(
           $('<div/>')
           .addClass('liveAPI-highlight-wrapper liveAPI-ignore')
@@ -374,11 +380,11 @@ class App extends Component {
           {this.state.lowerBar ? <Lowerbar activeStep={this.state.activeStep} stepsCompleted={this.state.stepsCompleted}/> : null}
 
 {/* setValFunc={this.handleChangeValue} value={this.state.segmentPropValue} saveFunc={this.saveScrapePropNames}  */}
-          {(this.state.lowerBar && (this.state.activeStep===1)) ? <SegmentOne doneFunc={this.stepForward} getPropertyName={this.getPropertyName} property={this.state.property} saveProperty={this.saveProperty}/> : null}
+          {(this.state.lowerBar && (this.state.activeStep===1)) ? <SegmentOne doneFunc={this.stepForward} getPropertyName={this.getPropertyName} property={this.state.property} saveProperty={this.saveProperty} setCrawlUrl={this.setCrawlUrl}/> : null}
 
            {(this.state.lowerBar && (this.state.activeStep===4)) ? <SegmentFour saveURL={this.saveURL} doneFunc={this.stepForward} signIn={this.signIn} authed={this.state.authenticated} authAttemptedFunc={this.authAttemptedFunc} authAttemptedNum={this.state.authAttemptNum} logout={this.logout}/> : null}
 
-            {(this.state.lowerBar && ((this.state.activeStep===5) || (this.state.activeStep===6))) ? <SegmentFive url={this.url} doneFunc={this.stepForward} text={this.text} activeStep={this.state.activeStep} serverUrl={this.state.serverUrl} initializeNewCrawl={this.initializeNewCrawl}/> : null}
+            {(this.state.lowerBar && ((this.state.activeStep===5) || (this.state.activeStep===6))) ? <SegmentFive url={this.url} doneFunc={this.stepForward} text={this.text} activeStep={this.state.activeStep} serverUrl={this.state.serverUrl} crawlUrl={this.state.crawlUrl}/> : null}
 
 
         </div>
