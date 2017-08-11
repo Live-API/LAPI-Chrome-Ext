@@ -4,10 +4,16 @@ import { Button, Input, Segment, Popup, Icon } from 'semantic-ui-react'
 class SegmentOne extends Component {
   constructor(props) {
     super(props);
+<<<<<<< HEAD
     this.nextSteps = () => {
       this.props.setCrawlUrl(window.location.href);
       this.props.doneFunc();
       console.log('text', this.props.text);
+=======
+    this.nextStep = () => {
+      this.props.crawlUrl();
+      this.props.doneFunc();
+>>>>>>> get URL in Step 1
     }
   }
   render() {
@@ -30,7 +36,11 @@ class SegmentOne extends Component {
           content='Once you click on the DOM element you want as a property in your object, name it and save it. Do this as many times as you need to for subsequent properties.'
         />
       
+<<<<<<< HEAD
         <Button className="doneBtn" floated='right' onClick={this.nextSteps}>Done</Button>
+=======
+        <Button className="doneBtn" floated='right' onClick={this.nextStep}>Done</Button>
+>>>>>>> get URL in Step 1
      
     </Segment>
     )
