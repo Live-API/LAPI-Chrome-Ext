@@ -26,15 +26,17 @@ class SegmentFive extends Component {
       this.setState(state);
     }
 
-    this.postEndpoint = (config, text, url) => {
+    this.postEndpoint = (config, text, crawlUrl, postUrl) => {
       return new Promise((res, rej) => {
         let data = {
-          url: document.location.href,
+          url: crawlUrl,
           interval: config.interval,
           endpoint: config.endpoint,
           "text": text
         }
-        let postURL = url + '/crawls';
+        let postURL = postUrl + '/crawls';
+        console.log('data', data);
+        console.log('postUrl', postUrl);
         const xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function() {
           if (xhr.readyState == XMLHttpRequest.DONE) {
@@ -52,22 +54,22 @@ class SegmentFive extends Component {
 
     // is ASYNC issue keeping active step from incrementing correctly? <-NOTE
     this.handleSubmit = async() => {
-      if (this.state.endpoint && this.state.interval){
+      if (this.state.endpoint && this.state.interval) {
         this.setState({disabled: false})
         try {
           // console.log(await this.postEndpoint(this.state, this.props.text, this.props.url));
-          let status = (await this.postEndpoint(this.state, this.props.text, this.props.url));
+          let status = (await this.postEndpoint(this.state, this.props.text, this.props.crawlUrl, this.props.serverUrl));
           if (status === 200){
-            this.setState({serverErr: false})
+            this.setState({serverErr: false});
             this.props.doneFunc();
           } else {
-            this.setState({serverErr: true})
+            this.setState({serverErr: true});
           }
         } catch(err) {
           console.log(err);
         } 
       } else {
-        this.setState({disabled: true})
+        this.setState({disabled: true});
       }
     }
 
