@@ -101,6 +101,29 @@ class App extends Component {
       console.log("authenticated:", this.state.authenticated)
     }
 
+    // initialize new crawl for already logged in user
+    this.initializeNewCrawl = () => {
+        this.setState({
+            activeStep: 1,
+            authAttemptNum: 0,
+            stepsCompleted: [],
+            property: undefined,
+            propertyArray: []
+        })
+    }
+
+    // log user out
+    this.logout = () => {
+        this.setState({
+            activeStep: 1,
+            authenticated: false,
+            authAttemptNum: 0,
+            stepsCompleted: [],
+            property: undefined,
+            propertyArray: []
+        })
+    }
+
     // increment auth attempts
     this.authAttemptedFunc = () => {
       let attempt = this.state.authAttemptNum;
@@ -353,9 +376,9 @@ class App extends Component {
 {/* setValFunc={this.handleChangeValue} value={this.state.segmentPropValue} saveFunc={this.saveScrapePropNames}  */}
           {(this.state.lowerBar && (this.state.activeStep===1)) ? <SegmentOne doneFunc={this.stepForward} getPropertyName={this.getPropertyName} property={this.state.property} saveProperty={this.saveProperty}/> : null}
 
-           {(this.state.lowerBar && (this.state.activeStep===4)) ? <SegmentFour saveURL={this.saveURL} doneFunc={this.stepForward} signIn={this.signIn} authed={this.state.authenticated} authAttemptedFunc={this.authAttemptedFunc} authAttemptedNum={this.state.authAttemptNum}/> : null}
+           {(this.state.lowerBar && (this.state.activeStep===4)) ? <SegmentFour saveURL={this.saveURL} doneFunc={this.stepForward} signIn={this.signIn} authed={this.state.authenticated} authAttemptedFunc={this.authAttemptedFunc} authAttemptedNum={this.state.authAttemptNum} logout={this.logout}/> : null}
 
-            {(this.state.lowerBar && ((this.state.activeStep===5) || (this.state.activeStep===6))) ? <SegmentFive url={this.url} doneFunc={this.stepForward} text={this.text} activeStep={this.state.activeStep} serverUrl={this.state.serverUrl}/> : null}
+            {(this.state.lowerBar && ((this.state.activeStep===5) || (this.state.activeStep===6))) ? <SegmentFive url={this.url} doneFunc={this.stepForward} text={this.text} activeStep={this.state.activeStep} serverUrl={this.state.serverUrl} initializeNewCrawl={this.initializeNewCrawl}/> : null}
 
 
         </div>
