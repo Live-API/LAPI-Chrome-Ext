@@ -272,6 +272,7 @@ class App extends Component {
     });
     // Stop propagation for highlight components
 
+
     $(document).on('click', '.liveAPI-highlight', function(e) {
       e.stopImmediatePropagation();
     });
