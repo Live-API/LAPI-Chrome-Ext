@@ -216,6 +216,10 @@ class App extends Component {
       propertyTextbox.value = '';
       this.setState({property: undefined});
     }
+
+    this.resetPropertyArray = () => {
+      this.setState({ propertyArray: [] });
+    }
   
     this.saveProperty = (property) => {
       if (!property) return;
@@ -223,6 +227,7 @@ class App extends Component {
       textObj[property] = this.state.propertyArray.slice();
       this.setState({text: textObj});
       this.resetPropertyName();
+      this.resetPropertyArray();
       
       // MELISSSA
         let newArr = this.state.scrapePropBtnArr;
@@ -298,7 +303,6 @@ class App extends Component {
       // let pathId = $(this).parents().addBack().get().map((ele, i) => ele.id);
       let pathClassList = $(this).parents().addBack().get().map((ele, i) => ele.classList);
       if ($(this)[0].nodeName.toLowerCase() === 'div' && children.includes('div')) return false;
-      console.log('pathClassList', pathClassList);
       // Prevent click event on highlighted box
       for (let i = 0; i < pathClassList.length; i++) {        
         // console.log('pathClassList[i]', pathClassList[i]);
@@ -367,7 +371,7 @@ class App extends Component {
 
            {(this.state.lowerBar && (this.state.activeStep===4)) ? <SegmentFour savePostURL={this.savePostURL} doneFunc={this.stepForward} signIn={this.signIn} authed={this.state.authenticated} authAttemptedFunc={this.authAttemptedFunc} authAttemptedNum={this.state.authAttemptNum} logout={this.logout}/> : null}
 
-            {(this.state.lowerBar && ((this.state.activeStep===5) || (this.state.activeStep===6))) ? <SegmentFive doneFunc={this.stepForward} text={this.state.text} activeStep={this.state.activeStep} crawlUrl={this.state.crawlUrl} serverUrl={this.state.serverUrl}/> : null}
+            {(this.state.lowerBar && ((this.state.activeStep===5) || (this.state.activeStep===6))) ? <SegmentFive doneFunc={this.stepForward} text={this.state.text} activeStep={this.state.activeStep} crawlUrl={this.state.crawlUrl} serverUrl={this.state.serverUrl} initializeNewCrawl={this.initializeNewCrawl}/> : null}
 
         </div>
       </div>
