@@ -59,6 +59,10 @@ background: linear-gradient(to bottom, rgb(0, 168, 47) 0%,rgba(203,235,255,0) 10
      width: 20%; 
 } 
 
+/* step link contract */
+#lapiChromeExtensionContainer > div > div > div.ui.container.constWidth > div > a {
+    width: 20%;
+}
 
 div>.step>.content {
     margin-top: 20px;

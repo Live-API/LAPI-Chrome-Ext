@@ -95,6 +95,10 @@ class App extends Component {
             })
         }
 
+        this.jumpBack = (activeStepInt) => {
+          this.setState({activeStep: activeStepInt});
+        }
+
         // remove property
         this.removeProperty = (e, el) => {
             let propArr = this.state.scrapePropBtnArr;
@@ -351,7 +355,7 @@ class App extends Component {
           <SendDefinitionModal trigger={<button>Create API Endpoint</button>} address='localhost:4000'/> */}
            <Toolbar closeFunc={this.closeEx} toggleLower={this.toggleLower} arrowDown={this.state.lowerBar}/>
 
-          {this.state.lowerBar ? <Lowerbar activeStep={this.state.activeStep} stepsCompleted={this.state.stepsCompleted}/> : null}
+          {this.state.lowerBar ? <Lowerbar activeStep={this.state.activeStep} stepsCompleted={this.state.stepsCompleted} jumpBack={this.jumpBack}/> : null}
 
 
             {/* setValFunc={this.handleChangeValue} value={this.state.segmentPropValue} saveFunc={this.saveScrapePropNames}  */}
