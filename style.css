@@ -7,7 +7,7 @@
       top: 0px; 
     left: 0px;
     width: 100%;
-    z-index: 2147483647;
+    z-index: 2000;
      /* background: #dde084;
     color: black;  */
 }
@@ -140,7 +140,7 @@ div.ui.header {
   display: inline-block;  
   white-space: pre-wrap;
   padding: 2px 6px;
-  z-index: 2147483646;
+  z-index: 2147483647;
 }
 
 .liveAPI-yellow {
@@ -178,7 +178,7 @@ div.ui.raised.segment {
 .alertText {
     display: inline;
     color: red;
-    margin-left: 10px;
+    margin-left: 20px;
 }
  
 
@@ -187,6 +187,7 @@ div.ui.raised.segment {
     font-weight: bold;
     float: left;
     margin-top: .6em;
+    margin-left: 20px;
 } 
 
 body > div.ui.page.modals.dimmer.transition.visible.active {
@@ -204,7 +205,11 @@ div.ui.popup.transition.visible {
     float: left;
 } */
 
-div.ten.wide.column > .alertText {
-    top: 8px;
+
+.alertTextGrid {
+    display: inline;
+    color: red;
+    margin-left: 10px;
     position: relative;
+    top: 8px;
 }
