@@ -6,35 +6,84 @@ import SegmentOne from "./SegmentOne";
 import SegmentFour from "./SegmentFour";
 import SegmentFive from "./SegmentFive";
 
+// $.fn.reverse = function() {
+//   [].reverse;
+// }
 
-$.fn.fullSelector = function () {
-    // returns an array of DOM path
-    var path = this.parents().addBack();
-    // add parents
-    // adds the child, reverses order of the parents (?)
-    var quickCss = path.get().map(function (item) {
-        // add class, id, index
-        var self = $(item),
-            id = item.id ? '#' + item.id : '',
-            // gets all the classes for an item, and chains them together
-            // remove leading, trailing, and excess white space
-            classes = item.classList.toString();
-            classes = classes.replace(/^\s+|\s+$/g, "").replace(/\s+/g, " ")
-            var clss = classes.length ? classes.split(' ').map(function (c) {
-                return '.' + c;
-            }).join('') : '',
-            name = item.nodeName.toLowerCase(),
-            index = self.siblings(name).length ? ':nth-child(' + (self.index() + 1) + ')' : '';
-        // Check if the name is html or body, which are returned immediately
-        if (name === 'html' || name === 'body') {
-            return name;
-        }
-        // Other elements are returned with their index, id, and classes
-        return name + index + id + clss;
-    // Shows parent-child relationship
-    }).join(' > ');
-    return quickCss;
-};
+$.fn.getDOMPath = function () {
+  let path = this.parents().addBack();
+  console.log('path.get().reverse()', path.get().reverse());
+  let DOMPath = path.get().map(item => {
+    let self = $(item);
+    let classes = item.classList.toString().replace(/^\s+|\s+$/g, "").replace(/\s+/g, " ");
+    let clss = classes.length ? classes.split(' ').map(c => '.' + c).join('') : "",
+    name = item.nodeName.toLowerCase(),
+    index = self.siblings(name).length ? ':nth-child(' + (self.index() + 1) + ')' : "";
+    if (name === 'html' || name === 'body') {
+      return name;
+    }
+    return name + index + clss;
+  });
+  return DOMPath;
+}
+
+// Iterates through the DOM Path of an element, and gets the least # of selectors to get the exact item, and the path for common elements
+
+// If commonPath is empty, then there are no common elements
+// Returns an Array [uniquePath, commonPath]
+
+
+$.fn.getSelectors = function (getDOMPath) {
+  // gets the DOMPath of the current Element
+  let DOMPath = $(this).getDOMPath().reverse();
+  let i = 0;
+  let commonPath;
+  while (i < DOMPath.length) {
+    let currElement = DOMPath.slice(0, i + 1);
+    let cssSelectors = currElement.reverse().join(' > ')
+    let result = $(cssSelectors);
+    console.log('cssSelectors', cssSelectors);
+    console.log('result', result);
+    if (result.length === 1) {
+      console.log('[cssSelectors, commonPath]', [cssSelectors, commonPath]);
+      return [cssSelectors, commonPath];
+    }
+    commonPath = cssSelectors.slice();
+    i++;
+  }
+  // Return relevant Selectors
+}
+
+/*            Comment Out                */
+
+// $.fn.fullSelector = function () {
+//     // returns an array of DOM path
+//     var path = this.parents().addBack();
+//     // add parents
+//     // adds the child, reverses order of the parents (?)
+//     var quickCss = path.get().map(function (item) {
+//         // add class, id, index
+//         var self = $(item),
+//             id = item.id ? '#' + item.id : '',
+//             // gets all the classes for an item, and chains them together
+//             // remove leading, trailing, and excess white space
+//             classes = item.classList.toString();
+//             classes = classes.replace(/^\s+|\s+$/g, "").replace(/\s+/g, " ")
+//             var clss = classes.length ? classes.split(' ').map(function (c) {
+//                 return '.' + c;
+//             }).join('') : '',
+//             name = item.nodeName.toLowerCase(),
+//             index = self.siblings(name).length ? ':nth-child(' + (self.index() + 1) + ')' : '';
+//         // Check if the name is html or body, which are returned immediately
+//         if (name === 'html' || name === 'body') {
+//             return name;
+//         }
+//         // Other elements are returned with their index, id, and classes
+//         return name + index + id + clss;
+//     // Shows parent-child relationship
+//     }).join(' > ');
+//     return quickCss;
+// };
 
 // Removes leading, trailing, and excess whitespace between words from text
 function cleanWhiteSpace(text) {
@@ -246,12 +295,9 @@ class App extends Component {
   
     this.setCrawlUrl = (url) => {
       this.setState({crawlUrl: url});
-
+    }
   // end constructor /////////////////////////////////////
   }
-
-
-    }
   
 
   componentDidMount() {
@@ -260,93 +306,93 @@ class App extends Component {
     $(document).on('click','*', function (){
         return false;
     });
-    // Stop propagation for highlight components
+    // // Stop propagation for highlight components
 
 
-    $(document).on('click', '.liveAPI-highlight', function(e) {
-      e.stopImmediatePropagation();
-    });
-    $(document).on('click', '.liveAPI-highlight-wrapper', function(e) {
-      e.stopImmediatePropagation();
-    });
+    // $(document).on('click', '.liveAPI-highlight', function(e) {
+    //   e.stopImmediatePropagation();
+    // });
+    // $(document).on('click', '.liveAPI-highlight-wrapper', function(e) {
+    //   e.stopImmediatePropagation();
+    // });
 
-    // DOMPath is removed from state when item is deselected
-    $(document).on('click', '.liveAPI-highlight-button', function(e) {
+    // // DOMPath is removed from state when item is deselected
+    // $(document).on('click', '.liveAPI-highlight-button', function(e) {
 
-      // Abstract this into a function
+    //   // Abstract this into a function
 
-      const propertyArray = Application.state.propertyArray.slice();
-      let currDOMPath = $(this).parent().data('DOMPath');
-      let index = propertyArray.indexOf(currDOMPath);
-      propertyArray.splice(index, 1);
-      Application.setState({"propertyArray": propertyArray});
-      $(this).parent().remove();
-      e.stopImmediatePropagation();
-    });
+    //   const propertyArray = Application.state.propertyArray.slice();
+    //   let currDOMPath = $(this).parent().data('DOMPath');
+    //   let index = propertyArray.indexOf(currDOMPath);
+    //   propertyArray.splice(index, 1);
+    //   Application.setState({"propertyArray": propertyArray});
+    //   $(this).parent().remove();
+    //   e.stopImmediatePropagation();
+    // });
 
-    // Return false when the element is part of the Toolbar
-
-    // Return false for creation of multiple highlighting
-
-    // Return false if the element is not a
-      // div, span, li, p element
-    
-    // Add logic for div elements
+    /*
+    Return false when the element is part of the Toolbar
+    Return false for creation of multiple highlighting
+    Return false if the element is not a
+      div, span, li, p element
+    Add logic for div elements
+    */
 
     $(document).on('click', '*', function() {
-      console.log('this', this);
-      console.log('Application.state.propertyArray', Application.state.propertyArray);
-      if (Application.state.propertyArray.includes($(this).fullSelector())) return false;
-      // Check if DOM Path is in the array
-        // If so, return false
-      let children = $(this).children().map((i, ele) => ele.nodeName.toLowerCase()).get();
-      // let pathId = $(this).parents().addBack().get().map((ele, i) => ele.id);
-      let pathClassList = $(this).parents().addBack().get().map((ele, i) => ele.classList);
-      if ($(this)[0].nodeName.toLowerCase() === 'div' && children.includes('div')) return false;
-      // Prevent click event on highlighted box
-      for (let i = 0; i < pathClassList.length; i++) {        
-        // console.log('pathClassList[i]', pathClassList[i]);
-        if (Array.from(pathClassList[i]).includes('.liveAPI-newElement')) return false;
-      }
-      // Prevent click event on buttons
-      if (pathClassList[0][0] === 'ui' && pathClassList[0][1] === 'raised' && pathClassList[0][2] === 'segment') return false;
+      $(this).getSelectors($(this).getDOMPath);
+    //   console.log('this', this);
+    //   console.log('Application.state.propertyArray', Application.state.propertyArray);
+    //   if (Application.state.propertyArray.includes($(this).fullSelector())) return false;
+    //   // Check if DOM Path is in the array
+    //     // If so, return false
+    //   let children = $(this).children().map((i, ele) => ele.nodeName.toLowerCase()).get();
+    //   // let pathId = $(this).parents().addBack().get().map((ele, i) => ele.id);
+    //   let pathClassList = $(this).parents().addBack().get().map((ele, i) => ele.classList);
+    //   if ($(this)[0].nodeName.toLowerCase() === 'div' && children.includes('div')) return false;
+    //   // Prevent click event on highlighted box
+    //   for (let i = 0; i < pathClassList.length; i++) {        
+    //     // console.log('pathClassList[i]', pathClassList[i]);
+    //     if (Array.from(pathClassList[i]).includes('.liveAPI-newElement')) return false;
+    //   }
+    //   // Prevent click event on buttons
+    //   if (pathClassList[0][0] === 'ui' && pathClassList[0][1] === 'raised' && pathClassList[0][2] === 'segment') return false;
 
-      let styles = $(this).css([
-        "width", "height", "font-size", "font-weight", "font-family", "font-variant", "font-stretch", "line-height", "text-transform", "text-align", "padding-top", "padding-bottom", "padding-left", "padding-right", "letter-spacing"]
-      );
+    //   let styles = $(this).css([
+    //     "width", "height", "font-size", "font-weight", "font-family", "font-variant", "font-stretch", "line-height", "text-transform", "text-align", "padding-top", "padding-bottom", "padding-left", "padding-right", "letter-spacing"]
+    //   );
       
-      const position = cumulativeOffset(this);
-      const DOMPath = $(this).fullSelector();
-      // Add DOM Path to this.state.propertyArray
-      const propertyArray = Application.state.propertyArray.slice();
-      propertyArray.push(DOMPath);
-      Application.setState({"propertyArray": propertyArray});
-      $('body').append(
-        $('<div/>')
-        .offset({top: position.top, left: position.left})
+    //   const position = cumulativeOffset(this);
+    //   const DOMPath = $(this).fullSelector();
+    //   // Add DOM Path to this.state.propertyArray
+    //   const propertyArray = Application.state.propertyArray.slice();
+    //   propertyArray.push(DOMPath);
+    //   Application.setState({"propertyArray": propertyArray});
+    //   $('body').append(
+    //     $('<div/>')
+    //     .offset({top: position.top, left: position.left})
 
-        // Assign div element the CSS properties of the HTML Element
-        .css({"font-size": styles["font-size"], "font-family": styles["font-family"], "font-variant": styles["font-variant"], "font-stretch": styles["font-stretch"], "line-height": styles["line-height"], "text-transform": styles["text-transform"], "text-align": styles["text-align"], "letter-spacing": styles["letter-spacing"]})
-        // Add DOM Path to the parent div element
-        .data('DOMPath', DOMPath)
-        // Add highlight and ignore classes
-        // Add highlight and ignore classes
-        .addClass('liveAPI-newElement liveAPI-highlight liveAPI-yellow liveAPI-ignore')
-        .append(
-          $('<div/>')
-          .addClass('liveAPI-highlight-wrapper liveAPI-ignore')
-          .css({
-            "max-width": styles["width"], "height": styles["height"],"padding-right": styles["padding-right"]
-          })
-          // .text(cleanWhiteSpace($(this).getText()))
-          .text(cleanWhiteSpace($(this).text()))
-        )
-        .append(
-          $('<a/>')
-          .addClass('liveAPI-highlight-button')
-          .text('x')
-        )
-      );
+    //     // Assign div element the CSS properties of the HTML Element
+    //     .css({"font-size": styles["font-size"], "font-family": styles["font-family"], "font-variant": styles["font-variant"], "font-stretch": styles["font-stretch"], "line-height": styles["line-height"], "text-transform": styles["text-transform"], "text-align": styles["text-align"], "letter-spacing": styles["letter-spacing"]})
+    //     // Add DOM Path to the parent div element
+    //     .data('DOMPath', DOMPath)
+    //     // Add highlight and ignore classes
+    //     // Add highlight and ignore classes
+    //     .addClass('liveAPI-newElement liveAPI-highlight liveAPI-yellow liveAPI-ignore')
+    //     .append(
+    //       $('<div/>')
+    //       .addClass('liveAPI-highlight-wrapper liveAPI-ignore')
+    //       .css({
+    //         "max-width": styles["width"], "height": styles["height"],"padding-right": styles["padding-right"]
+    //       })
+    //       // .text(cleanWhiteSpace($(this).getText()))
+    //       .text(cleanWhiteSpace($(this).text()))
+    //     )
+    //     .append(
+    //       $('<a/>')
+    //       .addClass('liveAPI-highlight-button')
+    //       .text('x')
+    //     )
+    //   );
     });
   }
 
