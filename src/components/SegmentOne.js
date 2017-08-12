@@ -9,21 +9,26 @@ class SegmentOne extends Component {
         errBool: false
       }
 
-      this.nextSteps = () => {
-      this.props.setCrawlUrl(window.location.href);
-      this.props.doneFunc();
-      console.log('text', this.props.text);
+
         
       this.nextStep = () => {
-      this.props.crawlUrl();
-      this.props.doneFunc();
+        this.props.crawlUrl();
+        this.props.doneFunc();
+      }
               
-      this.checkForProp = () => {
-        console.log("in here");
-        (this.props.scrapePropBtnArr.length===0) ? this.setState({errBool: true}) : (this.setState({errBool: false}), this.props.doneFunc());
+      // this.checkForProp = () => {
+      //   console.log("in here");
+      //   (this.props.scrapePropBtnArr.length===0) ? this.setState({errBool: true}) : (this.setState({errBool: false}), this.props.doneFunc());
         
+      // }
+
+      this.nextSteps = () => {
+        this.props.setCrawlUrl(window.location.href);
+        (this.props.scrapePropBtnArr.length===0) ? this.setState({errBool: true}) : (this.setState({errBool: false}), this.props.doneFunc());
+        // console.log('text', this.props.text);
       }
     }
+      
 
   render() {
     return (
@@ -44,10 +49,10 @@ class SegmentOne extends Component {
         />
       
 
-        <Button className="doneBtn" floated='right' onClick={this.nextSteps}>Done</Button>
+        {/* <Button className="doneBtn" floated='right' onClick={this.nextSteps}>Done</Button> */}
 
 
-          />
+          
         </Grid.Column>
 
         <Grid.Column width={10}> 
@@ -58,7 +63,7 @@ class SegmentOne extends Component {
         </Grid.Column>
 
         <Grid.Column width={2}>
-          <Button primary className="doneBtn" floated='right' onClick={this.checkForProp}>Done</Button>
+          <Button primary className="doneBtn" floated='right' onClick={this.nextSteps}>Done</Button>
         </Grid.Column>
       </Grid>
     
