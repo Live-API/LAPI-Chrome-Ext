@@ -2,19 +2,28 @@ import React, { Component }  from 'react'
 import { Button, Input, Segment, Popup, Icon, Grid } from 'semantic-ui-react'
 
 class SegmentOne extends Component {
-    constructor(){
-      super();
+
+  constructor(props) {
+    super(props);
       this.state = {
         errBool: false
       }
 
+      this.nextSteps = () => {
+      this.props.setCrawlUrl(window.location.href);
+      this.props.doneFunc();
+      console.log('text', this.props.text);
+        
+      this.nextStep = () => {
+      this.props.crawlUrl();
+      this.props.doneFunc();
+              
       this.checkForProp = () => {
         console.log("in here");
         (this.props.scrapePropBtnArr.length===0) ? this.setState({errBool: true}) : (this.setState({errBool: false}), this.props.doneFunc());
         
       }
     }
-
 
   render() {
     return (
@@ -32,6 +41,12 @@ class SegmentOne extends Component {
           <Popup
           trigger={<Icon name='info'/>}
           content='Once you click on the DOM element you want as a property in your object, name it and save it. Do this as many times as you need to for subsequent properties.'
+        />
+      
+
+        <Button className="doneBtn" floated='right' onClick={this.nextSteps}>Done</Button>
+
+
           />
         </Grid.Column>
 
@@ -47,6 +62,7 @@ class SegmentOne extends Component {
         </Grid.Column>
       </Grid>
     
+
     </Segment>
     )
   }
