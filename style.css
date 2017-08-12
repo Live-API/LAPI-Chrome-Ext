@@ -203,3 +203,8 @@ div.ui.popup.transition.visible {
 /* .floatLeft {
     float: left;
 } */
+
+div.ten.wide.column > .alertText {
+    top: 8px;
+    position: relative;
+}
