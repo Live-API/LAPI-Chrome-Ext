@@ -60,199 +60,191 @@ function cumulativeOffset(element) {
 
 class App extends Component {
     constructor(){
-    super();
-    this.state = {
-      serverUrl: '',
-      crawlUrl: '',
-      activeStep: 1,
-      authenticated: false,
-      authAttemptNum: 0,
-      stepsCompleted: [],
-      lowerBar: true,
-      // scrapePropNames: [],
-      scrapePropBtnArr: [],
-      lowerSegment: false,
-      // segmentPropValue: '', 
-      property: undefined,
-      propertyArray: [],
-      text: {}
-    }
+        super();
+        this.state = {
+          serverUrl: '',
+          crawlUrl: '',
+          activeStep: 1,
+          authenticated: false,
+          authAttemptNum: 0,
+          stepsCompleted: [],
+          lowerBar: true,
+          scrapePropBtnArr: [],
+          lowerSegment: false,
+          property: undefined,
+          propertyArray: [],
+          text: {}
+        }
 
 
-    // toggle authentication 
-    this.signIn = () => {
-      console.log(this);
-      this.setState({authenticated: true});
-      console.log("authenticated:", this.state.authenticated)
-    }
+        // toggle authentication 
+        this.signIn = () => {
+          console.log(this);
+          this.setState({authenticated: true});
+          console.log("authenticated:", this.state.authenticated)
+        }
 
-    // initialize new crawl for already logged in user
-    this.initializeNewCrawl = () => {
-        this.setState({
-            activeStep: 1,
-            authAttemptNum: 0,
-            stepsCompleted: [],
-            property: undefined,
-            propertyArray: []
-        })
-    }
+        // initialize new crawl for already logged in user
+        this.initializeNewCrawl = () => {
+            this.setState({
+                activeStep: 1,
+                authAttemptNum: 0,
+                stepsCompleted: [],
+                property: undefined,
+                propertyArray: []
+            })
+        }
 
-    // remove property
-    this.removeProperty = (e, el) => {
-        let propArr = this.state.scrapePropBtnArr;
-        console.log("propArr", propArr);
-        propArr.forEach((element, i)=>{
-            console.log("i", i);
-            if (element === el.content){
-                propArr.splice(i,1);
-                console.log("HEY", propArr)
-                this.setState({scrapePropBtnArr: propArr});
-                this.deleteProperty(el.content);
-                console.log(this.text)
-            }
-        });
-    }
+        // remove property
+        this.removeProperty = (e, el) => {
+            let propArr = this.state.scrapePropBtnArr;
+            console.log("propArr", propArr);
+            propArr.forEach((element, i)=>{
+                console.log("i", i);
+                if (element === el.content){
+                    propArr.splice(i,1);
+                    console.log("HEY", propArr)
+                    this.setState({scrapePropBtnArr: propArr});
+                    this.deleteProperty(el.content); // from text obj
+                    console.log(this.text)
+                }
+            });
+        }
 
-    // log user out
-    this.logout = () => {
-        this.setState({
-            activeStep: 1,
-            authenticated: false,
-            authAttemptNum: 0,
-            stepsCompleted: [],
-            property: undefined,
-            propertyArray: []
-        })
-    }
+        // log user out
+        this.logout = () => {
+            this.setState({
+                activeStep: 1,
+                authenticated: false,
+                authAttemptNum: 0,
+                stepsCompleted: [],
+                property: undefined,
+                propertyArray: []
+            })
+        }
 
-    // increment auth attempts
-    this.authAttemptedFunc = () => {
-      let attempt = this.state.authAttemptNum;
-      ++attempt
-      this.setState({authAttemptNum: attempt});
-      console.log("attempt", this.state.authAttemptNum);
-      console.log("attempt from state",this.state.authAttemptNum);
-    }
+        // increment auth attempts
+        this.authAttemptedFunc = () => {
+          let attempt = this.state.authAttemptNum;
+          ++attempt
+          this.setState({authAttemptNum: attempt});
+          console.log("attempt", this.state.authAttemptNum);
+          console.log("attempt from state",this.state.authAttemptNum);
+        }
 
-    // move to next step
-    this.stepForward = () => {
-      console.log("step", this.state.activeStep);
-      let step = this.state.activeStep;
-      let completedArr = this.state.stepsCompleted;
-      if (this.state.activeStep<=5){
-        completedArr.push(step);
-        this.setState({stepsCompleted: completedArr});
-        (step === 1) ? this.setState({activeStep: 4}): this.setState({activeStep: ++step});
-        console.log(this.state.stepsCompleted);
-      } 
-    }
+        // move to next step
+        this.stepForward = () => {
+          console.log("step", this.state.activeStep);
+          let step = this.state.activeStep;
+          let completedArr = this.state.stepsCompleted;
+          if (this.state.activeStep<=5){
+            completedArr.push(step);
+            this.setState({stepsCompleted: completedArr});
+            (step === 1) ? this.setState({activeStep: 4}): this.setState({activeStep: ++step});
+            console.log(this.state.stepsCompleted);
+          } 
+        }
 
-    // save scrapePropNames
-    // this.saveScrapePropNames = () => {
-    //   let newArr = this.state.scrapePropNames;
-    //   newArr.push(this.state.segmentPropValue);
-    //   this.setState({scrapePropNames: newArr});
-    //   console.log(this.state.scrapePropNames)
-    // }
+        this.closeEx = () => {
+          $('#lapiChromeExtensionContainer').remove(); 
+          $('#targetBodyContainer').css({
+              '-ms-transform': 'translateY(0px)',
+              '-webkit-transform': 'translateY(0px)',
+              'transform': 'translateY(0px)'
+          });
+        }
 
-    this.closeEx = () => {
-      $('#lapiChromeExtensionContainer').remove(); 
-      $('#targetBodyContainer').css({
-          '-ms-transform': 'translateY(0px)',
-          '-webkit-transform': 'translateY(0px)',
-          'transform': 'translateY(0px)'
-      });
-    }
+        // toggle lowerbar transform
+        this.lowerBarTransformCssToggle = () => {
+          let pushDown = () => {
+                $('#targetBodyContainer').css({
+                '-ms-transform': 'translateY(230px)',
+                '-webkit-transform': 'translateY(230px)',
+                'transform': 'translateY(230px)'
+            })
+          }
 
-    // toggle lowerbar transform
-    this.lowerBarTransformCssToggle = () => {
-      let pushDown = () => {
-            $('#targetBodyContainer').css({
-            '-ms-transform': 'translateY(230px)',
-            '-webkit-transform': 'translateY(230px)',
-            'transform': 'translateY(230px)'
-        })
-      }
+          let pullUp = () => {
+            console.log("pulling body up")
+                $('#targetBodyContainer').css({
+                '-ms-transform': 'translateY(35px)',
+                '-webkit-transform': 'translateY(35px)',
+                'transform': 'translateY(35px)'
+            })
+          }
 
-      let pullUp = () => {
-        console.log("pulling body up")
-            $('#targetBodyContainer').css({
-            '-ms-transform': 'translateY(35px)',
-            '-webkit-transform': 'translateY(35px)',
-            'transform': 'translateY(35px)'
-        })
-      }
-
-      (!this.state.lowerBar) ? pushDown() : pullUp();
-    }
+          (!this.state.lowerBar) ? pushDown() : pullUp();
+        }
 
 
-    // close lower and change icon
-    this.toggleLower = () => {
-      this.setState({lowerBar: !this.state.lowerBar});
-      this.lowerBarTransformCssToggle();
-    }
+        // close lower and change icon
+        this.toggleLower = () => {
+          this.setState({lowerBar: !this.state.lowerBar});
+          this.lowerBarTransformCssToggle();
+        }
 
-    this.savePostURL = (url) => {
-      this.setState({serverUrl: url})
-    }
+        this.savePostURL = (url) => {
+          this.setState({serverUrl: url})
+        }
 
-    /* 
-      Following functions are used in Step 1 to assign property name to the selected HTML elements.
-  
-      getPropertyName - gets value of textbox
-      resetPropertyName - resets value of textbox after saving
-      saveProperty - saves property name to state
-    */
-  
-    // Gets value of the property textbox
-    this.getPropertyName = (e) => {
-      this.setState({property: e.target.value});
-    }
-  
-    // Clears the property textbox. Executed in saveProperty function
-    this.resetPropertyName = () => {
-      const propertyTextbox = document.getElementById('live-API-property-textbox');
-      propertyTextbox.value = '';
-      this.setState({property: undefined});
-    }
-
-    this.resetPropertyArray = () => {
-      this.setState({ propertyArray: [] });
-    }
-  
-    this.saveProperty = (property) => {
-      if (!property) return;
-      let textObj = JSON.parse(JSON.stringify(this.state.text));
-      textObj[property] = this.state.propertyArray.slice();
-      this.setState({text: textObj});
-      this.resetPropertyName();
-      this.resetPropertyArray();
+        /* 
+          Following functions are used in Step 1 to assign property name to the selected HTML elements.
       
-      // MELISSSA
-        let newArr = this.state.scrapePropBtnArr;
-        newArr.push(property);
-        this.setState({
-          property: property,
-          scrapePropBtnArr: newArr
-        });
-    }
-    
-     // Delete property from text object
-      this.deleteProperty = (property) => {
-      if (!property) return;
-      delete this.text[property];
-      }
-  
-    this.setCrawlUrl = (url) => {
-      this.setState({crawlUrl: url});
+          getPropertyName - gets value of textbox
+          resetPropertyName - resets value of textbox after saving
+          saveProperty - saves property name to state
+        */
+      
+        // Gets value of the property textbox
+        this.getPropertyName = (e) => {
+          this.setState({property: e.target.value});
+          console.log("happening on change:", this.state.propertyArray)
+        }
+      
+        // Clears the property textbox. Executed in saveProperty function
+        this.resetPropertyName = () => {
+          const propertyTextbox = document.getElementById('live-API-property-textbox');
+          propertyTextbox.value = '';
+          this.setState({property: undefined});
+        }
 
-  // end constructor /////////////////////////////////////
+        this.resetPropertyArray = () => {
+          this.setState({ propertyArray: [] });
+        }
+      
+        this.saveProperty = (property) => {
+          if (!property) return;
+          let textObj = JSON.parse(JSON.stringify(this.state.text));
+          textObj[property] = this.state.propertyArray.slice();
+          this.setState({text: textObj});
+          // this.resetPropertyName();
+          // this.resetPropertyArray();
+          
+          // MELISSSA
+            let newArr = this.state.scrapePropBtnArr;
+            newArr.push(property);
+            this.setState({
+              property: property,
+              scrapePropBtnArr: newArr
+            });
+
+          this.resetPropertyName();
+          this.resetPropertyArray();
+        }
+        
+        // Delete property from text object
+          this.deleteProperty = (property) => {
+          if (!property) return;
+          let textObj = JSON.parse(JSON.stringify(this.state.text));
+          delete textObj[property];
+          this.setState({text: textObj});
+          }
+      
+          this.setCrawlUrl = (url) => {
+            this.setState({crawlUrl: url});
+          }
   }
-
-
-    }
-  
+  // end constructor /////////////////////////////////////
 
   componentDidMount() {
     const Application = this;
@@ -364,7 +356,7 @@ class App extends Component {
 
             {/* setValFunc={this.handleChangeValue} value={this.state.segmentPropValue} saveFunc={this.saveScrapePropNames}  */}
             
-          {(this.state.lowerBar && (this.state.activeStep===1)) ? <SegmentOne text={this.state.text} doneFunc={this.stepForward} getPropertyName={this.getPropertyName} property={this.state.property} saveProperty={this.saveProperty} setCrawlUrl={this.setCrawlUrl} scrapePropBtnArr={this.state.scrapePropBtnArr} removeProperty={this.removeProperty}/> : null}
+          {(this.state.lowerBar && (this.state.activeStep===1)) ? <SegmentOne text={this.state.text} doneFunc={this.stepForward} getPropertyName={this.getPropertyName} property={this.state.property} saveProperty={this.saveProperty} setCrawlUrl={this.setCrawlUrl} scrapePropBtnArr={this.state.scrapePropBtnArr} removeProperty={this.removeProperty} selPropArr={this.state.propertyArray}/> : null}
 
            {/* {(this.state.lowerBar && (this.state.activeStep===4)) ? <SegmentFour saveURL={this.saveURL} doneFunc={this.stepForward} signIn={this.signIn} authed={this.state.authenticated} authAttemptedFunc={this.authAttemptedFunc} authAttemptedNum={this.state.authAttemptNum} logout={this.logout}/> : null} */}
 
