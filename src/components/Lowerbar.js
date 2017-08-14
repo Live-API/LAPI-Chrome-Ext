@@ -6,7 +6,7 @@ class Lowerbar extends Component {
   render() {
     return (
         <Container className='constWidth'>
-            <Step activeStep={this.props.activeStep} stepsCompleted={this.props.stepsCompleted}/>
+            <Step activeStep={this.props.activeStep} stepsCompleted={this.props.stepsCompleted} jumpBack={this.props.jumpBack}/>
         </Container>
     )
   }
