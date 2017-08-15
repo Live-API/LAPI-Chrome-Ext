@@ -230,12 +230,12 @@ class App extends Component {
       resetPropertyName - resets value of textbox after saving
       saveProperty - saves property name to state
     */
-  
+
     // Gets value of the property textbox
     this.getPropertyName = (e) => {
-      this.setState({property: e.target.value});
+      this.setState({ property: e.target.value });
     }
-  
+
     // Clears the property textbox. Executed in saveProperty function
     this.resetPropertyName = () => {
       const propertyTextbox = document.getElementById('live-API-property-textbox');
@@ -257,8 +257,11 @@ class App extends Component {
       if (!property) return;
       let textObj = JSON.parse(JSON.stringify(this.state.text));
       textObj[property] = this.state.propertyArray.slice();
-      this.setState({text: textObj});
-      
+      this.setState({ text: textObj });
+      this.resetHighlightedElements();
+      this.resetPropertyName();
+      this.resetPropertyArray();
+
       // MELISSSA
       let newArr = this.state.scrapePropBtnArr;
       newArr.push(property);
@@ -282,26 +285,27 @@ class App extends Component {
     this.setCrawlUrl = (url) => {
       this.setState({ crawlUrl: url });
     }
+    // end constructor /////////////////////////////////////
   }
-  // end constructor /////////////////////////////////////
+
 
   componentDidMount() {
     const Application = this;
 
     // Prevents default click event
-    $(document).on('click','*', function () {
+    $(document).on('click', '*', function () {
     });
     // Stop propagation for highlight components
 
     $(document).on('click', '.liveAPI-highlight', (e) => e.stopImmediatePropagation());
     $(document).on('click', '.liveAPI-highlight-wrapper', (e) => e.stopImmediatePropagation());
     // DOMPath is removed from state when item is deselected
-    $(document).on('click', '.liveAPI-highlight-button', function(e) {
+    $(document).on('click', '.liveAPI-highlight-button', function (e) {
       const propertyArray = Application.state.propertyArray.slice();
       let currDOMPath = $(this).parent().data('DOMPath');
       let index = propertyArray.indexOf(currDOMPath);
       propertyArray.splice(index, 1);
-      Application.setState({"propertyArray": propertyArray});
+      Application.setState({ "propertyArray": propertyArray });
       $(this).parent().remove();
       e.stopImmediatePropagation();
     });
@@ -314,7 +318,7 @@ class App extends Component {
     Add logic for div elements
     */
 
-    $(document).on('click', '*', function() {
+    $(document).on('click', '*', function () {
       const position = cumulativeOffset(this);
       const DOMPath = $(this).getSelectors($(this).getDOMPath)[0];
       // Remove event listener from Toolbar elements
@@ -322,34 +326,34 @@ class App extends Component {
       // Add DOM Path to this.state.propertyArray
       const propertyArray = Application.state.propertyArray.slice();
       propertyArray.push(DOMPath);
-      Application.setState({"propertyArray": propertyArray});
+      Application.setState({ "propertyArray": propertyArray });
       let styles = $(this).css([
         "width", "height", "font-size", "font-weight", "font-family", "font-variant", "font-stretch", "line-height", "text-transform", "text-align", "padding-top", "padding-bottom", "padding-left", "padding-right", "letter-spacing"]
       );
       $('body').append(
         $('<div/>')
-        .offset({top: position.top, left: position.left})
+          .offset({ top: position.top, left: position.left })
 
-        // Assign div element the CSS properties of the HTML Element
-        .css({"font-size": styles["font-size"], "font-family": styles["font-family"], "font-variant": styles["font-variant"], "font-stretch": styles["font-stretch"], "line-height": styles["line-height"], "text-transform": styles["text-transform"], "text-align": styles["text-align"], "letter-spacing": styles["letter-spacing"]})
-        // Add DOM Path to the parent div element
-        .data('DOMPath', DOMPath)
-        // Add highlight and ignore classes
-        // Add highlight and ignore classes
-        .addClass('liveAPI-newElement liveAPI-highlight liveAPI-yellow liveAPI-ignore')
-        .append(
+          // Assign div element the CSS properties of the HTML Element
+          .css({ "font-size": styles["font-size"], "font-family": styles["font-family"], "font-variant": styles["font-variant"], "font-stretch": styles["font-stretch"], "line-height": styles["line-height"], "text-transform": styles["text-transform"], "text-align": styles["text-align"], "letter-spacing": styles["letter-spacing"] })
+          // Add DOM Path to the parent div element
+          .data('DOMPath', DOMPath)
+          // Add highlight and ignore classes
+          // Add highlight and ignore classes
+          .addClass('liveAPI-newElement liveAPI-highlight liveAPI-yellow liveAPI-ignore')
+          .append(
           $('<div/>')
-          .addClass('liveAPI-highlight-wrapper liveAPI-ignore')
-          .css({
-            "max-width": styles["width"], "height": styles["height"],"padding-right": styles["padding-right"]
-          })
-          .text(cleanWhiteSpace($(this).text()))
-        )
-        .append(
+            .addClass('liveAPI-highlight-wrapper liveAPI-ignore')
+            .css({
+              "max-width": styles["width"], "height": styles["height"], "padding-right": styles["padding-right"]
+            })
+            .text(cleanWhiteSpace($(this).text()))
+          )
+          .append(
           $('<a/>')
-          .addClass('liveAPI-highlight-button')
-          .text('x')
-        )
+            .addClass('liveAPI-highlight-button')
+            .text('x')
+          )
       );
     });
   }
