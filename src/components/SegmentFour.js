@@ -80,7 +80,7 @@ class SegmentFour extends Component {
 
             {((this.props.authed==false) && (this.props.authAttemptedNum>0)) ? <div className="alertText">Authentication failed, please try again.</div> : null}  
 
-         {(this.props.authed==false) ? <Button className="propSaveBtn" onClick={this.handleSubmit} floated='right'>Login</Button> : null}
+         {(this.props.authed==false) ? <Button className="propSaveBtn liveAPI-ignore" onClick={this.handleSubmit} floated='right'>Login</Button> : null}
 
          {/* already signed in  */}
          {(this.props.authed==true) ? <div className="successText"><Icon color='green' name='check'/> You are already signed in.</div> : null} 
