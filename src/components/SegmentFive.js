@@ -98,9 +98,9 @@ class SegmentFive extends Component {
 
         {(this.state.serverErr) ? <div className="alertText">The server encountered an error; no endpoint has been created. Please try again.</div> : null}  
         
-        {(this.props.activeStep===6) ? <Button primary floated='right' onClick={this.props.initializeNewCrawl}>Initiate new crawl</Button> : null}
+        {(this.props.activeStep===6) ? <Button className="liveAPI-ignore" primary floated='right' onClick={this.props.initializeNewCrawl}>Initiate new crawl</Button> : null}
 
-        {(this.props.activeStep===6) ? <Button secondary floated='right'  onClick={()=>{window.open(`${this.props.serverUrl}/crawls/${this.state.endpoint}`)}}>Go to endpoint</Button> : null}
+        {(this.props.activeStep===6) ? <Button className="liveAPI-ignore" secondary floated='right'  onClick={()=>{window.open(`${this.props.serverUrl}/crawls/${this.state.endpoint}`)}}>Go to endpoint</Button> : null}
            
     </Segment>
     )
