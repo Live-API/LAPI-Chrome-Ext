@@ -13,11 +13,11 @@ class SegmentOne extends Component {
 
       this.nextSteps = () => {
         this.props.setCrawlUrl(window.location.href);
-        ((this.props.scrapePropBtnArr.length===0) || (this.props.selPropArr.length===0)) ? (this.setState({errBool: true}), this.setState({errText: "Please save at least one DOM element to scrape."})) : (this.setState({errBool: false}), this.props.doneFunc());
+        (this.props.scrapePropBtnArr.length === 0) ? (this.setState({errBool: true}), this.setState({errText: "Please save at least one DOM element to scrape."})) : (this.setState({errBool: false}), this.props.doneFunc());
       }
 
       this.saveSteps = (passedProperty) => {
-        if (!passedProperty) {
+        if (!passedProperty || this.props.selPropArr.length === 0) {
           this.setState({saveErrBool: true});
           this.setState({errText: "To save a property name you need to enter a name in the input field and select at least one DOM element as a value."})
         } else {
@@ -61,7 +61,7 @@ class SegmentOne extends Component {
         </Grid.Column>
 
         <Grid.Column width={2}>
-          <Button primary className="doneBtn" floated='right' onClick={this.nextSteps}>Done</Button>
+          <Button primary className="LiveAPI-doneBtn liveAPI-ignore" floated='right' onClick={this.nextSteps}>Done</Button>
         </Grid.Column>
       </Grid>
     
