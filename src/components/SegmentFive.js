@@ -86,7 +86,7 @@ class SegmentFive extends Component {
 
         {(this.props.activeStep===5) ? <Popup
           trigger={<Icon name='info'/>}
-          content='This endpoint name will be part of the route for your endpoint; please do not use spaces or special characters besides dashes (www.yourserver.com/crawls/<endpoint-name>). The interval is the amount of time you want to wait between scrapes measured in seconds.)'
+          content='This endpoint name will be part of the route for your endpoint; please do not use spaces or special characters besides dashes (www.yourserver.com/crawls/<endpoint-name>). The interval is the amount of time you want to wait between scrapes measured in seconds.'
           wide
         /> : null}
 
