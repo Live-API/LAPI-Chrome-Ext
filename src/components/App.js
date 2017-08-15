@@ -8,22 +8,46 @@ import SegmentFive from "./SegmentFive";
 
 $.fn.getDOMPath = function () {
   let path = this.parents().addBack();
+<<<<<<< HEAD
   let DOMPath = path.get().map(item => {
     let self = $(item);
     let name = item.nodeName.toLowerCase();
     let index = self.siblings(name).length ? ':nth-child(' + (self.index() + 1) + ')' : "";
     if (name === 'html' || name === 'body') return name;
     return name + index;
+=======
+  // console.log('path.get().reverse()', path.get().reverse());
+  let DOMPath = path.get().map(item => {
+    let self = $(item);
+    let classes = item.classList.toString().replace(/^\s+|\s+$/g, "").replace(/\s+/g, " ");
+    let clss = classes.length ? classes.split(' ').map(c => '.' + c).join('') : "",
+    name = item.nodeName.toLowerCase(),
+    index = self.siblings(name).length ? ':nth-child(' + (self.index() + 1) + ')' : "";
+    if (name === 'html' || name === 'body') {
+      return name;
+    }
+    return name + index + clss;
+>>>>>>> resolve merge conflicts
   });
   return DOMPath;
 }
 
+<<<<<<< HEAD
 // Iterates through the DOM Path of an element, and gets (1) the least # of selectors to get the exact item, (2) path for common elements
+=======
+// Iterates through the DOM Path of an element, and gets the least # of selectors to get the exact item, and the path for common elements
+>>>>>>> resolve merge conflicts
 
 // If commonPath is empty, then there are no common elements
 // Returns an Array [uniquePath, commonPath]
 
+<<<<<<< HEAD
 $.fn.getSelectors = function(getDOMPath) {
+=======
+
+$.fn.getSelectors = function (getDOMPath) {
+  // gets the DOMPath of the current Element
+>>>>>>> resolve merge conflicts
   let DOMPath = $(this).getDOMPath().reverse();
   let i = 0;
   let commonPath;
@@ -31,11 +55,56 @@ $.fn.getSelectors = function(getDOMPath) {
     let currElement = DOMPath.slice(0, i + 1);
     let cssSelectors = currElement.reverse().join(' > ')
     let result = $(cssSelectors);
+<<<<<<< HEAD
     if (result.length === 1) return [cssSelectors, commonPath];
     commonPath = cssSelectors.slice();
     i++;
   }
 }
+=======
+    // console.log('cssSelectors', cssSelectors);
+    // console.log('result', result);
+    if (result.length === 1) {
+      // console.log('[cssSelectors, commonPath]', [cssSelectors, commonPath]);
+      return [cssSelectors, commonPath];
+    }
+    commonPath = cssSelectors.slice();
+    i++;
+  }
+  // Return relevant Selectors
+}
+
+/*            Comment Out                */
+
+// $.fn.fullSelector = function () {
+//     // returns an array of DOM path
+//     var path = this.parents().addBack();
+//     // add parents
+//     // adds the child, reverses order of the parents (?)
+//     var quickCss = path.get().map(function (item) {
+//         // add class, id, index
+//         var self = $(item),
+//             id = item.id ? '#' + item.id : '',
+//             // gets all the classes for an item, and chains them together
+//             // remove leading, trailing, and excess white space
+//             classes = item.classList.toString();
+//             classes = classes.replace(/^\s+|\s+$/g, "").replace(/\s+/g, " ")
+//             var clss = classes.length ? classes.split(' ').map(function (c) {
+//                 return '.' + c;
+//             }).join('') : '',
+//             name = item.nodeName.toLowerCase(),
+//             index = self.siblings(name).length ? ':nth-child(' + (self.index() + 1) + ')' : '';
+//         // Check if the name is html or body, which are returned immediately
+//         if (name === 'html' || name === 'body') {
+//             return name;
+//         }
+//         // Other elements are returned with their index, id, and classes
+//         return name + index + id + clss;
+//     // Shows parent-child relationship
+//     }).join(' > ');
+//     return quickCss;
+// };
+>>>>>>> resolve merge conflicts
 
 // Removes leading, trailing, and excess whitespace between words from text
 function cleanWhiteSpace(text) {
@@ -60,6 +129,7 @@ function cumulativeOffset(element) {
 };
 
 class App extends Component {
+<<<<<<< HEAD
   constructor() {
     super();
     this.state = {
@@ -181,16 +251,45 @@ class App extends Component {
 
       (!this.state.lowerBar) ? pushDown() : pullUp();
     }
+=======
+    constructor() {
+        super();
+        this.state = {
+          serverUrl: '',
+          crawlUrl: '',
+          activeStep: 1,
+          authenticated: false,
+          authAttemptNum: 0,
+          stepsCompleted: [],
+          lowerBar: true,
+          scrapePropBtnArr: [],
+          lowerSegment: false,
+          property: undefined,
+          propertyArray: [],
+          text: {}
+        }
+
+
+      (!this.state.lowerBar) ? pushDown() : pullUp();
+>>>>>>> resolve merge conflicts
 
 
     // close lower and change icon
     this.toggleLower = () => {
+<<<<<<< HEAD
       this.setState({ lowerBar: !this.state.lowerBar });
+=======
+      this.setState({lowerBar: !this.state.lowerBar});
+>>>>>>> resolve merge conflicts
       this.lowerBarTransformCssToggle();
     }
 
     this.savePostURL = (url) => {
+<<<<<<< HEAD
       this.setState({ serverUrl: url })
+=======
+      this.setState({serverUrl: url})
+>>>>>>> resolve merge conflicts
     }
 
     /* 
@@ -200,6 +299,7 @@ class App extends Component {
       resetPropertyName - resets value of textbox after saving
       saveProperty - saves property name to state
     */
+<<<<<<< HEAD
 
     // Gets value of the property textbox
     this.getPropertyName = (e) => {
@@ -207,11 +307,23 @@ class App extends Component {
       console.log("happening on change:", this.state.propertyArray)
     }
 
+=======
+  
+    // Gets value of the property textbox
+    this.getPropertyName = (e) => {
+      this.setState({property: e.target.value});
+    }
+  
+>>>>>>> resolve merge conflicts
     // Clears the property textbox. Executed in saveProperty function
     this.resetPropertyName = () => {
       const propertyTextbox = document.getElementById('live-API-property-textbox');
       propertyTextbox.value = '';
+<<<<<<< HEAD
       this.setState({ property: undefined });
+=======
+      this.setState({property: undefined});
+>>>>>>> resolve merge conflicts
     }
 
     this.resetPropertyArray = () => {
@@ -223,12 +335,17 @@ class App extends Component {
       console.log('body', $('body'));
       $('body').find('.liveAPI-newElement').remove();
     }
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> resolve merge conflicts
     this.saveProperty = (property) => {
       if (!property) return;
       let textObj = JSON.parse(JSON.stringify(this.state.text));
       textObj[property] = this.state.propertyArray.slice();
       this.setState({text: textObj});
+<<<<<<< HEAD
       
       // MELISSSA
       let newArr = this.state.scrapePropBtnArr;
@@ -254,7 +371,33 @@ class App extends Component {
       this.setState({ crawlUrl: url });
     }
   }
+=======
+      this.resetHighlightedElements();
+      this.resetPropertyName();
+      this.resetPropertyArray();
+      
+      // MELISSSA
+        let newArr = this.state.scrapePropBtnArr;
+        newArr.push(property);
+        this.setState({
+          property: property,
+          scrapePropBtnArr: newArr
+        });
+    }
+    
+     // Delete property from text object
+      this.deleteProperty = (property) => {
+      if (!property) return;
+      delete this.text[property];
+      }
+  
+    this.setCrawlUrl = (url) => {
+      this.setState({crawlUrl: url});
+    }
+>>>>>>> resolve merge conflicts
   // end constructor /////////////////////////////////////
+  }
+  
 
   componentDidMount() {
     const Application = this;
