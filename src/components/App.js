@@ -222,7 +222,6 @@ class App extends Component {
       console.log('body', $('body'));
       $('body').find('.liveAPI-newElement').remove();
     }
-
     this.saveProperty = (property) => {
       if (!property) return;
       let textObj = JSON.parse(JSON.stringify(this.state.text));
@@ -239,7 +238,6 @@ class App extends Component {
       this.resetHighlightedElements();
       this.resetPropertyName();
       this.resetPropertyArray();
-      console.log('scrapePropBtnArr', this.state.scrapePropBtnArr);
     }
 
     // Delete property from text object
