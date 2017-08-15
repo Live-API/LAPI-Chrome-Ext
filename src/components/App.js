@@ -7,6 +7,7 @@ import SegmentFour from "./SegmentFour";
 import SegmentFive from "./SegmentFive";
 
 $.fn.getDOMPath = function () {
+  let path = this.parents().addBack();
   let DOMPath = path.get().map(item => {
     let self = $(item);
     let name = item.nodeName.toLowerCase();
@@ -36,37 +37,6 @@ $.fn.getSelectors = function(getDOMPath) {
     i++;
   }
 }
-
-/*            Comment Out                */
-
-// $.fn.fullSelector = function () {
-//     // returns an array of DOM path
-//     var path = this.parents().addBack();
-//     // add parents
-//     // adds the child, reverses order of the parents (?)
-//     var quickCss = path.get().map(function (item) {
-//         // add class, id, index
-//         var self = $(item),
-//             id = item.id ? '#' + item.id : '',
-//             // gets all the classes for an item, and chains them together
-//             // remove leading, trailing, and excess white space
-//             classes = item.classList.toString();
-//             classes = classes.replace(/^\s+|\s+$/g, "").replace(/\s+/g, " ")
-//             var clss = classes.length ? classes.split(' ').map(function (c) {
-//                 return '.' + c;
-//             }).join('') : '',
-//             name = item.nodeName.toLowerCase(),
-//             index = self.siblings(name).length ? ':nth-child(' + (self.index() + 1) + ')' : '';
-//         // Check if the name is html or body, which are returned immediately
-//         if (name === 'html' || name === 'body') {
-//             return name;
-//         }
-//         // Other elements are returned with their index, id, and classes
-//         return name + index + id + clss;
-//     // Shows parent-child relationship
-//     }).join(' > ');
-//     return quickCss;
-// };
 
 // Removes leading, trailing, and excess whitespace between words from text
 function cleanWhiteSpace(text) {
@@ -172,7 +142,7 @@ class App extends Component {
     this.stepForward = () => {
       console.log("step", this.state.activeStep);
       let step = this.state.activeStep;
-      let completedArr = this.state.stepsCompleted;
+      let completedArr = this.state.stepsCompleted.slice();
       if (this.state.activeStep <= 5) {
         completedArr.push(step);
         this.setState({ stepsCompleted: completedArr });
@@ -260,15 +230,16 @@ class App extends Component {
       this.setState({ text: textObj });
       
       // MELISSSA
-      let newArr = this.state.scrapePropBtnArr;
+      let newArr = this.state.scrapePropBtnArr.slice();
       newArr.push(property);
       this.setState({
-        property: property,
+        // property: property,
         scrapePropBtnArr: newArr
       });
       this.resetHighlightedElements();
       this.resetPropertyName();
       this.resetPropertyArray();
+      console.log('scrapePropBtnArr', this.state.scrapePropBtnArr);
     }
 
     // Delete property from text object
@@ -284,7 +255,6 @@ class App extends Component {
     }
     // end constructor /////////////////////////////////////
   }
-
 
   componentDidMount() {
     const Application = this;
@@ -315,12 +285,14 @@ class App extends Component {
       div, span, li, p element
     Add logic for div elements
     */
-
+    
     $(document).on('click', '*', function () {
       const position = cumulativeOffset(this);
       const DOMPath = $(this).getSelectors($(this).getDOMPath)[0];
       // Remove event listener from Toolbar elements
-      if ($(this).closest('#lapiChromeExtensionContainer').length === 1) return false;
+      if ($(this).closest('#lapiChromeExtensionContainer').length > 0) return false;
+      console.log('this', $(this));
+      if ($(this).hasClass("liveAPI-ignore")) return false;
       // Add DOM Path to this.state.propertyArray
       const propertyArray = Application.state.propertyArray.slice();
       propertyArray.push(DOMPath);
@@ -341,13 +313,13 @@ class App extends Component {
           .addClass('liveAPI-newElement liveAPI-highlight liveAPI-yellow liveAPI-ignore')
           .append(
           $('<div/>')
-            .addClass('liveAPI-highlight-wrapper liveAPI-ignore')
-            .css({
-              "max-width": styles["width"], "height": styles["height"], "padding-right": styles["padding-right"]
-            })
-            .text(cleanWhiteSpace($(this).text()))
-          )
-          .append(
+          .addClass('liveAPI-highlight-wrapper liveAPI-ignore')
+          .css({
+            "max-width": styles["width"], "height": styles["height"],"padding-right": styles["padding-right"]
+          })
+          .text(cleanWhiteSpace($(this).text()))
+        )
+        .append(
           $('<a/>')
             .addClass('liveAPI-highlight-button')
             .text('x')
