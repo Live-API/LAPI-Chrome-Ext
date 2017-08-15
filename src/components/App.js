@@ -23,7 +23,7 @@ $.fn.getDOMPath = function () {
 // If commonPath is empty, then there are no common elements
 // Returns an Array [uniquePath, commonPath]
 
-$.fn.getSelectors = function (getDOMPath) {
+$.fn.getSelectors = function(getDOMPath) {
   let DOMPath = $(this).getDOMPath().reverse();
   let i = 0;
   let commonPath;
@@ -74,6 +74,7 @@ class App extends Component {
       lowerSegment: false,
       property: undefined,
       propertyArray: [],
+      recommendations: [],
       text: {}
     }
 
@@ -221,7 +222,6 @@ class App extends Component {
       console.log('body', $('body'));
       $('body').find('.liveAPI-newElement').remove();
     }
-
     this.saveProperty = (property) => {
       if (!property) return;
       let textObj = JSON.parse(JSON.stringify(this.state.text));
@@ -310,13 +310,13 @@ class App extends Component {
           .addClass('liveAPI-newElement liveAPI-highlight liveAPI-yellow liveAPI-ignore')
           .append(
           $('<div/>')
-            .addClass('liveAPI-highlight-wrapper liveAPI-ignore')
-            .css({
-              "max-width": styles["width"], "height": styles["height"], "padding-right": styles["padding-right"]
-            })
-            .text(cleanWhiteSpace($(this).text()))
-          )
-          .append(
+          .addClass('liveAPI-highlight-wrapper liveAPI-ignore')
+          .css({
+            "max-width": styles["width"], "height": styles["height"],"padding-right": styles["padding-right"]
+          })
+          .text(cleanWhiteSpace($(this).text()))
+        )
+        .append(
           $('<a/>')
             .addClass('liveAPI-highlight-button')
             .text('x')
