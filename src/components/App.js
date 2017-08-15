@@ -8,29 +8,22 @@ import SegmentFive from "./SegmentFive";
 
 $.fn.getDOMPath = function () {
   let path = this.parents().addBack();
-  // console.log('path.get().reverse()', path.get().reverse());
   let DOMPath = path.get().map(item => {
     let self = $(item);
-    let classes = item.classList.toString().replace(/^\s+|\s+$/g, "").replace(/\s+/g, " ");
-    let clss = classes.length ? classes.split(' ').map(c => '.' + c).join('') : "",
-    name = item.nodeName.toLowerCase(),
-    index = self.siblings(name).length ? ':nth-child(' + (self.index() + 1) + ')' : "";
-    if (name === 'html' || name === 'body') {
-      return name;
-    }
-    return name + index + clss;
+    let name = item.nodeName.toLowerCase();
+    let index = self.siblings(name).length ? ':nth-child(' + (self.index() + 1) + ')' : "";
+    if (name === 'html' || name === 'body') return name;
+    return name + index;
   });
   return DOMPath;
 }
 
-// Iterates through the DOM Path of an element, and gets the least # of selectors to get the exact item, and the path for common elements
+// Iterates through the DOM Path of an element, and gets (1) the least # of selectors to get the exact item, (2) path for common elements
 
 // If commonPath is empty, then there are no common elements
 // Returns an Array [uniquePath, commonPath]
 
-
-$.fn.getSelectors = function (getDOMPath) {
-  // gets the DOMPath of the current Element
+$.fn.getSelectors = function(getDOMPath) {
   let DOMPath = $(this).getDOMPath().reverse();
   let i = 0;
   let commonPath;
@@ -38,48 +31,11 @@ $.fn.getSelectors = function (getDOMPath) {
     let currElement = DOMPath.slice(0, i + 1);
     let cssSelectors = currElement.reverse().join(' > ')
     let result = $(cssSelectors);
-    // console.log('cssSelectors', cssSelectors);
-    // console.log('result', result);
-    if (result.length === 1) {
-      // console.log('[cssSelectors, commonPath]', [cssSelectors, commonPath]);
-      return [cssSelectors, commonPath];
-    }
+    if (result.length === 1) return [cssSelectors, commonPath];
     commonPath = cssSelectors.slice();
     i++;
   }
-  // Return relevant Selectors
 }
-
-/*            Comment Out                */
-
-// $.fn.fullSelector = function () {
-//     // returns an array of DOM path
-//     var path = this.parents().addBack();
-//     // add parents
-//     // adds the child, reverses order of the parents (?)
-//     var quickCss = path.get().map(function (item) {
-//         // add class, id, index
-//         var self = $(item),
-//             id = item.id ? '#' + item.id : '',
-//             // gets all the classes for an item, and chains them together
-//             // remove leading, trailing, and excess white space
-//             classes = item.classList.toString();
-//             classes = classes.replace(/^\s+|\s+$/g, "").replace(/\s+/g, " ")
-//             var clss = classes.length ? classes.split(' ').map(function (c) {
-//                 return '.' + c;
-//             }).join('') : '',
-//             name = item.nodeName.toLowerCase(),
-//             index = self.siblings(name).length ? ':nth-child(' + (self.index() + 1) + ')' : '';
-//         // Check if the name is html or body, which are returned immediately
-//         if (name === 'html' || name === 'body') {
-//             return name;
-//         }
-//         // Other elements are returned with their index, id, and classes
-//         return name + index + id + clss;
-//     // Shows parent-child relationship
-//     }).join(' > ');
-//     return quickCss;
-// };
 
 // Removes leading, trailing, and excess whitespace between words from text
 function cleanWhiteSpace(text) {
@@ -164,7 +120,7 @@ class App extends Component {
       console.log('body', $('body'));
       $('body').find('.liveAPI-newElement').remove();
     }
-
+  
     this.saveProperty = (property) => {
       if (!property) return;
       let textObj = JSON.parse(JSON.stringify(this.state.text));
@@ -175,12 +131,12 @@ class App extends Component {
       this.resetPropertyArray();
       
       // MELISSSA
-        let newArr = this.state.scrapePropBtnArr;
-        newArr.push(property);
-        this.setState({
-          property: property,
-          scrapePropBtnArr: newArr
-        });
+      let newArr = this.state.scrapePropBtnArr;
+      newArr.push(property);
+      this.setState({
+        property: property,
+        scrapePropBtnArr: newArr
+      });
     }
     
      // Delete property from text object
