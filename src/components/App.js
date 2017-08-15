@@ -6,35 +6,37 @@ import SegmentOne from "./SegmentOne";
 import SegmentFour from "./SegmentFour";
 import SegmentFive from "./SegmentFive";
 
+$.fn.getDOMPath = function () {
+  let path = this.parents().addBack();
+  let DOMPath = path.get().map(item => {
+    let self = $(item);
+    let name = item.nodeName.toLowerCase();
+    let index = self.siblings(name).length ? ':nth-child(' + (self.index() + 1) + ')' : "";
+    if (name === 'html' || name === 'body') return name;
+    return name + index;
+  });
+  return DOMPath;
+}
 
-$.fn.fullSelector = function () {
-  // returns an array of DOM path
-  var path = this.parents().addBack();
-  // add parents
-  // adds the child, reverses order of the parents (?)
-  var quickCss = path.get().map(function (item) {
-    // add class, id, index
-    var self = $(item),
-      id = item.id ? '#' + item.id : '',
-      // gets all the classes for an item, and chains them together
-      // remove leading, trailing, and excess white space
-      classes = item.classList.toString();
-    classes = classes.replace(/^\s+|\s+$/g, "").replace(/\s+/g, " ")
-    var clss = classes.length ? classes.split(' ').map(function (c) {
-      return '.' + c;
-    }).join('') : '',
-      name = item.nodeName.toLowerCase(),
-      index = self.siblings(name).length ? ':nth-child(' + (self.index() + 1) + ')' : '';
-    // Check if the name is html or body, which are returned immediately
-    if (name === 'html' || name === 'body') {
-      return name;
-    }
-    // Other elements are returned with their index, id, and classes
-    return name + index + id + clss;
-    // Shows parent-child relationship
-  }).join(' > ');
-  return quickCss;
-};
+// Iterates through the DOM Path of an element, and gets (1) the least # of selectors to get the exact item, (2) path for common elements
+
+// If commonPath is empty, then there are no common elements
+// Returns an Array [uniquePath, commonPath]
+
+
+$.fn.getSelectors = function(getDOMPath) {
+  let DOMPath = $(this).getDOMPath().reverse();
+  let i = 0;
+  let commonPath;
+  while (i < DOMPath.length) {
+    let currElement = DOMPath.slice(0, i + 1);
+    let cssSelectors = currElement.reverse().join(' > ')
+    let result = $(cssSelectors);
+    if (result.length === 1) return [cssSelectors, commonPath];
+    commonPath = cssSelectors.slice();
+    i++;
+  }
+}
 
 // Removes leading, trailing, and excess whitespace between words from text
 function cleanWhiteSpace(text) {
@@ -73,9 +75,9 @@ class App extends Component {
       lowerSegment: false,
       property: undefined,
       propertyArray: [],
+      recommendations: [],
       text: {}
     }
-
 
     // toggle authentication 
     this.signIn = () => {
@@ -140,7 +142,7 @@ class App extends Component {
     this.stepForward = () => {
       console.log("step", this.state.activeStep);
       let step = this.state.activeStep;
-      let completedArr = this.state.stepsCompleted;
+      let completedArr = this.state.stepsCompleted.slice();
       if (this.state.activeStep <= 5) {
         completedArr.push(step);
         this.setState({ stepsCompleted: completedArr });
@@ -202,7 +204,6 @@ class App extends Component {
     // Gets value of the property textbox
     this.getPropertyName = (e) => {
       this.setState({ property: e.target.value });
-      console.log("happening on change:", this.state.propertyArray)
     }
 
     // Clears the property textbox. Executed in saveProperty function
@@ -216,22 +217,25 @@ class App extends Component {
       this.setState({ propertyArray: [] });
     }
 
+    this.resetHighlightedElements = () => {
+      // Not sure why body is firing twice
+      console.log('body', $('body'));
+      $('body').find('.liveAPI-newElement').remove();
+    }
     this.saveProperty = (property) => {
       if (!property) return;
       let textObj = JSON.parse(JSON.stringify(this.state.text));
       textObj[property] = this.state.propertyArray.slice();
       this.setState({ text: textObj });
-      // this.resetPropertyName();
-      // this.resetPropertyArray();
-
+      
       // MELISSSA
-      let newArr = this.state.scrapePropBtnArr;
+      let newArr = this.state.scrapePropBtnArr.slice();
       newArr.push(property);
       this.setState({
-        property: property,
+        // property: property,
         scrapePropBtnArr: newArr
       });
-
+      this.resetHighlightedElements();
       this.resetPropertyName();
       this.resetPropertyArray();
     }
@@ -247,30 +251,22 @@ class App extends Component {
     this.setCrawlUrl = (url) => {
       this.setState({ crawlUrl: url });
     }
+    // end constructor /////////////////////////////////////
   }
-  // end constructor /////////////////////////////////////
 
   componentDidMount() {
     const Application = this;
 
+    // Prevents default click event
     $(document).on('click', '*', function () {
       return false;
     });
     // Stop propagation for highlight components
 
-
-    $(document).on('click', '.liveAPI-highlight', function (e) {
-      e.stopImmediatePropagation();
-    });
-    $(document).on('click', '.liveAPI-highlight-wrapper', function (e) {
-      e.stopImmediatePropagation();
-    });
-
+    $(document).on('click', '.liveAPI-highlight', (e) => e.stopImmediatePropagation());
+    $(document).on('click', '.liveAPI-highlight-wrapper', (e) => e.stopImmediatePropagation());
     // DOMPath is removed from state when item is deselected
     $(document).on('click', '.liveAPI-highlight-button', function (e) {
-
-      // Abstract this into a function
-
       const propertyArray = Application.state.propertyArray.slice();
       let currDOMPath = $(this).parent().data('DOMPath');
       let index = propertyArray.indexOf(currDOMPath);
@@ -280,43 +276,28 @@ class App extends Component {
       e.stopImmediatePropagation();
     });
 
-    // Return false when the element is part of the Toolbar
-
-    // Return false for creation of multiple highlighting
-
-    // Return false if the element is not a
-    // div, span, li, p element
-
-    // Add logic for div elements
-
+    /*
+    Return false when the element is part of the Toolbar
+    Return false for creation of multiple highlighting
+    Return false if the element is not a
+      div, span, li, p element
+    Add logic for div elements
+    */
+    
     $(document).on('click', '*', function () {
-      console.log('this', this);
-      console.log('Application.state.propertyArray', Application.state.propertyArray);
-      if (Application.state.propertyArray.includes($(this).fullSelector())) return false;
-      // Check if DOM Path is in the array
-      // If so, return false
-      let children = $(this).children().map((i, ele) => ele.nodeName.toLowerCase()).get();
-      // let pathId = $(this).parents().addBack().get().map((ele, i) => ele.id);
-      let pathClassList = $(this).parents().addBack().get().map((ele, i) => ele.classList);
-      if ($(this)[0].nodeName.toLowerCase() === 'div' && children.includes('div')) return false;
-      // Prevent click event on highlighted box
-      for (let i = 0; i < pathClassList.length; i++) {
-        // console.log('pathClassList[i]', pathClassList[i]);
-        if (Array.from(pathClassList[i]).includes('.liveAPI-newElement')) return false;
-      }
-      // Prevent click event on buttons
-      if (pathClassList[0][0] === 'ui' && pathClassList[0][1] === 'raised' && pathClassList[0][2] === 'segment') return false;
-
-      let styles = $(this).css([
-        "width", "height", "font-size", "font-weight", "font-family", "font-variant", "font-stretch", "line-height", "text-transform", "text-align", "padding-top", "padding-bottom", "padding-left", "padding-right", "letter-spacing"]
-      );
-
       const position = cumulativeOffset(this);
-      const DOMPath = $(this).fullSelector();
+      const DOMPath = $(this).getSelectors($(this).getDOMPath)[0];
+      // Remove event listener from Toolbar elements
+      if ($(this).closest('#lapiChromeExtensionContainer').length > 0) return false;
+      console.log('this', $(this));
+      if ($(this).hasClass("liveAPI-ignore")) return false;
       // Add DOM Path to this.state.propertyArray
       const propertyArray = Application.state.propertyArray.slice();
       propertyArray.push(DOMPath);
       Application.setState({ "propertyArray": propertyArray });
+      let styles = $(this).css([
+        "width", "height", "font-size", "font-weight", "font-family", "font-variant", "font-stretch", "line-height", "text-transform", "text-align", "padding-top", "padding-bottom", "padding-left", "padding-right", "letter-spacing"]
+      );
       $('body').append(
         $('<div/>')
           .offset({ top: position.top, left: position.left })
@@ -330,14 +311,13 @@ class App extends Component {
           .addClass('liveAPI-newElement liveAPI-highlight liveAPI-yellow liveAPI-ignore')
           .append(
           $('<div/>')
-            .addClass('liveAPI-highlight-wrapper liveAPI-ignore')
-            .css({
-              "max-width": styles["width"], "height": styles["height"], "padding-right": styles["padding-right"]
-            })
-            // .text(cleanWhiteSpace($(this).getText()))
-            .text(cleanWhiteSpace($(this).text()))
-          )
-          .append(
+          .addClass('liveAPI-highlight-wrapper liveAPI-ignore')
+          .css({
+            "max-width": styles["width"], "height": styles["height"],"padding-right": styles["padding-right"]
+          })
+          .text(cleanWhiteSpace($(this).text()))
+        )
+        .append(
           $('<a/>')
             .addClass('liveAPI-highlight-button')
             .text('x')
