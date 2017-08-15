@@ -35,9 +35,7 @@ if (existsAlready!=true) {
     }
 
     // remove contents of body
-    $('body').empty();
-
-    
+    $('body').addClass('liveAPI-body').empty();
 
     // append chrome ext div
     $('body').append(containerDiv);
