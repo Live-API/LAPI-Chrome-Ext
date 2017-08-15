@@ -258,10 +258,7 @@ class App extends Component {
       let textObj = JSON.parse(JSON.stringify(this.state.text));
       textObj[property] = this.state.propertyArray.slice();
       this.setState({ text: textObj });
-      this.resetHighlightedElements();
-      this.resetPropertyName();
-      this.resetPropertyArray();
-
+      
       // MELISSSA
       let newArr = this.state.scrapePropBtnArr;
       newArr.push(property);
@@ -294,6 +291,7 @@ class App extends Component {
 
     // Prevents default click event
     $(document).on('click', '*', function () {
+      return false;
     });
     // Stop propagation for highlight components
 
