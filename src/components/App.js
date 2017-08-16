@@ -33,12 +33,74 @@ $.fn.getSelectors = function(getDOMPath) {
     let cssSelectors = currElement.reverse().join(' > ')
     let result = $(cssSelectors);
     if (result.length === 1) {
-      console.log('currElement', [cssSelectors, commonPath]);
       return [cssSelectors, commonPath];
     }
     commonPath = cssSelectors.slice();
     i++;
   }
+}
+
+function selectElement(App, siblingSelector, DOMPath, styles, text, position) {
+  if (App.state.firstElement) {
+    // execute highlightElement
+    // highlightElement(App, position, DOMPath, styles, text);
+    // can't directly add to state
+    App.addRecommendation(siblingSelector);
+    App.toggleFirstElement();
+  } else {
+    if (!App.state.recommendations.includes(siblingSelector)) {
+      highlightElement(App, position, DOMPath, styles, text);
+      };
+      let siblingsDOM = $(siblingSelector).each((index, element) => {
+        console.log('element', element);
+        let elePosition = cumulativeOffset(element);
+        let eleDOMPath = $(element).getSelectors($(element).getDOMPath)[0];
+        let eleStyles = setStyles.call(element);
+        let eleText = cleanWhiteSpace($(element).text());
+        highlightElement(App, elePosition, eleDOMPath, eleStyles, eleText);
+    });
+    console.log('propertyArray', App.state.propertyArray);
+
+      // If siblingSelector matches recommendation in cue
+      // Add Highlight to Each Recommendation [create new class]
+        // Exclude the existing element
+        // Add the DOM Path of Recommendation to Array (already in function)
+        // Add the DOM Path of Recommendation to Data (already in function)
+    // Else
+      // Add Highlight to the Element
+      // Add Recommendations via Function (w/ class)
+  }
+}
+
+function setStyles () {
+  return $(this).css([
+    "width", "height", "font-size", "font-weight", "font-family", "font-variant", "font-stretch", "line-height", "text-transform", "text-align", "padding-top", "padding-bottom", "padding-left", "padding-right", "letter-spacing"]
+  );
+}
+
+function highlightElement(App, position, DOMPath, styles, text) {
+  App.addDOMToPropertyArray(DOMPath);
+  $('.liveAPI-body').append(
+    $('<div/>')
+      .offset({ top: position.top, left: position.left })
+      .css({ "font-size": styles["font-size"], "font-family": styles["font-family"], "font-variant": styles["font-variant"], "font-stretch": styles["font-stretch"], "line-height": styles["line-height"], "text-transform": styles["text-transform"], "text-align": styles["text-align"], "letter-spacing": styles["letter-spacing"] })
+      .data('DOMPath', DOMPath)
+      // Add the data type here
+      .addClass('liveAPI-newElement liveAPI-highlight liveAPI-yellow liveAPI-ignore')
+      .append(
+      $('<div/>')
+      .addClass('liveAPI-highlight-wrapper liveAPI-ignore')
+      .css({
+        "max-width": styles["width"], "height": styles["height"],"padding-right": styles["padding-right"]
+      })
+      .text(text)
+    )
+    .append(
+      $('<a/>')
+        .addClass('liveAPI-highlight-button')
+        .text('x')
+      )
+    )
 }
 
 // Removes leading, trailing, and excess whitespace between words from text
@@ -79,10 +141,10 @@ class App extends Component {
       property: undefined,
       propertyArray: [],
       recommendations: [],
-      text: {}
+      text: {},
+      firstElement: true
     }
-
-    // toggle authentication 
+    // ----------------toggle authentication 
     this.signIn = () => {
       console.log(this);
       this.setState({ authenticated: true });
@@ -253,11 +315,33 @@ class App extends Component {
     this.setCrawlUrl = (url) => {
       this.setState({ crawlUrl: url });
     }
+
+    this.getPropertyArray = () => {
+      return this.state.propertyArray.slice();
+    }
+
+    this.setPropertyArray = (propertyArray) => {
+      this.setState({ "propertyArray": propertyArray });
+    }
+
+    this.addDOMToPropertyArray = (DOMPath) => {
+      const propArr = this.getPropertyArray();
+      propArr.push(DOMPath);
+      this.setState({ "propertyArray": propArr });
+    }
+    this.addRecommendation = (rcmd) => {
+      const rcmdArr = this.state.recommendations.slice();
+      rcmdArr.push(rcmd);
+      this.setState({ "recommendations": rcmdArr });
+    }
+    this.toggleFirstElement = () => {
+      this.state.firstElement ? this.setState({firstElement: false}) : this.setState({firstElement: true});
+    }
     // end constructor /////////////////////////////////////
   }
 
   componentDidMount() {
-    const Application = this;
+    const App = this;
 
     // Prevents default click event
     $(document).on('click', '*', function () {
@@ -269,11 +353,13 @@ class App extends Component {
     $(document).on('click', '.liveAPI-highlight-wrapper', (e) => e.stopImmediatePropagation());
     // DOMPath is removed from state when item is deselected
     $(document).on('click', '.liveAPI-highlight-button', function (e) {
-      const propertyArray = Application.state.propertyArray.slice();
-      let currDOMPath = $(this).parent().data('DOMPath');
-      let index = propertyArray.indexOf(currDOMPath);
-      propertyArray.splice(index, 1);
-      Application.setState({ "propertyArray": propertyArray });
+      // Execute this function for all elements that have this data type
+        // Find them first, then execute the following function
+      const propArr = App.getPropertyArray();
+      let DOMPath = $(this).parent().data('DOMPath');
+      let index = propArr.indexOf(DOMPath);
+      propArr.splice(index, 1);
+      App.setPropertyArray(propArr);
       $(this).parent().remove();
       e.stopImmediatePropagation();
     });
@@ -289,43 +375,18 @@ class App extends Component {
     $(document).on('click', '*', function () {
       const position = cumulativeOffset(this);
       const DOMPath = $(this).getSelectors($(this).getDOMPath)[0];
+      const siblingSelector = $(this).getSelectors($(this).getDOMPath)[1];
       // Remove event listener from elements with child div elements
-      if ($(this).find('div').length > 0) return false;
       // Remove event listener from Toolbar elements
-      if ($(this).closest('#lapiChromeExtensionContainer').length > 0) return false;
-      console.log('hasClass', $(this).hasClass('liveAPI-ignore'));
-      if ($(this).hasClass("liveAPI-ignore")) return false;
       // Add DOM Path to this.state.propertyArray
-      const propertyArray = Application.state.propertyArray.slice();
-      propertyArray.push(DOMPath);
-      Application.setState({ "propertyArray": propertyArray });
-      let styles = $(this).css([
-        "width", "height", "font-size", "font-weight", "font-family", "font-variant", "font-stretch", "line-height", "text-transform", "text-align", "padding-top", "padding-bottom", "padding-left", "padding-right", "letter-spacing"]
-      );
-      $('.liveAPI-body').append(
-        $('<div/>')
-          .offset({ top: position.top, left: position.left })
-          // Assign div element the CSS properties of the HTML Element
-          .css({ "font-size": styles["font-size"], "font-family": styles["font-family"], "font-variant": styles["font-variant"], "font-stretch": styles["font-stretch"], "line-height": styles["line-height"], "text-transform": styles["text-transform"], "text-align": styles["text-align"], "letter-spacing": styles["letter-spacing"] })
-          // Add DOM Path to the parent div element
-          .data('DOMPath', DOMPath)
-          // Add highlight and ignore classes
-          // Add highlight and ignore classes
-          .addClass('liveAPI-newElement liveAPI-highlight liveAPI-yellow liveAPI-ignore')
-          .append(
-          $('<div/>')
-          .addClass('liveAPI-highlight-wrapper liveAPI-ignore')
-          .css({
-            "max-width": styles["width"], "height": styles["height"],"padding-right": styles["padding-right"]
-          })
-          .text(cleanWhiteSpace($(this).text()))
-        )
-        .append(
-          $('<a/>')
-            .addClass('liveAPI-highlight-button')
-            .text('x')
-          )
-      );
+      if ($(this).find('div').length > 0) return false;
+      if ($(this).closest('#lapiChromeExtensionContainer').length > 0) return false;
+      if ($(this).hasClass("liveAPI-ignore")) return false;
+
+      let styles = setStyles.call(this);
+      let text = cleanWhiteSpace($(this).text());
+      highlightElement(App, position, DOMPath, styles, text);
+      selectElement(App, siblingSelector, DOMPath, styles, text, position);
     });
   }
 
