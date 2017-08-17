@@ -32,7 +32,10 @@ $.fn.getSelectors = function(getDOMPath) {
     let currElement = DOMPath.slice(0, i + 1);
     let cssSelectors = currElement.reverse().join(' > ')
     let result = $(cssSelectors);
-    if (result.length === 1) return [cssSelectors, commonPath];
+    if (result.length === 1) {
+      console.log('currElement', [cssSelectors, commonPath]);
+      return [cssSelectors, commonPath];
+    }
     commonPath = cssSelectors.slice();
     i++;
   }
@@ -219,8 +222,7 @@ class App extends Component {
 
     this.resetHighlightedElements = () => {
       // Not sure why body is firing twice
-      console.log('body', $('body'));
-      $('body').find('.liveAPI-newElement').remove();
+      $('.liveAPI-body').find('.liveAPI-newElement').remove();
     }
     this.saveProperty = (property) => {
       if (!property) return;
@@ -287,9 +289,11 @@ class App extends Component {
     $(document).on('click', '*', function () {
       const position = cumulativeOffset(this);
       const DOMPath = $(this).getSelectors($(this).getDOMPath)[0];
+      // Remove event listener from elements with child div elements
+      if ($(this).find('div').length > 0) return false;
       // Remove event listener from Toolbar elements
       if ($(this).closest('#lapiChromeExtensionContainer').length > 0) return false;
-      console.log('this', $(this));
+      console.log('hasClass', $(this).hasClass('liveAPI-ignore'));
       if ($(this).hasClass("liveAPI-ignore")) return false;
       // Add DOM Path to this.state.propertyArray
       const propertyArray = Application.state.propertyArray.slice();
@@ -298,10 +302,9 @@ class App extends Component {
       let styles = $(this).css([
         "width", "height", "font-size", "font-weight", "font-family", "font-variant", "font-stretch", "line-height", "text-transform", "text-align", "padding-top", "padding-bottom", "padding-left", "padding-right", "letter-spacing"]
       );
-      $('body').append(
+      $('.liveAPI-body').append(
         $('<div/>')
           .offset({ top: position.top, left: position.left })
-
           // Assign div element the CSS properties of the HTML Element
           .css({ "font-size": styles["font-size"], "font-family": styles["font-family"], "font-variant": styles["font-variant"], "font-stretch": styles["font-stretch"], "line-height": styles["line-height"], "text-transform": styles["text-transform"], "text-align": styles["text-align"], "letter-spacing": styles["letter-spacing"] })
           // Add DOM Path to the parent div element
