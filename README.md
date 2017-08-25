@@ -9,14 +9,14 @@ The following three-part guide that walks through how to get started and use Liv
 * [Part 2: Authentication](https://medium.com/@pennwu/liveapi-a-visual-data-extraction-tool-part-2-17a1d32b2d52)
 * [Part 3: Using the Chrome Extension](https://medium.com/@melissjs/liveapi-a-visual-data-extraction-tool-part-3-e9d60c9ab28d)
 
-Installation Guide
+#Installation Guide
 A primary goal of ours when building LiveAPI is to make setup painless. Installing the Chrome Extension only takes two clicks on the Chrome Web Store. You can now start using the LiveAPI extension on any site by clicking the icon in the top-right Chrome Menu and following the Using the Chrome Extension part of this guide. Setting up a server generally isn’t as simple. Keeping to our goal, we’ve automated the server installation process through a script that installs all of the necessary prerequisites, builds the code and starts the LiveAPI services. This script can be executed in one shell command: 
 
 sudo curl -shttps://raw.githubusercontent.com/live-API/LAPI-Server/master/bin/pull.sh | bash -s 
 
 This command is tested for MacOS and Amazon Linux, but should work on other flavors of RHEL and on Ubuntu. If you have any setup or compatibility issues, let us know on Github. We’re still early in determining our compatibility and would love your feedback. 
 
-Port Setup
+#Port Setup
 LiveAPI server runs on port 4000 (http) and 4443 (https) by default and is accessible by adding the port to the domain (e.g. liveapi.yoursite.com:4443). To serve and access LiveAPI over the standard http and https ports, you can update the HTTP_PORT and HTTPS_PORT variables in server.js. 
 
 If using AWS to host LiveAPI, EC2 requires the application to have root access to run on ports under 1000. To avoid running a web server like LiveAPI as root, you can use iptables to forward port 443 to LiveAPI’s 4443. See this guide for more information. What We’re Asking to Sudo 
@@ -53,7 +53,8 @@ By now, here is what you have completed:
 [x] Start the LiveAPI server 
 
 We built authorization into LiveAPI to allow you to control the endpoints created. First, create the admin account. 
-Creating an Admin Account
+
+#Creating an Admin Account
 Go to https://localhost:4443/config. If your SSL Certificate is working correctly, you will see the above sign-in bar. Create the admin account by entering your login credentials. This will create a cookie in the browser, and bring you to the new page. 
 
 If you get an error, your SSL certificate is not working. Visit Part 1: Installation on instructions to create an SSL certificate! 
