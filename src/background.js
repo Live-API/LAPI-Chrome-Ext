@@ -1,5 +1,3 @@
-
-
 chrome.browserAction.onClicked.addListener(function(tab) {
   // console.log("without bang", $('#lapiChromeExtensionContainer'));
   // console.log("with bang", !!$('#lapiChromeExtensionContainer'));
