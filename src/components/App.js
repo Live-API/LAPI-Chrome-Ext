@@ -5,6 +5,7 @@ import Lowerbar from "./Lowerbar";
 import SegmentOne from "./SegmentOne";
 import SegmentFour from "./SegmentFour";
 import SegmentFive from "./SegmentFive";
+import Loader from "./Loader";
 
 $.fn.getDOMPath = function () {
   let path = this.parents().addBack();
@@ -129,6 +130,7 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
+      loading: true,
       serverUrl: '',
       crawlUrl: '',
       activeStep: 1,
@@ -341,6 +343,7 @@ class App extends Component {
   }
 
   componentDidMount() {
+
     const App = this;
 
     // Prevents default click event
@@ -388,12 +391,17 @@ class App extends Component {
       highlightElement(App, position, DOMPath, styles, text);
       selectElement(App, siblingSelector, DOMPath, styles, text, position);
     });
+
+     setTimeout(() => this.setState({ loading: false }), 2000); 
+
   }
 
   render() {
     return (
       <div className="App">
         <div className="App-header">
+
+          {this.state.loading ?<Loader/>:null}
 
           {/* <AuthModal trigger={<button>Authenticate</button>}/>
           <SendDefinitionModal trigger={<button>Create API Endpoint</button>} address='localhost:4000'/> */}
